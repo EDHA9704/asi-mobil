@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Observable} from 'rxjs/Observable';
-import {UsuarioLogin} from 'src/app/models/UsuarioLogin';
+import {UsuarioLogin} from 'src/app/models/usuarioLogin';
 import {UsuarioAdoptante} from '../models/usuarioAdoptante';
 import{FileTransfer,FileUploadOptions} from '@ionic-native/file-transfer/ngx'
 

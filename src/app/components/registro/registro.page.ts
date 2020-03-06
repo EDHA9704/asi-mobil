@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {UsuarioAdoptante} from '../../models/usuarioAdoptante';
-import {UsuarioLogin} from 'src/app/models/UsuarioLogin';
+import {UsuarioLogin} from 'src/app/models/usuarioLogin';
 import {UsuarioService} from '../../services/usuario.service';
 import {GLOBAL} from '../../services/global';
 import * as $ from 'jquery'
