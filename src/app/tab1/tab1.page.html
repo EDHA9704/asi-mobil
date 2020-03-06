@@ -20,10 +20,10 @@
 
  
 </ion-header>
-  <ion-refresher  (ionRefresh)="doRefresh($event)" *ngIf="mascotas.length > 0 && selecFiltro == false && statusMsc == false && bkey == false">
+  <ion-refresher slot="fixed"  (ionRefresh)="doRefresh($event)" *ngIf="mascotas.length > 0 && selecFiltro == false && statusMsc == false && bkey == false">
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
-  <ion-refresher  (ionRefresh)="doRefresh2($event)" *ngIf="mascotas.length > 0 && selecFiltro == true && statusMsc == false && bkey == false">
+  <ion-refresher slot="fixed"  (ionRefresh)="doRefresh2($event)" *ngIf="mascotas.length > 0 && selecFiltro == true && statusMsc == false && bkey == false">
       <ion-refresher-content></ion-refresher-content>
     </ion-refresher>
     <div class="btnFiltro">
