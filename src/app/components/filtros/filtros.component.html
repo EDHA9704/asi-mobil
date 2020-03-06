@@ -1,0 +1,143 @@
+
+<ion-content>
+
+    <div class="header-adopcion" >
+      <div class="titulo">
+        <h2>Filtros</h2>
+        <div class="btnModal">
+            <ion-icon name="trash" class="trs" (tap)="myDismiss('trash')"></ion-icon>           
+             <ion-icon name="close-circle" (tap)="myDismiss('sc')"></ion-icon>
+
+        </div>
+      </div>
+      
+    </div>
+    <div class="form-filtros" *ngIf="op == 'msc'">
+        <div class="titu">
+            <label id="lesp">Especie</label>
+            <span></span>
+        </div>
+          <mat-radio-group [formControl]="especie"
+            aria-labelledby="example-radio-group-label"
+            class="example-radio-group"
+            >
+            <mat-radio-button  class="example-radio-button" *ngFor="let es of aespecie" [value]="es">
+              {{es}}
+            </mat-radio-button>
+          </mat-radio-group>
+        </div>
+    <div class="form-filtros" *ngIf="op == 'msc'">
+      <div class="titu">
+          <label id="lsex">Sexo</label>
+          <span></span>
+      </div>
+        <mat-radio-group [formControl]="sexo"
+          aria-labelledby="example-radio-group-label"
+          class="example-radio-group"
+          >
+          <mat-radio-button  class="example-radio-button" *ngFor="let s of asexo" [value]="s">
+            {{s}}
+          </mat-radio-button>
+        </mat-radio-group>
+      </div>
+      <div class="form-filtros" *ngIf="op == 'msc'">
+        <div class="titu">
+            <label id="ltam">Tamaño</label>
+            <span></span>
+        </div>
+          
+          <mat-radio-group [formControl]="tamanio"
+            aria-labelledby="example-radio-group-label"
+            class="example-radio-group"
+            >
+            <mat-radio-button  class="example-radio-button" *ngFor="let t of atam" [value]="t">
+              {{t}}
+            </mat-radio-button>
+          </mat-radio-group>
+      </div>
+      <div class="form-filtros" *ngIf="op == 'msc'">
+        <div class="titu">
+            <label id="led">Edad</label>
+            <span></span>
+          </div>
+            <mat-radio-group [formControl]="edad"
+              aria-labelledby="example-radio-group-label"
+              class="example-radio-group"
+              >
+              <mat-radio-button  class="example-radio-button" *ngFor="let e of aedad" [value]="e">
+                {{e}}
+              </mat-radio-button>
+            </mat-radio-group>
+       
+         
+      </div>
+      <div class="form-filtros" *ngIf="op == 'msc'">
+        <div class="titu">
+            <label id="lraz">Raza</label>
+            <span></span>
+        </div>
+          
+          <mat-radio-group [formControl]="raza"
+            aria-labelledby="example-radio-group-label"
+            class="example-radio-group2"
+            >
+            <mat-radio-button  class="example-radio-button" *ngFor="let r of araza" [value]="r">
+              {{r}}
+            </mat-radio-button>
+          </mat-radio-group>
+      </div>
+      <div class="form-filtros" *ngIf="op == 'fund'">
+          <div class="titu">
+              <label id="led">Sector</label>
+              <span></span>
+            </div>
+              <mat-radio-group [formControl]="sector"
+                aria-labelledby="example-radio-group-label"
+                class="example-radio-group"
+                >
+                <mat-radio-button  class="example-radio-button" *ngFor="let sec of asector" [value]="sec">
+                  {{sec}}
+                </mat-radio-button>
+              </mat-radio-group>
+         
+           
+        </div>
+      
+        <div class="form-filtros" *ngIf="op == 'emer'">
+          <div class="titu">
+              <label id="niv">Nivel Emergencia</label>
+              <span></span>
+            </div>
+              <mat-radio-group [formControl]="nivelEmergencia"
+                aria-labelledby="example-radio-group-label"
+                class="example-radio-group2"
+                >
+                <mat-radio-button  class="example-radio-button" *ngFor="let n of anivel" [value]="n">
+                  {{n}}
+                </mat-radio-button>
+              </mat-radio-group>
+         
+           
+        </div>
+        <div class="form-filtros" *ngIf="op == 'emer'">
+          <div class="titu">
+              <label id="tip">Tipo emergencia</label>
+              <span></span>
+            </div>
+              <mat-radio-group [formControl]="tipoEmergencia"
+                aria-labelledby="example-radio-group-label"
+                class="example-radio-group3"
+                >
+                <mat-radio-button  class="example-radio-button" *ngFor="let t of atipo" [value]="t">
+                  {{t}}
+                </mat-radio-button>
+              </mat-radio-group>
+         
+           
+        </div>
+      <div class="form-filtros" style="text-align: center;">
+        <ion-button (click)="myDismiss('filtro')">Filtrar</ion-button>
+      </div>
+    
+    </ion-content>
+    

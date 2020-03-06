@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<network-security-config>
+    <domain-config cleartextTrafficPermitted="true">
+        <domain includeSubdomains="true">192.168.1.7</domain>
+        <domain includeSubdomains="true">192.168.1.7:3800</domain>
+        <domain includeSubdomains="true">172.29.136.61:3800</domain>
+        <domain includeSubdomains="true">172.29.136.61</domain>
+
+        <domain includeSubdomains="true">localhost</domain>
+        <domain includeSubdomains="true">https://fundacionesbck.herokuapp.com</domain>
+
+        
+
+    </domain-config>
+</network-security-config>

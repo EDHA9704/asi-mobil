@@ -1,0 +1,8 @@
+<div class="dialog">
+  <p>Ingresa el código enviado a tu correo electrótico:</p>
+  <mat-form-field>
+    <input matInput required id="codigo" placeholder="Código" [formControl]="codigo" required>
+    <mat-error *ngIf="codigo.invalid">{{getErrorMessage('co')}}</mat-error>
+  </mat-form-field>
+  <ion-button fill="outline" (click)="validarCodigo()">Verificar</ion-button>
+</div>

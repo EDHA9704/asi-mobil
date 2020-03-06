@@ -1,0 +1,319 @@
+
+<ion-content>
+
+<div class="header-adopcion" *ngIf="mascota" style="padding: 1rem 0;">
+  <div class="titulo">
+    <h2>Proceso de adopción</h2>
+    <ion-icon name="close-circle" (tap)="myDismiss('no')"></ion-icon>
+  </div>
+  <div class="mascota">
+      <ion-chip>
+          <ion-avatar>
+            <img src="https://fundacionesbckimg.s3.us-east-2.amazonaws.com/{{ 
+              mascota.fotos[0].name}}">
+          </ion-avatar>
+          <ion-label>{{mascota.nombre}}</ion-label>
+        </ion-chip>
+  </div>
+</div>
+<div class="form-adopcion">
+    <mat-horizontal-stepper [linear]="isLinear" #stepper>
+        <ng-template matStepperIcon="account_circle">
+            <mat-icon>account_circle</mat-icon>
+          </ng-template>
+          <ng-template matStepperIcon="pets">
+              <mat-icon>pets</mat-icon>
+            </ng-template>
+            <ng-template matStepperIcon="people">
+                <mat-icon>people</mat-icon>
+              </ng-template>
+            <ng-template matStepperIcon="contact_phone">
+                <mat-icon>contact_phone</mat-icon>
+              </ng-template>
+              
+          <ng-template matStepperIcon="done">
+            <mat-icon>done_all</mat-icon>
+          </ng-template>
+        <mat-step state="account_circle" [stepControl]="firstFrGroup">
+            
+              <form id="formC" [formGroup]="firstFrGroup"  class="formContent">
+
+                <mat-form-field appearance="standard">
+                  <mat-label>Cédula</mat-label>
+                
+                  <input required formControlName="cedula" matInput type="text" id="cedula" [class.is-invalid]="f.cedula.errors" [class.is-valid]="f.cedula.errors">
+                  <mat-error *ngIf="f.cedula.errors">
+                    <p *ngIf="f.cedula.errors.required">Cédula requerida</p> 
+                    <p *ngIf="f.cedula.errors.pattern">Cédula no válida</p> 
+                  </mat-error>
+                </mat-form-field>
+            
+                <mat-form-field>
+                  <mat-label>Instrucción académica</mat-label>
+                  <mat-select required formControlName="instruccion">
+                    <mat-option value="Primaria">Primaria</mat-option>
+                    <mat-option value="Secundaria">Secundaria</mat-option>
+                    <mat-option value="Universidad">Universidad</mat-option>
+                    <mat-option value="Postgrado">Postgrado</mat-option>
+                   
+                  </mat-select>
+                </mat-form-field>
+                <mat-form-field>
+                  <mat-label>¿Qué tipo de inmueble posee?</mat-label>
+                  <mat-select required formControlName="inmueble">
+                    <mat-option value="Casa propia">Casa propia</mat-option>
+                    <mat-option value="Casa arrendada">Casa arrendada</mat-option>
+                    <mat-option value="Departamento propio">Departamento propio</mat-option>
+                    <mat-option value="Departamento arrendado">Departamento arrendado</mat-option> 
+                  </mat-select>
+                </mat-form-field>
+                <mat-form-field appearance="standard">
+                  <mat-label>Ocupación</mat-label>
+                
+                  <input required formControlName="ocupacion" matInput type="text" id="ocupacion" [class.is-invalid]="f.ocupacion.errors" [class.is-valid]="f.ocupacion.errors">
+                  <mat-error *ngIf="f.ocupacion.errors">
+                    <p *ngIf="f.ocupacion.errors.required">Ocupación requerida</p> 
+                    <p *ngIf="f.ocupacion.errors.minlength">Describe mejor a que te dedicas</p> 
+                    <p *ngIf="f.ocupacion.errors.maxlength">Exceso de caracteres</p> 
+                    <p *ngIf="f.ocupacion.errors.pattern">No se permite caracteres especiales</p> 
+                  </mat-error>
+                </mat-form-field>
+                <div class="direccionSelec">
+                  
+                  <button type="button" mat-button (click)="presentMapModal()" style="border:1px solid #3bbfad; width: 100%;">Seleccionar dirección domiciliaria <i style="color: #3bbfad; font-size: 2em;" class="fa fa-map-marker" aria-hidden="true"></i></button>
+      
+                  <p *ngIf="direccionSelected != ''" style="padding: .5em 0;">Dirección seleccionada: {{direccionSelected.formmatedAddres}}</p>
+                </div>
+                </form>           
+            <div class="btnI">
+              <button  mat-button matStepperNext>Siguiente</button>
+            </div>
+        </mat-step>
+        <mat-step state="pets" [stepControl]="secondFrmGroup">
+            <form id="formC2" [formGroup]="secondFrmGroup"  class="formContent">
+              <mat-form-field appearance="standard">
+                <mat-label>¿Porqué desea adoptar una mascota?</mat-label>
+              
+                <input required formControlName="deseoAdoptar" matInput type="text" id="deseoAdoptar" [class.is-invalid]="f2.deseoAdoptar.errors" [class.is-valid]="f2.deseoAdoptar.errors">
+                <mat-error *ngIf="f2.deseoAdoptar.errors">
+                  <p *ngIf="f2.deseoAdoptar.errors.required">Describe porque deseas adoptar</p> 
+                  <p *ngIf="f2.deseoAdoptar.errors.minlength">Responde mejor a la pregunta</p> 
+                  <p *ngIf="f2.deseoAdoptar.errors.maxlength">Exceso de caracteres</p> 
+                  <p *ngIf="f2.deseoAdoptar.errors.pattern">No se admite caracteres especiales</p> 
+                </mat-error>
+              </mat-form-field>
+
+              <mat-form-field appearance="standard">
+                <mat-label>Si cambia de domicilio. ¿Qué pasaría con la mascota?</mat-label>
+              
+                <textarea matAutosizeMinRows="1" matAutosizeMaxRows="5" required formControlName="cambiarDomicilio" matInput type="text" id="cambiarDomicilio" [class.is-invalid]="f2.cambiarDomicilio.errors" [class.is-valid]="f2.cambiarDomicilio.errors"></textarea>
+                <mat-error *ngIf="f2.cambiarDomicilio.errors">
+                  <p *ngIf="f2.cambiarDomicilio.errors.required">Describe lo que pasaría con la mascota</p> 
+                  <p *ngIf="f2.cambiarDomicilio.errors.minlength">Responde mejor a la pregunta</p> 
+                  <p *ngIf="f2.cambiarDomicilio.errors.maxlength">Exceso de caracteres</p> 
+                  <p *ngIf="f2.cambiarDomicilio.errors.pattern">No se admite caracteres especiales</p> 
+                </mat-error>
+              </mat-form-field>
+              <mat-form-field appearance="standard">
+                <mat-label>¿Quién se hará cargo de los gastos de la mascota?</mat-label>
+              
+                <textarea required formControlName="cargoGastos" matInput type="text" id="cargoGastos" [class.is-invalid]="f2.cargoGastos.errors" [class.is-valid]="f2.cargoGastos.errors"></textarea>
+                <mat-error *ngIf="f2.cargoGastos.errors">
+                  <p *ngIf="f2.cargoGastos.errors.required">Describe quién cubrirá los gastos</p> 
+                  <p *ngIf="f2.cargoGastos.errors.minlength">Responde mejor a la pregunta</p> 
+                  <p *ngIf="f2.cargoGastos.errors.maxlength">Exceso de caracteres</p> 
+                  <p *ngIf="f2.cargoGastos.errors.pattern">No se admite caracteres especiales</p> 
+                </mat-error>
+              </mat-form-field>
+              <mat-form-field class="persol">
+                <mat-label>Seleccione cuánto dinero mensual podría gastar en su mascota</mat-label>
+                <mat-select required formControlName="dineroMensualMS">
+                 
+                  <mat-option value="5 a 20">5 a 20 dólares</mat-option>
+                  <mat-option value="21 a 50">21 a 50 dólares</mat-option>
+                  <mat-option value="Más de 50">Más de 50 dólares</mat-option>
+                </mat-select>
+              </mat-form-field>
+
+                    
+              </form>     
+            <div class="btnI2">
+              <button mat-button matStepperPrevious>Regresar</button>
+              <button mat-button matStepperNext>Siguiente</button>
+            </div>
+          
+        </mat-step>
+        <mat-step state="pets" [stepControl]="trFrmGroup">
+            <form id="formC3" [formGroup]="trFrmGroup"  class="formContent">
+              <mat-form-field >
+                <mat-label class="fontsXS">¿El lugar donde pasará la mascota posee cerramiento?</mat-label>
+                <mat-select required formControlName="cerramiento">
+                  <mat-option value="Si">Si</mat-option>
+                  <mat-option value="No">No</mat-option>
+                 
+                </mat-select>
+              </mat-form-field>
+              <mat-form-field >
+                <mat-label class="fontsXS">Si sale de viaje mas de un día la mascota:</mat-label>
+                <mat-select required formControlName="salirViaje">
+                  <mat-option value="Viaja conmigo">Viaja conmigo</mat-option>
+                  <mat-option value="Se queda con un familiar">Se queda con un familiar</mat-option>
+                  <mat-option value="Hospedaje">Hospedaje</mat-option>
+                  <mat-option value="Otro">Otro</mat-option>
+                </mat-select>
+              </mat-form-field>
+              <mat-form-field >
+                <mat-label class="fontsXS">Cuánto tiempo al día pasará sola la mascota?</mat-label>
+                <mat-select required formControlName="tiempoSolo">
+                  <mat-option value="1">1 hora</mat-option>
+                  <mat-option value="2">2 horas</mat-option>
+                  <mat-option value="Más de 2">Más de 2 horas</mat-option>
+                </mat-select>
+              </mat-form-field>
+              <mat-form-field >
+                <mat-label class="fontsXS">¿Qué comerá habitualmente la mascota?</mat-label>
+                <mat-select required formControlName="comidaMS">
+                  <mat-option value="Balanceado">Balanceado</mat-option>
+                    <mat-option value="Comida casera">Comida casera</mat-option>
+                    <mat-option value="Restos">Restos</mat-option>
+                </mat-select>
+              </mat-form-field>
+              <mat-form-field >
+                <mat-label class="fontsXS">Si su mascota enferma usted:</mat-label>
+                <mat-select required formControlName="enfermaMS">
+                  <mat-option value="Lo lleva al veterinario">Lo lleva al veterinario</mat-option>
+                  <mat-option value="Lo medica usted mismo">Lo medica usted mismo</mat-option>
+                  <mat-option value="Lo lleva al centro de salud">Lo lleva al centro de salud</mat-option>
+                  <mat-option value="Espera a que sane solo">Espera a que sane solo</mat-option>
+                </mat-select>
+              </mat-form-field>
+             
+              <mat-form-field appearance="standard">
+                <mat-label class="fontsXS">¿Dónde dormirá la mascota?</mat-label>
+              
+                <input required formControlName="dormirMS" matInput type="text" id="dormirMS" [class.is-invalid]="f3.dormirMS.errors" [class.is-valid]="f3.dormirMS.errors">
+                <mat-error *ngIf="f3.dormirMS.errors">
+                  <p *ngIf="f3.dormirMS.errors.required">Campo requerido</p> 
+                  <p *ngIf="f3.dormirMS.errors.minlength">Responde mejor a la pregunta</p> 
+                  <p *ngIf="f3.dormirMS.errors.maxlength">Exceso de caracteres</p> 
+                  <p *ngIf="f3.dormirMS.errors.pattern">No se admite caracteres especiales</p> 
+                </mat-error>
+              </mat-form-field>
+                    
+                   
+    
+              </form>  
+              <div class="btnI2">
+                  <button mat-button matStepperPrevious>Regresar</button>
+                  <button mat-button matStepperNext>Siguiente</button>
+                </div>
+        </mat-step>
+        <mat-step state="people" [stepControl]="frFrmGroup">
+            <form id="formC4" [formGroup]="frFrmGroup"  class="formContent">
+              <mat-form-field >
+                <mat-label class="fontsXS">¿Posee otras mascotas?</mat-label>
+                <mat-select required formControlName="numMascotas">
+                  <mat-option value="1">Sí, 1 mascota</mat-option>
+                  <mat-option value="2">Si, 2 mascotas </mat-option>
+                  <mat-option value="Más de 2">Si, más de 2 mascotas </mat-option>
+                  <mat-option value="No">No poseo mascotas</mat-option>
+                </mat-select>
+              </mat-form-field>
+ 
+                  <mat-form-field >
+                    <mat-label class="fontsXS">¿En qué estado de salud están la/las mascotas?</mat-label>
+                    <mat-select required formControlName="estadoMascotas">  
+                      <mat-option value="Saludable/es">Saludable/es</mat-option>
+                      <mat-option value="Enferma/as">Enferma/as</mat-option>
+                      <mat-option value="Fallecido/dos">Fallecido/dos</mat-option>
+                      <mat-option value="Extraviada/das">Extraviada/das</mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                 
+                    <mat-form-field >
+                      <mat-label class="fontsXS">Cuántas personas viven con usted?</mat-label>
+                      <mat-select required formControlName="numPersonas">
+                        <mat-option value="Solo">Vivo solo</mat-option>
+                            <mat-option value="1 a 3">Entre 1 a 3 </mat-option>
+                            <mat-option value="4 a 8">Entre 4 a 8</mat-option>
+                            <mat-option value="Más de 8">Más de 8</mat-option>
+                      </mat-select>
+                    </mat-form-field>  
+                   
+                      <mat-form-field >
+                        <mat-label class="fontsXS">¿Algún familiar espera un bebé?</mat-label>
+                        <mat-select required formControlName="familiarEmbarazo">
+                          <mat-option value="Si">Si</mat-option>
+                          <mat-option value="No">No</mat-option>
+                         
+                        </mat-select>
+                      </mat-form-field>
+                     
+                        <mat-form-field >
+                          <mat-label class="fontsXS">¿Algún familiar es alérgico a los animales o sufre de asma?</mat-label>
+                          <mat-select required formControlName="familiarAlergico">
+                            <mat-option value="Si">Si</mat-option>
+                            <mat-option value="No">No</mat-option>
+                           
+                          </mat-select>
+                        </mat-form-field>
+                      
+                
+              </form>  
+              <div class="btnI2">
+                  <button mat-button matStepperPrevious>Regresar</button>
+                  <button mat-button matStepperNext>Siguiente</button>
+                </div>
+        </mat-step>
+        <mat-step state="contact_phone" [stepControl]="fvFrmGroup">
+            <form id="formC" [formGroup]="fvFrmGroup"  class="formContent">
+              <mat-form-field appearance="standard">
+                <mat-label>¿Qué opina su familia de la adopción que desea realizar?</mat-label>
+              
+                <textarea matAutosizeMinRows="1" matAutosizeMaxRows="5" required formControlName="compartidaFamilia" matInput type="text" id="compartidaFamilia" [class.is-invalid]="f5.compartidaFamilia.errors" [class.is-valid]="f5.compartidaFamilia.errors"></textarea>
+                <mat-error *ngIf="f5.compartidaFamilia.errors">
+                  <p *ngIf="f5.compartidaFamilia.errors.required">Campo requerido</p> 
+                  <p *ngIf="f5.compartidaFamilia.errors.minlength">Responde mejor a la pregunta</p> 
+                  <p *ngIf="f5.compartidaFamilia.errors.maxlength">Exceso de caracteres</p> 
+                  <p *ngIf="f5.compartidaFamilia.errors.pattern">No se admite caracteres especiales</p> 
+                </mat-error>
+              </mat-form-field>
+              <mat-form-field appearance="standard">
+                <mat-label>Nombres/Apellidos de una persona de referencia</mat-label>
+              
+                <textarea matAutosizeMinRows="1" matAutosizeMaxRows="5" required formControlName="nombresRP" matInput type="text" id="nombresRP" [class.is-invalid]="f5.nombresRP.errors" [class.is-valid]="f5.nombresRP.errors"></textarea>
+                <mat-error *ngIf="f5.nombresRP.errors">
+                  <p *ngIf="f5.nombresRP.errors.required">Campo requerido</p> 
+                  <p *ngIf="f5.nombresRP.errors.minlength">Responde mejor a la pregunta</p> 
+                  <p *ngIf="f5.nombresRP.errors.maxlength">Exceso de caracteres</p> 
+                  <p *ngIf="f5.nombresRP.errors.pattern">No se admite caracteres especiales</p> 
+                </mat-error>
+              </mat-form-field>
+              <mat-form-field appearance="standard">
+                <mat-label>Teléfono de la persona de referencia</mat-label>
+              
+                <textarea matAutosizeMinRows="1" matAutosizeMaxRows="5" required formControlName="telefonoRP" matInput type="text" id="telefonoRP" [class.is-invalid]="f5.telefonoRP.errors" [class.is-valid]="f5.telefonoRP.errors"></textarea>
+                <mat-error *ngIf="f5.telefonoRP.errors">
+                  <p *ngIf="f5.telefonoRP.errors.required">Campo requerido</p> 
+                  <p *ngIf="f5.telefonoRP.errors.pattern">Número no válido</p> 
+                </mat-error>
+              </mat-form-field>
+              <mat-form-field >
+                <p class="fontsXS">¿Está de acuerdo en qué podamos visitar su domicilio para verificar el estado de la mascota?</p>
+                <mat-select required formControlName="visitarDomicilio">
+                  <mat-option value="Si">Si</mat-option>
+                        <mat-option value="No">No</mat-option> 
+                </mat-select>
+              </mat-form-field>
+             
+              </form>  
+              <div class="btnI2">
+                  <button mat-button matStepperPrevious>Regresar</button>
+                  <button mat-button (click)="registrarAdopcion(mascota.responsable._id,mascota._id)" >Finalizar</button>
+                </div>
+          
+        </mat-step>
+      </mat-horizontal-stepper>
+    
+</div>
+</ion-content>

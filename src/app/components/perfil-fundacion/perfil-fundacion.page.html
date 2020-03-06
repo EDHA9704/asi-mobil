@@ -1,0 +1,253 @@
+<!--<ion-header>
+    <ion-toolbar>
+      <ion-buttons slot="start">
+        <ion-back-button></ion-back-button>
+      </ion-buttons>
+    </ion-toolbar>
+  </ion-header>
+-->
+<ion-content>
+<!-- fab placed to the bottom end -->
+<ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+<ion-fab vertical="top" horizontal="start" slot="fixed">
+    <ion-fab-button color="dark" style="max-width: 2rem; max-height: 2rem;">
+      <ion-back-button color="light" defaultHref="tabs/tab2"></ion-back-button>
+
+    </ion-fab-button>
+  </ion-fab>
+  <div class="fundacion" *ngIf="fundacion">
+      <div class="fundacion-header">
+        
+          <div class="header1">
+             
+             <div class="swiper-container" *ngIf="portadasFundacion">
+                  <div class="swiper-wrapper" *ngIf="portadasFundacion.length > 0">
+                    <div  (click)="presentModalPH('port')" class="swiper-slide" *ngFor="let p of portadasFundacion"><img src="https://fundacionesbckimg.s3.us-east-2.amazonaws.com/{{ 
+                      p.foto}}" ></div>
+
+                  </div>
+                  <div class="swiper-wrapper" *ngIf="portadasFundacion.length == 0">
+                      <div  class="swiper-slide" *ngFor="let p of portadasFundacion"><img src="https://fundacionesbckimg.s3.us-east-2.amazonaws.com/{{ 
+                        p.foto}}" ></div>
+  
+                    </div>
+                 
+                  <div class="swiper-pagination"></div>
+                
+                </div>
+          </div>
+          <div class="header2">
+
+          </div>
+          <div class="header-datos">
+            <div class="foto-name">
+              <div class="foto">
+                  <div class="instagram">
+                      <div class="inner-btn" *ngIf="historias">
+                         <div class="inner-border" *ngIf="historias.length > 0"> 
+                                <img  (click)="presentModalPH('hist')" class="big-circle" src="https://fundacionesbckimg.s3.us-east-2.amazonaws.com/{{ 
+                                  fundacion.logo}}">
+                          
+                         </div>
+                         <div class="inner-border" *ngIf="historias.length == 0"> 
+                            <img  class="big-circle" src="https://fundacionesbckimg.s3.us-east-2.amazonaws.com/{{ 
+                              fundacion.logo}}">
+                      
+                     </div>
+                      </div>
+                    </div>
+              </div>
+               
+          
+              <div class="name">
+                <p></p>
+                <h4><i class="fa fa-university" aria-hidden="true"></i>&nbsp;{{fundacion.nombreFundacion}}</h4>
+              </div>
+            </div>
+           
+          </div>
+
+
+        </div>
+      
+        <div class="fundacion-tabs">
+            <mat-tab-group  (selectedIndexChange)="tabChanged($event)" mat-align-tabs="center">
+                <mat-tab >
+                    <ng-template mat-tab-label style="font-size: 10px !important;">
+                        <i style="font-size: 1rem !important;" class="fa fa-university" aria-hidden="true"></i> Perfil
+                      </ng-template>
+                   <div class="nosotros">
+
+                     <p class="rp">
+                        Representante <strong>{{fundacion.representante}}</strong>
+                     </p>
+                     <mat-accordion>
+                      <mat-expansion-panel [expanded]="step === 0" (opened)="setStep(0)">
+                        <mat-expansion-panel-header>
+                          <mat-panel-title>
+                            <h4>Perfil</h4>
+                          </mat-panel-title>
+                         
+                        </mat-expansion-panel-header>
+                    
+                        <p>{{fundacion.perfil}}</p>
+                      </mat-expansion-panel>
+                      <mat-expansion-panel >
+                        <mat-expansion-panel-header>
+                          <mat-panel-title>
+                            <h4>Misión</h4>
+                          </mat-panel-title>
+                          
+                        </mat-expansion-panel-header>
+                        <p>{{fundacion.mision}}</p>
+                      </mat-expansion-panel>
+                      <mat-expansion-panel >
+                        <mat-expansion-panel-header>
+                          <mat-panel-title>
+                            <h4>Visión</h4>
+                          </mat-panel-title>
+                          
+                        </mat-expansion-panel-header>
+                        <p>{{fundacion.vision}}</p>
+                      </mat-expansion-panel>
+                    </mat-accordion>
+                     
+                   
+                   </div>
+                </mat-tab>
+                <mat-tab> 
+                    <ng-template mat-tab-label style="font-size: 10px !important;">
+                        <ion-icon style="font-size: 1rem !important;" name="paw"></ion-icon> Mascotas
+                      </ng-template>
+
+
+                      <ion-grid class="gallery" *ngIf="mascotas && carga == false && statusMsc == false" style="padding: .4rem 0 !important;">
+                        <ion-row>
+                          <ion-col size="4" *ngFor="let item of mascotas">
+                            <ion-card >
+
+                              <ion-card-header>
+                                <div class="nameHead">
+                                  <p class="name">
+                                    {{item.ms.nombre}}
+                                  </p>
+                                </div>
+                                
+                                <img src="https://fundacionesbckimg.s3.us-east-2.amazonaws.com/{{ 
+                                  item.foto[0].name}}" (click)="perfilMascota(item.ms._id)">
+                              </ion-card-header>
+                            
+                              <ion-card-content>
+                      
+                               
+                                <ion-card-title (click)="perfilMascota(item.ms._id)">
+                                  <i class="fa fa-paw" aria-hidden="true"></i> {{item.ms.edadT}}</ion-card-title>
+                      
+                              </ion-card-content>
+                            </ion-card>
+                          </ion-col>
+                        </ion-row>
+                      </ion-grid>
+                   
+                      <div class="advertencia" *ngIf="statusMsc == true">
+                          <img src="../../../assets/img/dog-2952471_960_720.jpg">
+                         <p>No existe mascotas</p>
+                        </div>
+                       <ion-infinite-scroll threshold="100px" (ionInfinite)="loadData($event)" *ngIf="selecFiltro == false && statusMsc == false && bkey == false && fab == 1">
+                         <ion-infinite-scroll-content
+                           loadingSpinner="bubbles"
+                           loadingText="agregando mascotas...">
+                         </ion-infinite-scroll-content>
+                       </ion-infinite-scroll>
+                </mat-tab>
+                <mat-tab > 
+                    <ng-template mat-tab-label style="font-size: 10px !important;">
+                        <i style="font-size: 1rem !important;" class="fa fa-cart-plus" aria-hidden="true"></i> Donaciones
+                      </ng-template>
+                  <div  class="donaciones" >
+                    <div class="header-btns">
+                      <ion-button fill="outline" (click)="presentModal('donar')">Donar</ion-button>
+                    </div>
+
+                    <mat-accordion>
+                      <mat-expansion-panel [expanded]="step === 0" (opened)="setStep(0)">
+                        <mat-expansion-panel-header>
+                          <mat-panel-title>
+                            <h4>Depósitos y transferencias bancarias</h4>
+                          </mat-panel-title>
+                         
+                        </mat-expansion-panel-header>
+                    
+                        <div class="donacion-descripcion">
+
+                          <img src="../../../assets/img/corEm2.png">
+                          
+                          <div class="datos">
+                            <p><span>Titular:</span> {{fundacion.titular}}</p>
+                            <p><span>Banco:</span> {{fundacion.banco}}</p>
+                            <p><span>Número de cuenta:</span> {{fundacion.numCuenta}}</p>
+
+                          </div>
+                        </div>
+                      </mat-expansion-panel>
+                      <mat-expansion-panel >
+                        <mat-expansion-panel-header>
+                          <mat-panel-title>
+                            <h4>Donaciones en producto</h4>
+                          </mat-panel-title>
+                          
+                        </mat-expansion-panel-header>
+                        <div class="donacion-descripcion" style="min-height: 8rem;">
+      
+                          <img src="../../../assets/img/icon-pet.png">
+                          <div class="datos">
+                            <p>
+                                Registra tu donación en producto y se asignará un voluntario para retirar la donación 
+                                en caso de que lo desees.
+                            </p>
+                          </div>
+                        </div>
+                       
+                      </mat-expansion-panel>
+                     
+                    </mat-accordion>
+                
+                      
+                  </div>
+                
+                </mat-tab>
+                <mat-tab style="font-size: 10px !important;"> 
+                  <ng-template mat-tab-label>
+                    <i style="font-size: 1rem !important;" class="fa fa-info-circle" aria-hidden="true"></i> Contactos
+                    </ng-template>
+              <div class="contactos">
+                <div class="header-btns">
+                  <ion-button fill="outline" (click)="presentModal('contac')">Contactanos</ion-button>
+                </div>
+                <div class="datoscont" style="padding: 0 2rem;">
+                  <ion-grid>
+                    <ion-row>
+                      <ion-col size="1"><i class="fa fa-phone" aria-hidden="true"></i></ion-col>
+                      <ion-col size="11">{{fundacion.telefono}}</ion-col>
+                      <ion-col size="1"><i class="fa fa-mobile" aria-hidden="true"></i></ion-col>
+                      <ion-col size="11">{{fundacion.celular}}</ion-col>
+                      <ion-col size="1"><i class="fa fa-envelope" aria-hidden="true"></i></ion-col>
+                      <ion-col size="11">{{fundacion.correo}}</ion-col>
+                      <ion-col size="1"><i class="fa fa-map-marker" aria-hidden="true"></i></ion-col>
+                      <ion-col size="11">{{fundacion.sector}} - {{fundacion.barrio}} - {{fundacion.calleP}} - {{fundacion.calleS}}</ion-col>
+                    </ion-row>
+                  </ion-grid>
+                 
+                </div>
+              </div>
+              </mat-tab>
+             
+              </mat-tab-group>
+        </div>
+  </div>
+  
+
+ 
+</ion-content>

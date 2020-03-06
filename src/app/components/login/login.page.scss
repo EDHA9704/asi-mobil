@@ -1,0 +1,142 @@
+
+.header-md:after{
+    background: none !important;
+    background-image: none !important;
+}
+
+ion-header{
+    display: flex;
+    .logo{
+        margin: 5px;
+        width: 3.5rem;
+        height: 3rem;
+        border-radius: 50%;
+    
+        img{
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+    
+        }
+    }
+}
+
+.inicio{
+
+    height: 100%;
+
+    .options{
+        height: 100%;
+        width: 100%;
+        margin: 0;
+      
+        display: flex;
+        flex-direction: column;
+        padding-top: 2rem;
+        align-items: center;
+
+        .titulo{
+            text-align: center;
+
+            h4{
+                color: #3bbfad;
+                font-family: 'Righteous', cursive;
+
+            }
+        }
+        .logo{
+            width: 7rem;
+            height: 7rem;
+            border-radius: 50%;
+
+            img{
+                width: 100%;
+                height: 100%;
+                border-radius: 50%;
+
+            }
+        }
+        .titulo{
+            text-align: center;
+            width: 100%;
+
+            h4{
+                color: #3bbfad;
+            }
+        }
+
+      .formContent{
+        margin-top: 2rem;
+          width: 80%;
+          padding-bottom: 1rem;
+          border-bottom: 1px solid #a3a7a6;
+
+       
+        
+        
+          .formError{
+            border: 1px solid #bf3b3b;
+            margin-bottom: 0;
+        }
+        .formErrormsj{
+            margin-top: 0;
+            color: #bf3b3b;
+        }
+        .smallText{
+            color: gray;
+            font-size: 12px;
+        }
+        ion-item{
+            border: 1px solid #a3a7a6;
+            width: 100%;
+            border-radius: 10px;
+            margin-bottom: 1rem;
+        }
+
+        .bntIS{
+            width: 100%;
+            text-transform: lowercase;
+            & p:first-letter{
+                text-transform: capitalize !important;
+            }
+        }
+      }
+       
+        .btnsRedes{
+            padding:1rem 2rem 0 2rem;
+            p{
+                color: #a3a7a6
+            }
+            ion-button{
+                text-transform: lowercase;
+                width: 100%;
+                margin: 0;
+                --background:transparent;
+                border: 1px solid #4267b2;
+                color: #4267b2;
+                border-radius: 5px;
+                & p:first-letter{
+                    text-transform: capitalize !important;
+                }
+                p{
+                    color: #4267b2;
+                }
+                ion-icon{
+                    margin-right: 5px;
+                }
+            }
+
+        }
+ 
+    }
+    
+}
+.frgpss{
+    width: 100%;
+    text-align: center;
+    & p::first-letter{
+        text-transform: capitalize;
+    }
+   
+
+}

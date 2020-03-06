@@ -1,0 +1,263 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title >Donación</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  
+  <div class="emergencia" *ngIf="donacion">
+    
+    <div class="tabs">
+      <div class="mascota">
+        <div class="imageMS" >
+          <ion-thumbnail style="width: 100%; height: 100%;">
+            <ion-img ionImgViewer class="card-img-top" *ngIf="donacion.foto" src="https://fundacionesbckimg.s3.us-east-2.amazonaws.com/{{ 
+              donacion.foto}}" alt="Card image cap"></ion-img>
+          </ion-thumbnail>
+        </div>
+        <div class="estado">
+          <ion-chip [class.estP]="donacion.estado == 0 || donacion.estado == 1 || donacion.estado == 3 || donacion.estado == 4" [class.estA]="donacion.estado == 2">
+            <ion-icon name="checkmark-circle" *ngIf="donacion.estado == 1"></ion-icon>
+            <ion-icon name="close-circle" *ngIf="donacion.estado == 2"></ion-icon>
+            <ion-icon name="clock" *ngIf="donacion.estado == 0 || donacion.estado == 3 || donacion.estado == 4"></ion-icon>
+
+            <ion-label *ngIf="donacion.estado == 0 || donacion.estado == 3 || donacion.estado == 4">pendiente</ion-label>
+            <ion-label *ngIf="donacion.estado == 1">aprobado</ion-label>
+            <ion-label *ngIf="donacion.estado == 2">negado</ion-label>
+          </ion-chip>
+          <ion-label style="padding: 0 .5rem; margin: .5rem 0;">Solicitado {{(donacion.creadoEn | amFromUnix) | amLocale:'es' | amTimeAgo}}</ion-label>
+        </div>
+      </div>
+     
+        <mat-tab-group (selectedIndexChange)="tabChanged($event)" mat-align-tabs="center">
+            <mat-tab class="msc" *ngIf="tipo != 'DONA'">
+                <ng-template mat-tab-label style="display: flex; flex-direction: column;">
+                  <i style="font-size: 1rem !important;" class="fa fa-university" aria-hidden="true"></i>
+                  Fundación
+                  </ng-template>
+                  <div class="donacion-fundacion">
+                    <div class="fundacion-photo">
+                      <img (click)="perfilFundacion(donacion.fundacion._id)" src="https://fundacionesbckimg.s3.us-east-2.amazonaws.com/{{ 
+                        donacion.fundacion.logo}}">
+                    </div>
+                    <div class="fundacion-name">
+                      <h5 (click)="perfilFundacion(donacion.fundacion._id)">{{donacion.fundacion.nombreFundacion}}</h5>
+                    </div>
+                    <div class="fundacion-data">
+                      <p>{{donacion.fundacion.correo}}</p>
+                      <p>{{donacion.fundacion.telefono}}/{{donacion.fundacion.celular}}</p>
+
+                    </div>
+                  </div>
+               
+            </mat-tab>
+            
+            <mat-tab> 
+                <ng-template mat-tab-label style="display: flex; flex-direction: column;">
+                  <i style="font-size: 1rem !important;" class="fa fa-cart-plus" aria-hidden="true"></i>
+                  
+                  <span>Donación</span>
+                  </ng-template>
+                  <ion-grid>
+                    <ion-row>
+                      <ion-col size="6">
+                        <ion-item>
+                          <ion-label>
+                            Tipo: {{donacion.tipo}}
+
+                          </ion-label>
+                          <i class="fa fa-cart-plus" aria-hidden="true"></i>
+                        </ion-item>
+                      
+                      </ion-col>
+                      <ion-col size="6" *ngIf="donacion.tipo == 'Económica'">
+                        <ion-item>
+                          <ion-label >
+                            Cantidad: {{donacion.cantidad}}
+                          </ion-label>
+
+                          <i class="fa fa-money" aria-hidden="true"></i>
+                        </ion-item>
+                      
+                      </ion-col>
+                      <ion-col size="12" *ngIf="donacion.tipo == 'Producto'">
+                        <ion-item>
+                  
+                          <ion-label >
+                            Nombre Producto: {{donacion.nombreProducto}}
+                          </ion-label>
+                          <i class="fa fa-archive" aria-hidden="true"></i>
+                        </ion-item>
+                      
+                      </ion-col>
+                      <ion-col size="12">
+                        <mat-accordion>
+                          <mat-expansion-panel>
+                            <mat-expansion-panel-header>
+                              <mat-panel-title>
+                                Descripción
+                              </mat-panel-title>
+                            
+                            </mat-expansion-panel-header>
+                            <p style="padding: 0 24px; text-align: start;">{{donacion.descripcion}}</p>
+                          </mat-expansion-panel>
+                          <mat-expansion-panel *ngIf="tipo == 'DONA' && voluntario && voluntario.estado == 1">
+                            <mat-expansion-panel-header>
+                              <mat-panel-title>
+                                Datos Donador
+                              </mat-panel-title>
+                            
+                            </mat-expansion-panel-header>
+                            <div class="donador">
+                              <div class="photoUser">
+                                <img src="https://fundacionesbckimg.s3.us-east-2.amazonaws.com/{{ 
+                                  donacion.donanteR.foto}}" >
+                              </div>
+                              <div class="datosUser">
+                                <div class="itemus">
+                                  <div class="iconus"><i class="fa fa-user" aria-hidden="true"></i></div><p>{{donacion.donanteR.nombres}} {{donacion.donanteR.apellidos}}</p>
+                                </div>
+                                <div class="itemus">
+                                  <div class="iconus"><i class="fa fa-phone" aria-hidden="true"></i></div><p>{{donacion.donanteR.telefono}}</p>
+                                </div>
+                                <div class="itemus">
+                                  <div class="iconus"><i class="fa fa-mobile" aria-hidden="true"></i></div><p>{{donacion.donanteR.celular}}</p>
+                                </div>
+                                <div class="itemus">
+                                  <div class="iconus"><i class="fa fa-envelope" aria-hidden="true"></i></div><p>{{donacion.donanteR.correo}}</p>
+                                </div>
+                                <div class="itemus">
+                                  <div class="iconus"><i class="fa fa-birthday-cake" aria-hidden="true"></i></div><p>{{donacion.donanteR.fechaNacimiento}}</p>
+                                </div>
+                              </div>
+                            </div>
+                          </mat-expansion-panel>
+                        </mat-accordion>
+                      </ion-col>
+
+                    </ion-row>
+                  </ion-grid>
+                
+               
+            </mat-tab>
+            <mat-tab *ngIf="donacion.asignar != false">
+              <ng-template mat-tab-label style="display: flex; flex-direction: column;">
+                <i style="font-size: 1rem !important;" class="fa fa-map-marker" aria-hidden="true"></i>
+                <span>Dirección</span>
+                </ng-template>
+                <div class="addres" style="width: 100%;padding: 1em;">
+                  <p>Sector: {{donacion.sector}}</p>
+                  <p>Ubicación: {{donacion.direccion.formmatedAddres}}</p>
+                  <p>Referencia: {{donacion.referencia}}</p>
+                </div>
+                <div class="ubicacion">
+                  <div id="map1" style="width: 100%; height: 100%;" *ngIf="mp1 == true">
+                  </div>
+                  <div id="map2" style="width: 100%; height: 100%;" *ngIf="mp2 == true">
+                  </div>
+                </div>
+               
+            </mat-tab>
+            <mat-tab > 
+                <ng-template mat-tab-label style="display: flex; flex-direction: column;">
+                  <i style="font-size: 1rem !important;" class="fa fa-users" aria-hidden="true"></i>
+                  <span>Observaciones</span>
+                  </ng-template>
+              
+                  <div class="observaciones">
+                    <div class="msjDonante" *ngIf = "donacion.donanteR._id == usuario.id" >
+                      <ul>
+                        <li *ngIf = "donacion.estado == 0 || donacion.estado == 4 || donacion.estado == 3">
+                          <p>Tu donación esta pendiente de aprobación por parte de la fundación.</p>
+                        </li>
+                        <li *ngIf = "donacion.estado == 2">
+                          <p >Mensaje: {{donacion.observacionDonador}}</p>
+                        </li>
+                        <li *ngIf = "donacion.estado == 1">
+                        <p >Mensaje: {{donacion.observacionDonador}}</p>
+                        </li>    
+                      </ul>
+                     
+                    </div>
+                  <div class="msjVoluntario" *ngIf = "voluntario && donacion.donanteR._id == voluntario.id">
+                    <ul>
+                      <li *ngIf = "donacion.estado == 1">
+                        <p>La fundación dice: {{donacion.observacionVoluntarios}}</p>
+                      </li>
+                        
+                    </ul>
+                    </div>
+                  </div>
+                  <div class="ayuda" *ngIf = "donacion.asignar == true">
+                    <div class="ayuda-titulo" *ngIf = "donacion.estado == 0 || donacion.estado == 4 || donacion.estado == 3">
+                      <p>Los voluntario/os asignados y su información aparecerá una vez la fundación
+                        aprueba la solictud de donación
+                      </p>
+                    </div>
+                    <div class="vls" *ngIf = "(donacion.voluntarios.length > 0 && donacion.estado == 1 && voluntario.estado == 1) || (donacion.voluntarios.length > 0 && donacion.estado == 1 && donacion.donanteR._id == usuario.id)">
+                      <div class="ti">
+                        <h5>Voluntarios asignados:</h5>
+                      </div>
+                      <mat-accordion>
+                        <mat-expansion-panel *ngFor="let vl of voluntarios">
+                          <mat-expansion-panel-header>
+                            <mat-panel-title>
+                              {{vl.voluntario.nombres}} {{vl.voluntario.apellidos}} 
+                            </mat-panel-title>
+                          
+                          </mat-expansion-panel-header>
+                          <div class="voluntario">
+                            <div class="photoUser">
+                              <img src="https://fundacionesbckimg.s3.us-east-2.amazonaws.com/{{ 
+                                vl.voluntario.foto}}" >
+                            </div>
+                            <div class="datosUser">
+                             
+                              <div class="itemus">
+                                <div class="iconus"><i class="fa fa-phone" aria-hidden="true"></i></div><p>{{vl.voluntario.telefono}}</p>
+                              </div>
+                              <div class="itemus">
+                                <div class="iconus"><i class="fa fa-mobile" aria-hidden="true"></i></div><p>{{vl.voluntario.celular}}</p>
+                              </div>
+                              <div class="itemus">
+                                <div class="iconus"><i class="fa fa-envelope" aria-hidden="true"></i></div><p>{{vl.voluntario.correo}}</p>
+                              </div>
+                            
+                            </div>
+                          </div>
+                        </mat-expansion-panel>
+                     
+                      </mat-accordion>
+                    
+                    </div>
+                  </div>
+                
+            </mat-tab>
+           
+          </mat-tab-group>
+    </div>
+
+  </div>
+</ion-content>
+ <ion-footer>
+  <div class="actions" *ngIf="voluntario && donacion && tipo == 'DONA'" [class.acept]="voluntario.estado == 1" [class.nega]="voluntario.estado == 2">
+    <div class="estVoluntario" *ngIf="voluntario.estado != 0">
+      <p *ngIf="voluntario.estado == 2">Negaste esta donación</p>
+      <p *ngIf="voluntario.estado == 1">Aceptaste esta donación</p>
+    </div>
+    <ion-chip *ngIf="voluntario.estado == 0" (click)="aprobarNegar(1)" class="estP">
+      <ion-icon name="checkmark-circle" ></ion-icon>
+      
+      <ion-label >Aprobar</ion-label>
+    </ion-chip>
+    <ion-chip *ngIf="voluntario.estado == 0" (click)="aprobarNegar(2)" class="estA">
+      <ion-icon name="close-circle" ></ion-icon>
+      
+      <ion-label >Negar</ion-label>
+    </ion-chip>
+  </div>
+ </ion-footer>

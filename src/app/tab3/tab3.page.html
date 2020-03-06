@@ -1,0 +1,87 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      Notificaciones
+    </ion-buttons>
+    <ion-buttons slot="end">
+      <button (click)="presentPopover($event,'noti')">
+        Filtrar <i class="fa fa-filter" aria-hidden="true"></i>
+      </button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)" *ngIf="selecFiltro ==  false">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+  <ion-refresher slot="fixed" (ionRefresh)="doRefresh2($event)" *ngIf="selecFiltro == true">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+  <ion-list>
+
+    <div class="notifis" *ngFor="let nt of notificaciones">
+      <div class="redirect" (click)="redirectPage(nt)" [class.visto]="nt.estado == 1" [class.novisto]="nt.estado == 0">
+        <ion-item style="--background: transparent !important;" lines="none">
+
+          <ion-avatar slot="start">
+            <!--adopcion-->
+            <img *ngIf="nt.tipo == 1 || nt.tipo == 9 || nt.tipo == 10" src="https://fundacionesbckimg.s3.us-east-2.amazonaws.com/{{ 
+              nt.mascota.fotos[0].name}}">
+            <!--emergencia-->
+            <img *ngIf="nt.tipo == 7 || nt.tipo == 5 || nt.tipo == 16 || nt.tipo == 18 || nt.tipo == 17 || nt.tipo == 8" src="https://fundacionesbckimg.s3.us-east-2.amazonaws.com/{{ 
+                nt.emergencia.fotoMascota}}">
+
+            <img *ngIf="nt.tipo == 2" src="https://fundacionesbckimg.s3.us-east-2.amazonaws.com/{{ 
+                  nt.emergencia.fotoMascota}}">
+            <!--donacion-->
+            <img *ngIf="nt.tipo == 3 || nt.tipo == 11 || nt.tipo == 12" src="https://fundacionesbckimg.s3.us-east-2.amazonaws.com/{{ 
+                    nt.donacion.foto}}">
+
+            <img *ngIf="nt.tipo == 13 || nt.tipo == 14 " src="https://fundacionesbckimg.s3.us-east-2.amazonaws.com/{{ 
+                      nt.donacion.foto}}">
+
+            <img *ngIf="nt.tipo == 15 " src="https://fundacionesbckimg.s3.us-east-2.amazonaws.com/{{ 
+                        nt.donacion.foto}}">
+          </ion-avatar>
+          <!--adopcion-->
+          <ion-label *ngIf="nt.tipo == 1 ">Has solicitado realizar una adopción</ion-label>
+          <ion-label *ngIf="nt.tipo == 9 ">Tu solicitud de adopción fue aprobada</ion-label>
+          <ion-label *ngIf="nt.tipo == 10 ">Tu solicitud de adopción fue negada</ion-label>
+
+          <!--emergencia-->
+          <ion-label *ngIf="nt.tipo == 7">Aceptaste una petición de emergencia</ion-label>
+          <ion-label *ngIf="nt.tipo == 8">Negaste una petición de emergencia</ion-label>
+          <ion-label *ngIf="nt.tipo == 5 ">Te asignaron una nueva emergencia</ion-label>
+          <ion-label *ngIf="nt.tipo == 18 ">La emergencia reportada fue acogida</ion-label>
+          <ion-label *ngIf="nt.tipo == 16">La emergencia fue marcada como falsa</ion-label>
+          <ion-label *ngIf="nt.tipo == 17">La emergencia fue atentida exitosamente</ion-label>
+
+          <ion-label *ngIf="nt.tipo == 2">Registraste una nueva emergencia</ion-label>
+          <!--donacion-->
+          <ion-label *ngIf="nt.tipo == 3">Realizaste una nueva donación</ion-label>
+          <ion-label *ngIf="nt.tipo == 11">Tu donación fue aprobada</ion-label>
+          <ion-label *ngIf="nt.tipo == 12">Tu donación fue negada</ion-label>
+
+          <ion-label *ngIf="nt.tipo == 13">Aprobaste la donación asignada</ion-label>
+          <ion-label *ngIf="nt.tipo == 14">Negaste la donación asignada</ion-label>
+          <ion-label *ngIf="nt.tipo == 15">Te asignaron una nueva donación</ion-label>
+
+        </ion-item>
+      </div>
+
+
+    </div>
+
+
+    <p *ngIf="status == true" style="text-align: center;">No se encontró más notificaciones</p>
+  </ion-list>
+
+  <ion-infinite-scroll threshold="100px" (ionInfinite)="loadData($event)" *ngIf="selecFiltro == false">
+    <ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="agregando notificaciones...">
+    </ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+  <ion-infinite-scroll threshold="100px" (ionInfinite)="loadData2($event)" *ngIf="selecFiltro == true">
+    <ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="agregando notificaciones...">
+    </ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+</ion-content>

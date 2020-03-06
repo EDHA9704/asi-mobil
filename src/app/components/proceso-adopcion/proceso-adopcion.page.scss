@@ -1,0 +1,85 @@
+h5,h4,h3,h2,h1{
+    font-family: 'Righteous', cursive;
+    margin: 0;
+}
+p,a,button,span{
+    font-family: 'Exo', sans-serif;
+    margin: 0;
+}
+.header-adopcion{
+    .titulo{
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0 1rem;
+        h2{
+            color: #3bbfad;
+        }
+        ion-icon{
+            font-size: 30px;
+        }
+        
+    }
+    .mascota{
+        text-align: center;
+        margin-top: 1rem;
+    }
+}
+.mat-step-header .mat-step-icon-selected, .mat-step-header .mat-step-icon-state-done, .mat-step-header .mat-step-icon-state-edit {
+    background-color: #000000 !important;
+    color: #fff;
+}
+.form-adopcion{
+    padding: 1rem 0;
+    .formErrormsj{
+        margin-top: 0;
+        color: #bf3b3b;
+    }
+
+}
+.btnI{
+    margin-top: 1rem;
+    width: 100%;
+    text-align: center;
+
+    button{
+        background: #3bbfad;
+        color: #fff;
+    }
+}
+.btnI2{
+    margin-top: 1rem;
+    width: 100%;
+    text-align: center;
+
+    & button:nth-child(1){
+        margin-right: 10px;
+    }
+    & button:nth-child(2){
+        margin-left: 10px;
+    }
+    button{
+        background: #3bbfad;
+        color: #fff;
+    }
+
+}
+mat-form-field{
+    width: 100%;
+}
+
+
+
+@media only screen and (max-width: 410px) {
+    .fontsXS{
+        font-size: 12px !important;
+   }
+   
+}
+@media only screen and (max-width: 370px) {
+    .fontsXS{
+        font-size: 11px !important;
+   }
+   
+}

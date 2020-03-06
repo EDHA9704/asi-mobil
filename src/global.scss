@@ -1,0 +1,129 @@
+/*
+ * App Global CSS
+ * ----------------------------------------------------------------------------
+ * Put style rules here that you want to apply globally. These styles are for
+ * the entire app and not just one component. Additionally, this file can be
+ * used as an entry point to import other CSS/Sass files to be included in the
+ * output CSS.
+ * For more information on global stylesheets, visit the documentation:
+ * https://ionicframework.com/docs/layout/global-stylesheets
+ */
+
+/* Core CSS required for Ionic components to work properly */
+@import "~@ionic/angular/css/core.css";
+
+/* Basic CSS for apps built with Ionic */
+@import "~@ionic/angular/css/normalize.css";
+@import "~@ionic/angular/css/structure.css";
+@import "~@ionic/angular/css/typography.css";
+@import '~@ionic/angular/css/display.css';
+
+/* Optional CSS utils that can be commented out */
+@import "~@ionic/angular/css/padding.css";
+@import "~@ionic/angular/css/float-elements.css";
+@import "~@ionic/angular/css/text-alignment.css";
+@import "~@ionic/angular/css/text-transformation.css";
+@import "~@ionic/angular/css/flex-utils.css";
+
+@import '~@angular/material/theming';
+
+.candy-carousel {
+    $primary: mat-palette($mat-indigo);
+    // Get the default hue for a palette.
+  color: mat-color($primary);
+
+}
+
+.fg{
+  .searchbar-input {
+    background: #FFF !important;
+    border-radius: 20px !important;
+    height: 2rem !important;
+    max-width: 400px;
+    font-size: 1.25em !important;
+    border: 1px solid transparent;
+  }
+  .searchbar-search-icon{
+    top: 6px !important;
+  }
+}
+
+.mat-expansion-panel-body {
+  padding: 0 !important;
+}
+
+ion-popover{
+  ion-backdrop{
+  opacity: 0.5 !important;
+  }
+  .popover-wrapper{
+  .popover-content{
+  width:80vw;
+  max-width:500px;
+  }
+  }
+  }
+
+
+
+  .mat-tab-label .mat-tab-label-content {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    white-space: nowrap;
+}
+
+.galeria{
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.content-perfil{
+  mat-tab-header {
+    position: sticky !important;
+    top: 0 !important;
+    z-index: 1020;
+    background: white;
+  }
+}
+
+mat-label{
+ 
+  white-space: inherit !important;
+ 
+}
+.mat-form-field-label {
+  position: absolute;
+  left: 0;
+  font: inherit;
+  pointer-events: none;
+  width: 100%;
+  white-space: inherit !important;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  transform-origin: 0 0;
+  transition: transform .4s cubic-bezier(.25,.8,.25,1),color .4s cubic-bezier(.25,.8,.25,1),width .4s cubic-bezier(.25,.8,.25,1);
+  display: none;
+}
+.persol{
+  .mat-form-field-label-wrapper {
+    position: absolute;
+    left: 0;
+    box-sizing: content-box;
+    width: 100%;
+    height: 5rem !important;
+    overflow: hidden;
+    pointer-events: none;
+  }
+ 
+}
+.persol.mat-form-field-appearance-legacy .mat-form-field-wrapper {
+  padding-bottom: 1.25em;
+  height: 5rem !important;
+}
+.mat-tab-label {
+  
+  padding: 0 10px !important;
+  
+}

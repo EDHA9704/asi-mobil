@@ -1,0 +1,68 @@
+h5,h4,h3,h2,h1{
+    font-family: 'Righteous', cursive !important;
+    margin: 0;
+}
+p,a,button,span,ion-label{
+    font-family: 'Exo', sans-serif !important;
+    margin: 0;
+}
+
+ion-avatar{
+    width: 4rem;
+    height: 4rem;
+}
+.datos{
+    display: flex;
+    flex-direction: column;
+    padding: .5rem 0;
+    width: 100%;
+
+    .datos-name{
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        .estP{
+            background: #3bbfad;
+            border-radius: 15px;
+            padding: 0 .5rem;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            color: white;
+            
+            overflow: inherit;
+        }
+        .estA{
+            background: #bf3b3b;
+            border-radius: 15px;
+            padding: 0 .5rem;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            color: white;
+            
+            overflow: inherit;
+        }
+        h3{
+            color: #3bbfad;
+        }
+       
+    }
+   
+    .datos-all{
+        padding: .5rem 0;
+    }
+}
+.advertencia{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 80%;
+    width: 100%;
+  
+    img{
+      width: 7rem;
+      height: 7rem;
+    }
+  }

@@ -1,0 +1,32 @@
+<ion-header>
+  <ion-toolbar>
+   
+    <ion-title >Dirección</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="content-location">
+    <ion-searchbar  (ionChange)="updateSearchResults($event)" placeholder="Search for a place"></ion-searchbar>
+      <ion-list [hidden]="autocompleteItems.length == 0">
+        <ion-item *ngFor="let item of autocompleteItems" tappable (click)="selectSearchResult(item)">
+          {{ item.description }}
+        </ion-item>
+      </ion-list>
+    <div class="content-map">
+     
+        <div id="map" style="width: 100%; height: 100%;">
+      
+        </div>
+    </div>
+    <div class="location-selected">
+      <p>Tu dirección: </p>
+      <p>{{userTextActualLocation}}</p>
+    </div>
+    
+  </div>
+ 
+</ion-content>
+<ion-footer>
+  <button mat-button style="width: 100%; background: #3bbfad; color: white;" (click)="guardarDireccion()" > Aceptar</button>
+</ion-footer>

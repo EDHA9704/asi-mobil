@@ -1,0 +1,244 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title >Emergencia</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="emergencia" *ngIf="emergencia">
+    
+    <div class="fotos">
+      <div class="fmascota">
+          <h5>Mascota</h5>
+          <ion-thumbnail style="width: 100%; height: 100%;">
+            <ion-img ionImgViewer class="card-img-top" *ngIf="emergencia.fotoMascota" src="https://fundacionesbckimg.s3.us-east-2.amazonaws.com/{{ 
+              emergencia.fotoMascota}}" alt="Card image cap"></ion-img>
+          </ion-thumbnail>
+      </div>
+      
+    </div>  
+    <div class="tabs">
+        <mat-tab-group  (selectedIndexChange)="tabChanged($event)" mat-align-tabs="center">
+          <mat-tab class="msc" *ngIf="tipo == 'EMR' && emergencia.ayuda && emergencia.ayuda.fundacion && emergencia.ayuda.voluntarios && emergencia.ayuda.voluntarios.length > 0 && fundacion">
+            <ng-template mat-tab-label style="display: flex; flex-direction: column;">
+              <i style="font-size: 1rem !important;" class="fa fa-university" aria-hidden="true"></i>
+              Fundación
+              </ng-template>
+              <div class="donacion-fundacion">
+                <div class="fundacion-photo">
+                  <img (click)="perfilFundacion(emergencia.ayuda.fundacion._id)" src="https://fundacionesbckimg.s3.us-east-2.amazonaws.com/{{ 
+                    fundacion.logo}}">
+                </div>
+                <div class="fundacion-name">
+                  <h5 (click)="perfilFundacion(emergencia.ayuda.fundacion._id)">{{fundacion.nombreFundacion}}</h5>
+                </div>
+                <div class="fundacion-data">
+                  <p>{{fundacion.correo}}</p>
+                  <p>{{fundacion.telefono}}/{{fundacion.celular}}</p>
+
+                </div>
+              </div>
+           
+        </mat-tab>
+            <mat-tab >
+              <ng-template mat-tab-label style="display: flex; flex-direction: column;">
+                <i style="font-size: 1rem !important;" class="fa fa-ambulance" aria-hidden="true"></i>
+                Emergencia
+                </ng-template>
+               <div class="tbemergencia">
+                 <p><strong>Publicado: </strong>{{(emergencia.creadoEn | amFromUnix) | amLocale:'es' | amTimeAgo}}</p>
+                 <p><strong>Tipo: </strong>{{emergencia.tipoEmergencia}}</p>
+               </div>
+               <div >
+                <mat-accordion>
+                  <mat-expansion-panel>
+                    <mat-expansion-panel-header>
+                     
+                      <mat-panel-description>
+                        <p>Descripción</p>
+                      </mat-panel-description>
+                    </mat-expansion-panel-header>
+                 
+                    <p class="descr">{{emergencia.descripcion}}</p>
+                  </mat-expansion-panel>
+                  <mat-expansion-panel *ngIf="tipo != 'EMR' && voluntario && voluntario.aprobado == 1">
+                    <mat-expansion-panel-header>
+                     
+                      <mat-panel-description>
+                        <p>Usuario</p>
+                      </mat-panel-description>
+                    </mat-expansion-panel-header>
+                
+                    <div class="donador">
+                      <div class="photoUser">
+                        <img src="https://fundacionesbckimg.s3.us-east-2.amazonaws.com/{{ 
+                          emergencia.responsable.foto}}" >
+                      </div>
+                      <div class="datosUser">
+                        <div class="itemus">
+                          <div class="iconus"><i class="fa fa-user" aria-hidden="true"></i></div><p>{{emergencia.responsable.nombres}} {{emergencia.responsable.apellidos}}</p>
+                        </div>
+                        <div class="itemus">
+                          <div class="iconus"><i class="fa fa-phone" aria-hidden="true"></i></div><p>{{emergencia.responsable.telefono}}</p>
+                        </div>
+                        <div class="itemus">
+                          <div class="iconus"><i class="fa fa-mobile" aria-hidden="true"></i></div><p>{{emergencia.responsable.celular}}</p>
+                        </div>
+                        <div class="itemus">
+                          <div class="iconus"><i class="fa fa-envelope" aria-hidden="true"></i></div><p>{{emergencia.responsable.correo}}</p>
+                        </div>
+                        <div class="itemus">
+                          <div class="iconus"><i class="fa fa-birthday-cake" aria-hidden="true"></i></div><p>{{emergencia.responsable.fechaNacimiento}}</p>
+                        </div>
+                      </div>
+                    </div>
+                  </mat-expansion-panel>
+                </mat-accordion>
+               </div>
+               
+
+            </mat-tab>
+      
+            <mat-tab *ngIf="emergencia.direccion"> 
+              <ng-template mat-tab-label style="display: flex; flex-direction: column;">
+                <i style="font-size: 1rem !important;" class="fa fa-map-marker" aria-hidden="true"></i>
+                <span>Dirección</span>
+                </ng-template>
+                  <div class="addres" style="width: 100%;padding: 1em;">
+                    <p>Sector: {{emergencia.direccionSector}}</p>
+                    <p>Ubicación: {{emergencia.direccion.formmatedAddres}}</p>
+                    <p>Referencia: {{emergencia.direccionReferencia}}</p>
+                    <p>Contacto extra: {{emergencia.contactoExtra}}</p>
+                  </div>
+                  <div class="ubicacion">
+                    <div id="map1" style="width: 100%; height: 100%;" *ngIf="mp1 == true">
+                    </div>
+                    <div id="map2" style="width: 100%; height: 100%;" *ngIf="mp2 == true">
+                    </div>
+                  </div>
+                 
+            </mat-tab>
+            <mat-tab >
+              <ng-template mat-tab-label style="display: flex; flex-direction: column;">
+                <i style="font-size: 1rem !important;" class="fa fa-users" aria-hidden="true"></i>
+                <span>Observaciones</span>
+                </ng-template>
+              <div class="observaciones">
+                <div class="msjDonante" *ngIf = "emergencia.responsable._id == usuario.id" >
+                
+                  <div class="estd" style="width: 100%; display: flex; justify-content: center; padding: 1em;">
+                    <ion-chip *ngIf="emergencia.estado == 4" (click)="aprobarNegar(1)" class="estP">
+                      <ion-icon name="checkmark-circle" ></ion-icon>
+                      
+                      <ion-label >Emergencia atentida</ion-label>
+                    </ion-chip>
+                    <ion-chip *ngIf="emergencia.estado == 3" (click)="aprobarNegar(1)" class="estA">
+                      <ion-icon name="checkmark-circle" ></ion-icon>
+                      
+                      <ion-label >Emergencia negada</ion-label>
+                    </ion-chip>
+                    <ion-chip *ngIf="emergencia.estado == 0" (click)="aprobarNegar(1)" class="estP">
+                      <ion-icon name="checkmark-circle" ></ion-icon>
+                      
+                      <ion-label >Emergencia pendiente</ion-label>
+                    </ion-chip>
+                  </div>
+                
+                  <ul>
+                    <li *ngIf = "emergencia.estado == 0 ">
+                      <p>Esperando a que una fundación acoga la emergencia</p>
+                    </li>
+                    <li *ngIf = "emergencia.estado == 1 ">
+                      <p>Tu emergencia fue acogida, se esta asignando voluntarios</p>
+                    </li>
+                    <li *ngIf = "emergencia.estado == 3 || emergencia.estado == 2 || emergencia.estado == 4">
+                     
+                      
+                      <p >Mensaje: {{emergencia.observacionUsuario}}</p>
+                    </li>
+                    
+                  </ul>
+                 
+                </div>
+              <div class="msjVoluntario" *ngIf = "voluntario && emergencia.responsable._id == voluntario.voluntarioId._id">
+                <ul>
+                  <li *ngIf = "emergencia.estado == 1 || emergencia.estado == 4">
+                    <p>La fundación dice: {{emergencia.observacionVoluntarios}}</p>
+                  </li>
+                    
+                </ul>
+                </div>
+              </div>
+              <div class="ayuda" >
+                <div class="ayuda-titulo" *ngIf = "emergencia.estado == 1">
+                  <p>Los voluntario/os asignados y su información aparecerá una vez la fundación
+                    aprueba la solictud de donación
+                  </p>
+                </div>
+               
+                <div class="vls" *ngIf = "(emergencia.estado == 2 || emergencia.estado == 4 && voluntario.aprobado == 1) || (emergencia.estado == 2 || emergencia.estado == 4 && emergencia.responsable._id == usuario.id)">
+                  <div class="ti">
+                    <h5>Voluntarios asignados:</h5>
+                  </div>
+                  <mat-accordion>
+                    <mat-expansion-panel *ngFor="let vl of voluntarios">
+                      <mat-expansion-panel-header>
+                        <mat-panel-title>
+                          {{vl.voluntarioId.nombres}} {{vl.voluntarioId.apellidos}} 
+                        </mat-panel-title>
+                      
+                      </mat-expansion-panel-header>
+                      <div class="voluntario">
+                        <div class="photoUser">
+                          <img src="https://fundacionesbckimg.s3.us-east-2.amazonaws.com/{{ 
+                            vl.voluntarioId.foto}}" >
+                        </div>
+                        <div class="datosUser">
+                         
+                          <div class="itemus">
+                            <div class="iconus"><i class="fa fa-phone" aria-hidden="true"></i></div><p>{{vl.voluntarioId.telefono}}</p>
+                          </div>
+                          <div class="itemus">
+                            <div class="iconus"><i class="fa fa-mobile" aria-hidden="true"></i></div><p>{{vl.voluntarioId.celular}}</p>
+                          </div>
+                          <div class="itemus">
+                            <div class="iconus"><i class="fa fa-envelope" aria-hidden="true"></i></div><p>{{vl.voluntarioId.correo}}</p>
+                          </div>
+                        
+                        </div>
+                      </div>
+                    </mat-expansion-panel>
+                 
+                  </mat-accordion>
+                
+                 
+                </div>
+              </div>
+            </mat-tab>
+          </mat-tab-group>
+    </div>
+
+  </div>
+</ion-content>
+ <ion-footer>
+   
+  <div class="actions" *ngIf="voluntario && emergencia && tipo == 'EMA'" [class.acept]="voluntario && voluntario.aprobado == 1" [class.nega]="voluntario && voluntario.aprobado == 2">
+    <div class="estVoluntario" *ngIf="voluntario && voluntario.aprobado != 0">
+      <p *ngIf="voluntario.aprobado == 2">Negaste esta emergencia</p>
+      <p *ngIf="voluntario.aprobado == 1">Aceptaste esta emergencia</p>
+    </div>
+    <ion-chip *ngIf="voluntario.aprobado == 0" (click)="aprobarNegar(1)" class="estP">
+      <ion-icon name="checkmark-circle" ></ion-icon>
+      
+      <ion-label >Aprobar</ion-label>
+    </ion-chip>
+    <ion-chip *ngIf="voluntario.aprobado == 0" (click)="aprobarNegar(2)" class="estA">
+      <ion-icon name="close-circle" ></ion-icon>
+      
+      <ion-label >Negar</ion-label>
+    </ion-chip>
+  </div>
+ </ion-footer>

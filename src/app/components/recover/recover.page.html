@@ -1,0 +1,89 @@
+
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="inicio"></ion-back-button>
+    </ion-buttons>
+  </ion-toolbar>
+  <div class="logo">
+      <img src="../../assets/img/logo2.png">
+    </div>
+</ion-header>
+
+<ion-content>
+  <div class="recover">
+    <mat-horizontal-stepper #stepper [linear]="isLinear" style="font-size: 1.2rem;">
+      <mat-step [completed]="vall == true" [editable]="vallE == null">
+          <form [formGroup]="firstFormGroup">
+              <ng-template matStepLabel>Correo electrónico</ng-template>
+              <mat-form-field>
+                <input matInput placeholder="Correo electrónico" formControlName="email" required>
+                <mat-error *ngIf="firstFormGroup.controls.email.hasError('required') ">
+                    Correo electrónico requerido
+                  </mat-error>
+                  <mat-error *ngIf="firstFormGroup.controls.email.hasError('email') ">
+                      Correo electrónico invalido
+                    </mat-error>
+              </mat-form-field>
+             
+              <div class="btnsNP">
+                <button mat-button color="primary" class="btn btn-primary btnRGA" [disabled]="!firstFormGroup.valid" (click)="validarCorreo(stepper)">Siguiente</button> 
+              </div>
+            </form>
+      </mat-step>
+      <mat-step  [completed]="vall2 == true"  [editable]="vallE2 == null">
+          <form [formGroup]="secondFormGroup">
+              <ng-template matStepLabel>Código</ng-template>
+              <div>
+                  Un código de verificación fue enviado al correo electronico proporcionado, ingresalo a continuación:
+              </div>
+              <mat-form-field>
+                <input matInput placeholder="Código" formControlName="codigo" required>
+                <mat-error *ngIf="secondFormGroup.controls.codigo.hasError('required') ">
+                    Código requerido.
+                  </mat-error>
+                  <mat-error *ngIf="secondFormGroup.controls.codigo.hasError('pattern') ">
+                      Código requerido de 4 dígitos.
+                    </mat-error>
+              </mat-form-field>
+              <div class="errorRCE" *ngIf="vall2 == false">
+                  {{mensaje2}}
+              </div>
+              <div  class="btnsNP">
+                
+                <button mat-button class="btn btn-success btnRGA" (click)="validarCodigo(stepper)" [disabled]="!secondFormGroup.valid">Verificar</button>
+                <button mat-button class="btn btn-danger" (click)="eliminarCodigoPrev2(stepper)">Cancelar</button>
+              </div>
+              <div  class="btnsNP2">
+                
+                 
+                  <a (click)="eliminarCodigoPrev(stepper)">¿No recibiste el código?</a>
+                </div>
+            </form>
+      
+      </mat-step>
+      <mat-step [completed]="vall3 == true" [editable]="vall3 == null">
+          <form [formGroup]="threeFormGroup">
+              <ng-template matStepLabel>Contraseña</ng-template>
+            
+              <mat-form-field>
+                  <input matInput placeholder="Nueva contraseña" formControlName="password" required>
+                  <mat-error *ngIf="threeFormGroup.controls.password.hasError('required') ">
+                      Contraseña requerida.
+                    </mat-error>
+                    <mat-error *ngIf="threeFormGroup.controls.password.hasError('pattern') ">
+                        Contraseña invalida.
+                      </mat-error>
+                </mat-form-field>
+              <div class="btnsNP">
+                  <button mat-button class="btn btn-success btnRGA" (click)="cambiarPassword()" [disabled]="!threeFormGroup.valid">Guardar</button>
+                  <button mat-button class="btn btn-danger" (click)="eliminarCodigoPrev2(stepper)">Cancelar</button>
+
+              </div>
+              </form>
+      </mat-step>
+      <!-- one option -->
+    
+    </mat-horizontal-stepper>
+  </div>
+</ion-content>

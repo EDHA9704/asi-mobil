@@ -1,0 +1,80 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title >Mi perfil</ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+
+  <form *ngIf="usuario">
+    
+    <div class="photoUser">
+      <div class="photo">
+         
+          <img *ngIf="foto.value != '' && usuarioAcc.type != 'fb'" src="https://fundacionesbckimg.s3.us-east-2.amazonaws.com/{{ 
+            foto.value}}">
+          <img *ngIf="foto.value == '' && usuarioAcc.type != 'fb'" src="{{image}}">
+          <img *ngIf="foto.value != '' && usuarioAcc.type == 'fb'" src="{{foto.value}}">
+
+          <ion-button  class="cphoto" (click)="presentActionSheet()"><i *ngIf="usuarioAcc.type != 'fb'" class="fa fa-refresh" aria-hidden="true"></i></ion-button>
+
+          
+      </div>  
+        
+    </div>
+    <mat-form-field>
+      <input matInput required id="nombres" placeholder="Nombres" [formControl]="nombres" required>
+      <mat-error *ngIf="nombres.invalid">{{getErrorMessage('nm')}}</mat-error>
+    </mat-form-field>
+    <mat-form-field>
+      <input matInput required  id="apellidos" placeholder="Apellidos" [formControl]="apellidos" required>
+      <mat-error *ngIf="apellidos.invalid">{{getErrorMessage('apel')}}</mat-error>
+    </mat-form-field>
+    <div class="customEmail">
+      <div class="fieldEmail">
+        <mat-form-field [class.invalidd]="usuario.correoVerificado == false" [class.validd]="usuario.correoVerificado == true">
+          <input matInput required placeholder="Correo" [formControl]="correo" required>
+          <mat-error *ngIf="correo.invalid">{{getErrorMessage('cor')}}</mat-error>
+        </mat-form-field>
+        <ion-button *ngIf="usuario.correoVerificado == false" style="--background: #bf3b3b;" expand="full" (click)="enviarCodigo()"><i class="fa fa-check-circle" aria-hidden="true"></i></ion-button>
+
+      </div>
+      <div class="errorEmail" *ngIf="usuario.correoVerificado == false">
+        <p>Valida tu correo</p>
+      </div>
+     
+    </div>
+    <mat-form-field>
+      <input matInput [matDatepicker]="picker" placeholder="Fecha de nacimiento" [formControl]="nacimiento">
+      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
+      <mat-error *ngIf="apellidos.invalid">{{getErrorMessage('fch')}}</mat-error>
+
+    </mat-form-field>
+    <mat-form-field>
+      <input matInput placeholder="Teléfono" [formControl]="telefono" required>
+      <mat-error *ngIf="telefono.invalid">{{getErrorMessage('tel')}}</mat-error>
+    </mat-form-field>
+    <mat-form-field>
+      <input matInput  placeholder="Celular" [formControl]="celular" required>
+      <mat-error *ngIf="celular.invalid">{{getErrorMessage('cel')}}</mat-error>
+    </mat-form-field>
+   <!--<mat-form-field>
+      <input matInput required id="direccion" placeholder="Dirección" [formControl]="direccion" required>
+      <mat-error *ngIf="direccion.invalid">{{getErrorMessage('dir')}}</mat-error>
+    </mat-form-field>-->
+    <div class="customPassword">
+      <mat-form-field *ngIf="usuarioAcc.type != 'fb'">
+        <input matInput type="password" id="pass" placeholder="Contraseña" [formControl]="password" >
+        <mat-error *ngIf="password.invalid">{{getErrorMessage('pss')}}</mat-error>
+      </mat-form-field>
+      <ion-button *ngIf="disabledPass == true" style="--background: #3bbfad;" expand="full" (click)="changePass('habilitar')"><i class="fa fa-refresh" aria-hidden="true"></i></ion-button>
+      <ion-button *ngIf="disabledPass == false" style="--background: #bf3b3b;" expand="full" (click)="changePass('deshabilitar')"><i class="fa fa-times-circle" aria-hidden="true"></i></ion-button>
+
+    </div>
+   
+    <ion-button expand="full" (click)="actualizarUsuario()">Actualizar</ion-button>
+  </form>
+</ion-content>

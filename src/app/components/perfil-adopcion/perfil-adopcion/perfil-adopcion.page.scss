@@ -1,0 +1,87 @@
+mat-tab-group{
+    width: 100%;
+}
+h2,h1,h4,h5,h3{
+    font-family: 'Righteous', cursive;
+    margin: 0;
+
+}
+
+p,span,mat-panel-title,mat-radio-button,label,ion-label{
+    margin: 0;
+    margin: 0;
+    padding: 0;
+    font-family: 'Exo', sans-serif;
+}
+.qs{
+    padding: 0 24px;
+}
+.tabs{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    .mascota{
+        display: flex;
+        width: 100%;
+        .imageMS{
+            width: 8rem;
+            height: 8rem;
+            padding: 1rem;
+            
+            img{
+                width: 100%;
+                height: 100%;
+                border-radius: 50%;
+            }
+        }
+        .estado{
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            justify-content: center;
+            .estP{
+                background: #3bbfad;
+                border-radius: 15px;
+                padding: 0 .5rem;
+                margin: 0;
+                display: flex;
+                align-items: center;
+                color: white;
+                
+                overflow: inherit;
+            }
+            .estA{
+                background: #bf3b3b;
+                border-radius: 15px;
+                padding: 0 .5rem;
+                margin: 0;
+                display: flex;
+                align-items: center;
+                color: white;
+                
+                overflow: inherit;
+            }
+        }
+    }
+    
+}
+
+.preguntas{
+    padding: 1rem 0;
+    display: flex;
+    justify-content: center;
+
+    ion-label{
+        font-weight: bolder;
+    }
+
+}
+mat-accordion{
+  width: 100% !important;
+}
+ ion-col{
+    text-align: center;
+}
+

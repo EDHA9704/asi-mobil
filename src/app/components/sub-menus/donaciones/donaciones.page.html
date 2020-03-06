@@ -1,0 +1,57 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title >Mis donaciones asignadas</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div style="text-align: center;" *ngIf="carga == true">
+    <ion-spinner name="bubbles"></ion-spinner>
+  </div>
+  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+  <div class="advertencia" *ngIf="carga == false && status == true && page == 1">
+      <img src="../../../../assets/img/dog-2952471_960_720.jpg">
+     <p>No existe donaciones</p>
+    </div>
+  <ion-list *ngIf="donaciones && carga == false">
+    <ion-item *ngFor="let don of donaciones"  [routerLink]="['/perfil-donacion',don.donacion._id,'DONA']">
+      <ion-avatar slot="start">
+        <img src="https://fundacionesbckimg.s3.us-east-2.amazonaws.com/{{ 
+          don.donacion.foto}}">
+      </ion-avatar>
+      <div class="datos">
+          <div class="datos-name">
+              <h3>{{don.donacion.fundacion.nombreFundacion}}</h3>
+         
+              <div class="estados">
+              <ion-label [class.estP]="don.donacion.estado == 0" *ngIf="don.donacion.estado == 0"><i class="fa fa-university" aria-hidden="true"></i> pendiente</ion-label>
+              <ion-label [class.estP]="don.donacion.estado == 1" *ngIf="don.donacion.estado == 1"><i class="fa fa-university" aria-hidden="true"></i> aprobado</ion-label>
+              <ion-label [class.estA]="don.donacion.estado == 2" *ngIf="don.donacion.estado == 2"><i class="fa fa-university" aria-hidden="true"></i> negado</ion-label>
+              <ion-label class="estP" *ngIf="don.estadoVl == 0"><i class="fa fa-user" aria-hidden="true"></i> pendiente</ion-label>
+              <ion-label class="estP" *ngIf="don.estadoVl == 1"><i class="fa fa-user" aria-hidden="true"></i> aprobado</ion-label>
+              <ion-label class="estA" *ngIf="don.estadoVl == 2"><i class="fa fa-user" aria-hidden="true"></i> negado</ion-label>
+</div>
+            </div>
+      
+            <div class="datos-all">
+              <ion-label >{{don.donacion.tipo}}</ion-label>
+                <ion-label *ngIf="don.donacion.tipo == 'Económica'">$ {{don.donacion.cantidad}}</ion-label>
+                <ion-label *ngIf="don.donacion.tipo == 'Producto'">{{don.donacion.nombreProducto}}</ion-label>
+            </div>
+      </div>
+  
+      
+    </ion-item>
+  </ion-list>
+  <ion-infinite-scroll threshold="100px" (ionInfinite)="loadData($event)">
+      <ion-infinite-scroll-content
+        loadingSpinner="bubbles"
+        loadingText="agregando donaciones...">
+      </ion-infinite-scroll-content>
+    </ion-infinite-scroll>
+</ion-content>

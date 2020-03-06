@@ -1,0 +1,318 @@
+h5,h4,h3,h2,h1{
+    font-family: 'Righteous', cursive;
+    margin: 0;
+}
+p,a,button,span{
+    font-family: 'Exo', sans-serif;
+    margin: 0;
+}
+.carga{
+    text-align: center;
+    height: 100%;
+    width: 100%;
+    position: relative;
+    .header-carga{
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+        align-items: center;
+        ion-card{
+            width: 200px;
+            height: 200px;
+            padding: 0;
+            margin: 0;
+            margin-bottom: 1rem;
+            ion-card-content{
+                padding: 0;
+                margin: 0;
+                width: 100%;
+                height: 100%;
+            }
+        }
+    }
+}
+
+ion-header{
+    ion-title{
+        color: #3bbfad;
+    }
+}
+
+/*.header-perfil{
+    width: 100%;
+    height: 300px;
+    .swiper-container {
+        width: 100%;
+        height: 100%;
+        
+      }
+      .swiper-slide {
+        background-position: center;
+        background-size: cover;
+        img{
+            width: 100%;
+            height: 100%;
+        }
+      }
+}*/
+.visib{
+    display: flex;
+}
+.content-perfil{
+    
+    text-align: center;
+    margin-bottom: 1rem;
+    padding-top: 1rem;
+    
+    background: white;
+    .mascota-name{
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        justify-content: center;
+        align-items: center;
+        h2{
+            color: #3bbfad;
+            text-transform: uppercase;
+    
+        }
+        span{
+            border-top: 2px solid #3bbfad;
+            width: 10%;
+            height: 5px;
+        }
+    }
+    .mascota-desc{
+        width: 100%;
+        padding: 1rem 1rem;
+        .fund{
+            p{
+                font-family: 'Exo', sans-serif;
+
+                i{
+                    color: #3bbfad;
+                }
+            }
+        }
+        p{
+            font-family: 'Exo', sans-serif;
+            font-size: 18px;
+        }
+    }
+    .mascota-options{
+        display: none;
+        justify-content: center;
+        padding: 1rem 1rem;
+        .itemOP{
+            ion-item{
+                ion-label{
+                    font-family: 'Exo', sans-serif;
+                    font-size: 18px;
+                }
+                i{
+                    color: #3bbfad;
+                    font-size: 18px;
+                }
+            }
+        }
+
+    }
+    .mascota-vacunas{
+        display: none;
+        flex-direction: column;
+        justify-content: center;
+        flex-wrap: wrap;
+        padding: 1rem 1rem;
+        width: 100%;
+        width: 100%;
+        h5{
+            margin-top: 0;
+        }
+        .options{
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            flex-wrap: wrap;
+            width: 100%;
+            padding: 0 1rem;
+            width: 100%;
+    
+            p{
+                font-family: 'Exo', sans-serif;
+                margin: .5rem;
+                font-size: 20px;
+    
+                i{
+                    color: #3bbfad;
+                }
+            }
+        }
+       
+        span{
+            border-top: 2px solid #3bbfad;
+            width: 10%;
+            height: 5px;
+        }
+    }
+    
+}
+
+ion-content{
+    position: relative;
+}
+ion-footer{
+    p{
+        margin: 0;
+        width: 100%;
+        text-align: center;
+    }
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #3bbfad;
+    padding: .5rem;
+    color: white;
+    font-family: 'Righteous', cursive;
+    border-top-left-radius: 50%;
+    border-top-right-radius: 50%;
+}
+.header-perfil{
+    display: flex;
+    flex-direction: row;
+    
+    flex-wrap: wrap;
+   
+    .fotoP{
+        width: 40%;
+        padding: .5rem;
+        display: flex;
+        justify-content: flex-end;
+        .img{
+            width: 7rem;
+            height: 7rem;
+            display: flex;
+            border-radius: 50%;
+            justify-content: center;
+            background: rgb(0,0,0);
+            background: linear-gradient(39deg, rgba(0,0,0,0.5438550420168067) 0%, rgba(5,227,228,1) 100%);
+            align-items: center;
+            ion-avatar{
+                border-radius: 50%;
+                width: 6.5rem;
+                height: 6.5rem;
+               
+            }
+            img{
+                border-radius: 50%;  
+                
+            }
+        }
+    }
+    .datosMsc{
+        width: 60%;
+        padding: .5rem;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        .detll{
+            display: flex;
+        }
+        h2{
+            padding: .5rem;
+        }
+        p{
+            padding: .5rem;
+        }
+    }
+    .headerdescripcion{
+       width: 100%;
+       .desc{
+        width: 60%;
+        height: auto;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+      }
+            
+      
+
+    }
+}
+
+.photosMsc{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    padding: .5rem 0;
+    .photoAll{
+        width: 8rem;
+        height: 8rem;
+        margin: 1px;
+        ion-thumbnail{
+            width: 100% !important;
+            height: 100% !important;
+            
+        }
+        img{
+            width: 100% !important;
+            height: 100% !important;
+            border-radius: 5px !important;
+        }
+    }
+}
+.desc-vacun{
+    display: flex;
+    flex-direction: column;
+    padding: 1rem;
+    .desc{
+        text-align: center;
+        margin: 1rem 0;
+    }
+    .vacunas{
+        margin: 1rem 0;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+}
+mat-expansion-panel{
+    margin: 0;
+    box-shadow: none !important;
+    border-bottom: 1px solid #ebebeb;
+}
+
+
+
+.lock{
+    height: auto !important;
+    min-height: 64px !important;
+}
+.lock2{
+    width: 100% !important;
+    height: auto;
+    overflow: hidden;
+    white-space: inherit !important;
+    text-overflow: ellipsis;
+}
+
+.mascota{
+    padding-top: 1rem;
+   
+}
+.gallery{
+    ion-col{
+        padding: .5px !important;
+        .image-container{
+            background-size: 100% 100%;
+            background-repeat: no-repeat;
+            min-height: 120px;
+            ion-thumbnail{
+                width: 100%;
+                min-height: 120px;
+            }
+        }
+    }
+}
+

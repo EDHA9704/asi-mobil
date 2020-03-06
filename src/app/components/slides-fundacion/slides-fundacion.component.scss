@@ -1,0 +1,95 @@
+.swiper-container{
+    position: relative;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    background: #141414;
+    position: relative;
+
+    .swiper-slide{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        .titulo{
+            max-height: 15%;
+            min-height: 15%;
+            display: flex;
+            align-items: flex-end;
+            justify-content: flex-start;
+            width: 100%;
+            padding: 0 1rem;
+            color: white;
+        }
+        .imgP{
+            min-height: 50%;
+            max-height: 50%;
+            img{
+                height: 100%;
+            }
+        }
+        .descripcion{
+            max-height: 12%;
+            min-height: 12%;
+            color: white;
+            width: 100%;
+            padding: 1rem;
+            display: -webkit-box;
+            max-width: 100%;
+           // height: 50px;
+            //margin: .5rem auto;
+            //line-height: 1;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            font-family: 'Exo', sans-serif;
+        }
+        .btnLeer{
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            padding: .5rem;
+        }
+        
+    }
+
+    .upDescripcion{
+        position: absolute;
+        bottom: 0%;
+        background: #000000cf;
+        color: white;
+        z-index: 1020;
+        min-height: 100% !important;
+        height: 100%;
+        left: 0;
+        width: 100%;
+        padding: 2rem 1rem;
+        text-align: justify;
+        transform: translateY(100%);
+        transition: all 1s ease-in-out;
+    }
+    .upDscVisible{
+        transform: translateY(0%);
+
+    }
+    
+}
+.btnUp{
+    position: absolute;
+    bottom: 0;
+    margin-left: auto;
+    margin-right: auto;
+    left: 0;
+    right: 0;
+    z-index: 1;
+    display: -webkit-box;
+    display: flex;
+    align-items: flex-end;
+    -webkit-box-pack: center;
+    justify-content: center;
+    i{
+        font-size: 50px;
+        color: white;
+    }
+}

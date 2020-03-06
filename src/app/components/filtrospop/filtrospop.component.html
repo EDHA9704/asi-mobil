@@ -1,0 +1,196 @@
+<ion-content *ngIf="op == 'msc'">
+  <div class="content" style="padding: 1rem 0;">
+    <div class="titu">
+      <h5>Filtrar por:</h5>
+      <span (click)="myDismiss('trash')">Limpiar filtros</span>
+    </div>
+    <mat-accordion>
+      <mat-expansion-panel>
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            Especie
+          </mat-panel-title>
+  
+        </mat-expansion-panel-header>
+  
+        <div class="form-filtros">
+          <mat-radio-group [formControl]="especie" aria-labelledby="example-radio-group-label"
+            class="example-radio-group">
+            <mat-radio-button class="example-radio-button" *ngFor="let es of aespecie" [value]="es" (change)="onChangeEspecie($event)">
+              {{es}}
+            </mat-radio-button>
+          </mat-radio-group>
+        </div>
+      </mat-expansion-panel>
+      <mat-expansion-panel >
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            Sexo
+          </mat-panel-title>
+  
+        </mat-expansion-panel-header>
+  
+        <div class="form-filtros">
+  
+          <mat-radio-group [formControl]="sexo" aria-labelledby="example-radio-group-label" class="example-radio-group">
+            <mat-radio-button class="example-radio-button" *ngFor="let s of asexo" [value]="s" (change)="onChangeSexo($event)">
+              {{s}}
+            </mat-radio-button>
+          </mat-radio-group>
+        </div>
+      </mat-expansion-panel>
+      <mat-expansion-panel>
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            Tamaño
+          </mat-panel-title>
+  
+        </mat-expansion-panel-header>
+  
+  
+        <div class="form-filtros">
+  
+          <mat-radio-group [formControl]="tamanio" aria-labelledby="example-radio-group-label"
+            class="example-radio-group2">
+            <mat-radio-button class="example-radio-button" *ngFor="let t of atam" [value]="t" (change)="onChangeTam($event)">
+              {{t}}
+            </mat-radio-button>
+          </mat-radio-group>
+        </div>
+      </mat-expansion-panel>
+      <mat-expansion-panel >
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            Edad
+          </mat-panel-title>
+  
+        </mat-expansion-panel-header>
+  
+  
+  
+        <div class="form-filtros">
+  
+          <mat-radio-group [formControl]="edad" aria-labelledby="example-radio-group-label" class="example-radio-group2">
+            <mat-radio-button class="example-radio-button" *ngFor="let e of aedad" [value]="e" (change)="onChangeEdad($event)">
+              {{e}}
+            </mat-radio-button>
+          </mat-radio-group>
+  
+  
+        </div>
+      </mat-expansion-panel>
+    </mat-accordion>
+  </div>
+
+
+</ion-content>
+<ion-content *ngIf="op == 'fund'">
+  <div class="content" style="padding: 1rem 0;">
+    <div class="titu">
+      <h5>Filtrar por:</h5>
+      <span (click)="myDismiss('trash')">Limpiar filtros</span>
+    </div>
+    <div class="form-filtros2" >
+      <div class="tituFl">
+        <label>Sector</label>
+       
+      </div>
+      <mat-radio-group [formControl]="sector"
+        aria-labelledby="example-radio-group-label"
+        class="example-radio-group2"
+        >
+        <mat-radio-button  class="example-radio-button" *ngFor="let sec of asector" [value]="sec" (change)="onChangeSector($event)">
+          {{sec}}
+        </mat-radio-button>
+      </mat-radio-group>
+ 
+   
+</div>
+  </div>
+
+
+</ion-content>
+<ion-content *ngIf="op == 'emer'">
+  <div class="content" style="padding: 1rem 0;">
+    <div class="titu">
+      <h5>Filtrar por:</h5>
+      <span (click)="myDismiss('trash')">Limpiar filtros</span>
+    </div>
+    <mat-accordion>
+      <mat-expansion-panel>
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            Asignada/Reportada
+          </mat-panel-title>
+  
+        </mat-expansion-panel-header>
+  
+        <div class="form-filtros" >
+          
+          <mat-radio-group [formControl]="asingRepor"
+            aria-labelledby="example-radio-group-label"
+            class="example-radio-group3"
+            >
+            <mat-radio-button  class="example-radio-button" *ngFor="let ar of aasingr" [value]="ar" (change)="onChangeAsingRepor($event)">
+              {{ar}}
+            </mat-radio-button>
+          </mat-radio-group>
+     
+       
+    </div>
+      </mat-expansion-panel>
+      <mat-expansion-panel>
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            Tipo de emergencia
+          </mat-panel-title>
+  
+        </mat-expansion-panel-header>
+  
+        <div class="form-filtros" >
+          
+          <mat-radio-group [formControl]="tipoEmergencia"
+            aria-labelledby="example-radio-group-label"
+            class="example-radio-group3"
+            >
+            <mat-radio-button  class="example-radio-button" *ngFor="let t of atipo" [value]="t" (change)="onChangeTipoEmergencia($event)">
+              {{t}}
+            </mat-radio-button>
+          </mat-radio-group>
+     
+       
+    </div>
+      </mat-expansion-panel>
+ 
+    </mat-accordion>
+  </div>
+
+
+</ion-content>
+<ion-content *ngIf="op == 'noti'">
+  <div class="content" style="padding: 1rem 0;">
+    <div class="titu">
+      <h5>Filtrar por:</h5>
+      <span (click)="myDismiss('trash')">Limpiar filtros</span>
+    </div>
+    <div class="form-filtros2" >
+      <div class="tituFl">
+        <label>Tipo</label>
+       
+      </div>
+      <mat-radio-group [formControl]="tipoNotiDonacion"
+        aria-labelledby="example-radio-group-label"
+        class="example-radio-group2"
+        >
+        <mat-radio-button  class="example-radio-button" *ngFor="let nt of anotificacion" [value]="nt" (change)="onChangeNoti($event)">
+          {{nt}}
+        </mat-radio-button>
+      </mat-radio-group>
+ 
+   
+</div>
+  </div>
+
+
+</ion-content>
+

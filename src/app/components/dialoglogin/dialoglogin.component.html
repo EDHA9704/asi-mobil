@@ -1,0 +1,16 @@
+<div class="dialog">
+  <div class="titulo">
+    <h4>{{titulo}}</h4>
+  </div>
+  <div class="msj">
+    <p>{{msj}}</p>
+  </div>
+  <div class="actions" *ngIf="tipo == 'lg'">
+    <ion-button style="color: #2d2d2d ;" fill="clear" (click)="register()">Crear cuenta</ion-button>
+    <ion-button style="color: #3bbfad;" fill="clear" (click)="dismiss()">Intentar de nuevo</ion-button>
+  </div>
+  <div class="actions" *ngIf="tipo == 'rg'">
+    <ion-button style="color: #2d2d2d ;" fill="clear" (click)="login()">Iniciar sesión</ion-button>
+    <ion-button style="color: #3bbfad;" fill="clear" (click)="dismiss()">Intentar de nuevo</ion-button>
+  </div>
+</div>

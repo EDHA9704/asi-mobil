@@ -1,0 +1,87 @@
+mat-form-field{
+    width: 100%;
+}
+form{
+    padding: 1rem;
+}
+.photoUser{
+    width: 100%;
+    text-align: center;
+    position: relative;
+    margin-bottom: 1rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    .photo{
+        width: 6rem;
+        height: 6rem;
+        position: relative;
+        img{
+            border-radius: 50%;
+            width: 100%;
+            height: 100%;
+        }
+        .nphoto{
+            width: 100%;
+            height: 100%; 
+            --background:#0000006b;
+            --border-radius: 50%;
+         
+        }
+        .cphoto{
+            position: absolute;
+            top: -5%;
+            right: -20%;
+            --background: #1dc9c0b3;
+            --border-radius: 50%;
+            width: 3rem;
+            -webkit-box-pack: center;
+            justify-content: center;
+            height: 3rem;
+        }
+    }
+    
+    
+}
+.customEmail{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    .fieldEmail{
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: space-between;
+        
+    }
+    .errorEmail{
+        position: absolute;
+        right: 50%;
+        top:-3px;
+        p{
+            margin: 0;
+            color: red;
+
+        }
+    }
+
+}
+
+.invalidd{
+        width: 80%;
+}
+.validd{
+    width: 100%;
+}
+.customPassword{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    mat-form-field{
+        width: 80%;
+    }
+}

@@ -1,0 +1,134 @@
+
+<ion-content id="divNotificacion" [scrollEvents]="true"
+
+(ionScroll)="logScrolling($event)"
+>
+<ion-header id="headerM"  mode="ios" slot="fixed" class="mostrar">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+        <ion-menu-button color="ligth" menu="first">
+          </ion-menu-button>
+    </ion-buttons>
+    <ion-buttons slot="end" class="btnEmer" (click)="presentModal()">
+      <span>Emergencia</span><ion-icon name="add-circle"></ion-icon>
+  </ion-buttons>
+    
+  </ion-toolbar>
+
+ 
+</ion-header>
+  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)" *ngIf="selecFiltro == false">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher> 
+  <ion-refresher slot="fixed" (ionRefresh)="doRefresh2($event)" *ngIf="selecFiltro == true">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher> 
+  <div class="btnFiltro" >
+    <!--<ion-button color="ligth" (click)="presentModal('msc')">
+        <i class="fa fa-filter" aria-hidden="true"></i>
+
+      </ion-button>-->
+      <span>{{total}} resultados</span> 
+      <button (click)="presentPopover($event,'emer')">
+        Filtrar <i class="fa fa-filter" aria-hidden="true"></i>
+      </button>
+     
+</div>
+  <div class="advertencia" *ngIf="emergencias && carga == false &&  emergencias.length == 0">
+      <img src="../../../../assets/img/dog-2952471_960_720.jpg">
+     <p>No existe emergencias</p>
+    </div>
+    <div class="cards" *ngIf="!emergencias && carga == true">
+      <ion-card >
+          <ion-card-header>
+              <ion-skeleton-text animated style="width: 100%; height: 100%;"></ion-skeleton-text>
+          </ion-card-header>
+        
+          <ion-card-content>
+              <ion-skeleton-text animated></ion-skeleton-text>
+            </ion-card-content>
+        </ion-card>
+        <ion-card >
+            <ion-card-header>
+                <ion-skeleton-text animated style="width: 100%; height: 100%;"></ion-skeleton-text>
+            </ion-card-header>
+          
+            <ion-card-content>
+                <ion-skeleton-text animated></ion-skeleton-text>
+              </ion-card-content>
+          </ion-card>
+          <ion-card >
+              <ion-card-header>
+                  <ion-skeleton-text animated style="width: 100%; height: 100%;"></ion-skeleton-text>
+              </ion-card-header>
+            
+              <ion-card-content>
+                  <ion-skeleton-text animated></ion-skeleton-text>
+                </ion-card-content>
+            </ion-card>
+            <ion-card >
+                <ion-card-header>
+                    <ion-skeleton-text animated style="width: 100%; height: 100%;"></ion-skeleton-text>
+                </ion-card-header>
+              
+                <ion-card-content>
+                    <ion-skeleton-text animated></ion-skeleton-text>
+                  </ion-card-content>
+              </ion-card>
+              <ion-card >
+                  <ion-card-header>
+                      <ion-skeleton-text animated style="width: 100%; height: 100%;"></ion-skeleton-text>
+                  </ion-card-header>
+                
+                  <ion-card-content>
+                      <ion-skeleton-text animated></ion-skeleton-text>
+                    </ion-card-content>
+                </ion-card>
+                <ion-card >
+                    <ion-card-header>
+                        <ion-skeleton-text animated style="width: 100%; height: 100%;"></ion-skeleton-text>
+                    </ion-card-header>
+                  
+                    <ion-card-content>
+                        <ion-skeleton-text animated></ion-skeleton-text>
+                      </ion-card-content>
+                  </ion-card>
+  
+   
+  </div>
+    <ion-list class="cards" *ngIf="emergencias && carga == false">
+      
+      <ion-card *ngFor="let em of emergencias" >
+          <ion-card-header>
+            <div class="nameHead">
+              
+                <p class="name" *ngIf="em.estado == 0"><i class="fa fa-university" aria-hidden="true"></i> pendiente</p>
+                <p class="name" *ngIf="em.estado == 1"><i class="fa fa-university" aria-hidden="true"></i> aprobado</p>
+                <p class="name" *ngIf="em.estado == 2"><i class="fa fa-university" aria-hidden="true"></i> negado</p>
+          
+            </div>
+            <img src="https://fundacionesbckimg.s3.us-east-2.amazonaws.com/{{ 
+              em.fotoMascota}}" (click)="perfilEmergencia(em)">
+          </ion-card-header>
+        
+          <ion-card-content>
+            <ion-card-title (click)="perfilEmergencia(em)"><i class="fa fa-heartbeat" aria-hidden="true"></i> {{em.tipoEmergencia}}</ion-card-title>
+
+          </ion-card-content>
+        </ion-card>
+       
+    </ion-list>
+ 
+  <ion-infinite-scroll threshold="100px" (ionInfinite)="loadData($event)" *ngIf="selecFiltro == false">
+      <ion-infinite-scroll-content
+        loadingSpinner="bubbles"
+        loadingText="agregando emergencias...">
+      </ion-infinite-scroll-content>
+    </ion-infinite-scroll>
+    <ion-infinite-scroll threshold="100px" (ionInfinite)="loadData2($event)" *ngIf="selecFiltro == true">
+      <ion-infinite-scroll-content
+        loadingSpinner="bubbles"
+        loadingText="agregando emergencias...">
+      </ion-infinite-scroll-content>
+    </ion-infinite-scroll>
+</ion-content>

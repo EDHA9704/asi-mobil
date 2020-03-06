@@ -1,0 +1,49 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Mis emergencias</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <div style="text-align: center;" *ngIf="carga == true">
+    <ion-spinner name="bubbles"></ion-spinner>
+  </div>
+  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+  <div class="advertencia" *ngIf="carga == false && status == true && !emergencias">
+      <img src="../../../../assets/img/dog-2952471_960_720.jpg">
+     <p>Aún no registras ninguna emergencia</p>
+    </div>
+  <ion-list *ngIf="emergencias && carga == false">
+    <ion-item *ngFor="let em of emergencias" [routerLink]="['/perfil-emergencia',em._id,'EMR']">
+      <ion-avatar slot="start">
+        <img src="https://fundacionesbckimg.s3.us-east-2.amazonaws.com/{{ 
+          em.fotoMascota}}">
+      </ion-avatar>
+      <div class="datos">
+          <div class="datos-name">
+              <h4>{{em.nivelEmergencia}} aaaaaa</h4>
+           
+              <ion-label class="estP" *ngIf="em.estado == 0"><i class="fa fa-university" aria-hidden="true"></i> pendiente</ion-label>
+              <ion-label class="estP" *ngIf="em.estado == 1"><i class="fa fa-university" aria-hidden="true"></i> aprobado</ion-label>
+              <ion-label class="estP" *ngIf="em.estado == 2"><i class="fa fa-university" aria-hidden="true"></i> negado</ion-label>
+            </div>
+      
+            <div class="datos-all">
+                <ion-label>{{em.tipoEmergencia}}</ion-label>
+                <ion-label>{{em.estadoMascota}}</ion-label>
+            </div>
+      </div>
+  
+      
+    </ion-item>
+  </ion-list>
+  <ion-infinite-scroll threshold="100px" (ionInfinite)="loadData($event)">
+      <ion-infinite-scroll-content
+        loadingSpinner="bubbles"
+        loadingText="agregando adopciones...">
+      </ion-infinite-scroll-content>
+    </ion-infinite-scroll>
+</ion-content>

@@ -1,0 +1,68 @@
+
+<ion-header>
+        <ion-toolbar>
+          <ion-buttons slot="start">
+            <ion-back-button defaultHref="registro"></ion-back-button>
+          </ion-buttons>
+        </ion-toolbar>
+        <div class="logo">
+            <img src="../../assets/img/logo2.png">
+          </div>
+      </ion-header>
+    
+
+<ion-content>
+        <div class="inicio">
+          
+          <div class="options"> 
+          
+            <div class="titulo" >
+              <h4>Solo un paso más</h4>
+             
+            </div>
+
+            <form id="formC" #loginForm="ngForm"  class="formContent">
+
+                <div class="photoUser">
+                    <img *ngIf="image == ''" src="../../../assets/img/User_Circle.png">
+                    <img *ngIf="image != ''" src="{{image}}">
+
+                    <ion-button  (click)="presentActionSheet()"><ion-icon name="camera"></ion-icon>
+
+                    </ion-button>
+                   
+                      
+                </div>
+               
+              <ion-item [class.formError]="!nombres.valid && nombres.touched"> 
+                <ion-label position="floating">Nombres</ion-label>
+                <ion-input pattern="^[a-z A-Z]+$" maxlength="25" minlength="4" required autofocus="true" type="text" id="nombres" name="nombres" #nombres="ngModel" [(ngModel)]="usuarioAdoptante.nombres"></ion-input>
+              </ion-item>
+              <p class="formErrormsj" *ngIf="!nombres.valid && nombres.touched">Nombres no válidos</p>
+              <p class="smallText" >No se permite símbolos o caracteres especiales.
+                </p>
+             
+
+              <ion-item [class.formError]="!apellidos.valid && apellidos.touched">
+                <ion-label  position="floating">Apellidos</ion-label>
+                <ion-input required pattern="^[a-z A-Z]+$" maxlength="40" minlength="5" type="text" id="apellidos"  name="apellidos" #apellidos="ngModel" [(ngModel)]="usuarioAdoptante.apellidos"></ion-input>
+              </ion-item>
+              <p class="formErrormsj" *ngIf="!apellidos.valid && apellidos.touched">Apellidos no válidos</p>
+
+              <p class="smallText" >No se permite símbolos o caracteres especiales.
+                </p>
+              <ion-item [class.formError]="!edad.valid && edad.touched">
+                <ion-label position="floating">MM/DD/YYYY</ion-label>
+                <ion-datetime required displayFormat="MM/DD/YYYY" id="edad"  name="edad" #edad="ngModel" [(ngModel)]="usuarioAdoptante.edad" placeholder="Fecha de nacimiento"></ion-datetime>
+              </ion-item>
+              <ion-button color="primary" type="submit" (click)="registrarUsuario()"   class="bntIS"  [disabled]=!loginForm.form.valid>Finalizar</ion-button>
+
+            </form>
+      
+           
+          </div>
+        </div>
+      </ion-content>
+     
+    
+     

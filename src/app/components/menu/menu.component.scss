@@ -1,0 +1,36 @@
+.user{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 1rem;
+    .photo{
+        width: 8rem;
+        height: 8rem;
+        margin: .5rem;
+
+        img{
+            height: 100%;
+            width: 100%;
+            border-radius: 50%;
+        }
+    }
+    button{
+        margin: .5rem 0;
+        background: transparent;
+        color: #3bbfad;
+        font-size: 1.2em;
+    }
+}
+
+.active{
+    --background: #3bbfad;
+    color: white;
+}
+mat-expansion-panel-header{
+    padding: 0 18px !important;
+    font-size: 1rem !important;
+}
+mat-panel-title{
+    color: black !important;
+}

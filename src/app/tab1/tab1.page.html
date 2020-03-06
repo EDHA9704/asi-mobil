@@ -1,0 +1,160 @@
+
+
+
+<ion-content id="divNotificacion" [scrollEvents]="true"
+(ionScrollStart)="logScrollStart($event)"
+(ionScroll)="logScrolling($event)"
+(ionScrollEnd)="logScrollEnd()">
+
+<ion-header id="headerM" mode="ios" slot="fixed" class="mostrar">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+        <ion-menu-button color="ligth" menu="first">
+          </ion-menu-button>
+    </ion-buttons>
+      <ion-searchbar  animated class="fg" placeholder=" "
+      (ionInput)="buscarKey($event)"
+      (ionCancel)="cancelBuscar($event)"></ion-searchbar>
+     
+  </ion-toolbar>
+
+ 
+</ion-header>
+  <ion-refresher  (ionRefresh)="doRefresh($event)" *ngIf="mascotas.length > 0 && selecFiltro == false && statusMsc == false && bkey == false">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+  <ion-refresher  (ionRefresh)="doRefresh2($event)" *ngIf="mascotas.length > 0 && selecFiltro == true && statusMsc == false && bkey == false">
+      <ion-refresher-content></ion-refresher-content>
+    </ion-refresher>
+    <div class="btnFiltro">
+      <!--<ion-button color="ligth" (click)="presentModal('msc')">
+          <i class="fa fa-filter" aria-hidden="true"></i>
+
+        </ion-button>-->
+        <span>{{total}} resultados</span>
+        <button (click)="presentPopover($event,'msc')">
+          Filtrar <i class="fa fa-filter" aria-hidden="true"></i>
+        </button>
+       
+  </div>
+
+  <div class="filtros"*ngIf="selecFiltro == true;">
+      <ion-chip *ngIf="selecFiltroAr.especie != ''">
+          <ion-label >{{selecFiltroAr.especie}}</ion-label>
+          <ion-icon name="close-circle" (click)="eliminarFiltro('es')"></ion-icon>
+        </ion-chip>
+        <ion-chip *ngIf="selecFiltroAr.sexo != ''">
+            <ion-label>{{selecFiltroAr.sexo}}</ion-label>
+            <ion-icon name="close-circle" (click)="eliminarFiltro('sex')"></ion-icon>
+          </ion-chip>
+          <ion-chip *ngIf="selecFiltroAr.tamanio != ''">
+              <ion-label>{{selecFiltroAr.tamanio}}</ion-label>
+              <ion-icon name="close-circle" (click)="eliminarFiltro('tam')"></ion-icon>
+            </ion-chip>
+            <ion-chip *ngIf="selecFiltroAr.edad != ''">
+                <ion-label>{{selecFiltroAr.edad}}</ion-label>
+                <ion-icon name="close-circle" (click)="eliminarFiltro('edad')"></ion-icon>
+              </ion-chip>
+           
+  </div>
+  <div class="cards" *ngIf="mascotas.length == 0 && carga == true && statusMsc == false">
+      <ion-card >
+          <ion-card-header>
+              <ion-skeleton-text animated style="width: 100%; height: 100%;"></ion-skeleton-text>
+          </ion-card-header>
+        
+          <ion-card-content>
+              <ion-skeleton-text animated></ion-skeleton-text>
+            </ion-card-content>
+        </ion-card>
+        <ion-card >
+            <ion-card-header>
+                <ion-skeleton-text animated style="width: 100%; height: 100%;"></ion-skeleton-text>
+            </ion-card-header>
+          
+            <ion-card-content>
+                <ion-skeleton-text animated></ion-skeleton-text>
+              </ion-card-content>
+          </ion-card>
+          <ion-card >
+              <ion-card-header>
+                  <ion-skeleton-text animated style="width: 100%; height: 100%;"></ion-skeleton-text>
+              </ion-card-header>
+            
+              <ion-card-content>
+                  <ion-skeleton-text animated></ion-skeleton-text>
+                </ion-card-content>
+            </ion-card>
+            <ion-card >
+                <ion-card-header>
+                    <ion-skeleton-text animated style="width: 100%; height: 100%;"></ion-skeleton-text>
+                </ion-card-header>
+              
+                <ion-card-content>
+                    <ion-skeleton-text animated></ion-skeleton-text>
+                  </ion-card-content>
+              </ion-card>
+              <ion-card >
+                  <ion-card-header>
+                      <ion-skeleton-text animated style="width: 100%; height: 100%;"></ion-skeleton-text>
+                  </ion-card-header>
+                
+                  <ion-card-content>
+                      <ion-skeleton-text animated></ion-skeleton-text>
+                    </ion-card-content>
+                </ion-card>
+                <ion-card >
+                    <ion-card-header>
+                        <ion-skeleton-text animated style="width: 100%; height: 100%;"></ion-skeleton-text>
+                    </ion-card-header>
+                  
+                    <ion-card-content>
+                        <ion-skeleton-text animated></ion-skeleton-text>
+                      </ion-card-content>
+                  </ion-card>
+  
+   
+  </div>
+  <ion-list class="cards" *ngIf="mascotas.length > 0 && carga == false && statusMsc == false">
+    
+    <ion-card *ngFor="let item of mascotas">
+ 
+        <ion-card-header>
+          <div class="nameHead">
+            <p class="name">
+              {{item.ms.nombre}}
+            </p>
+          </div>
+          
+          <img src="https://fundacionesbckimg.s3.us-east-2.amazonaws.com/{{ 
+            item.foto[0].name}}" (click)="perfilMascota(item.ms._id)">
+        </ion-card-header>
+      
+        <ion-card-content>
+
+          <ion-card-title (click)="perfilMascota(item.ms._id)"><i class="fa fa-university" aria-hidden="true"></i>
+            {{item.ms.responsable.nombreFundacion}}</ion-card-title>
+          <ion-card-title (click)="perfilMascota(item.ms._id)">
+            <i class="fa fa-paw" aria-hidden="true"></i> {{item.ms.edadT}}</ion-card-title>
+
+        </ion-card-content>
+      </ion-card>
+      <p style="width: 100%; text-align: center;" *ngIf="status == true">No se encontró más mascotas</p>
+  </ion-list>
+ <div class="advertencia" *ngIf="statusMsc == true">
+   <img src="../../assets/img/dog-2952471_960_720.jpg">
+  <p>No existe mascotas</p>
+ </div>
+<ion-infinite-scroll threshold="100px" (ionInfinite)="loadData($event)" *ngIf="selecFiltro == false && statusMsc == false && bkey == false">
+  <ion-infinite-scroll-content
+    loadingSpinner="bubbles"
+    loadingText="agregando mascotas...">
+  </ion-infinite-scroll-content>
+</ion-infinite-scroll>
+<ion-infinite-scroll threshold="100px" (ionInfinite)="loadData2($event)" *ngIf="selecFiltro == true && statusMsc == false && bkey == false">
+    <ion-infinite-scroll-content
+      loadingSpinner="bubbles"
+      loadingText="agregando mascotas...">
+    </ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+</ion-content>

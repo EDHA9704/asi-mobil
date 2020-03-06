@@ -1,0 +1,55 @@
+
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="inicio"></ion-back-button>
+    </ion-buttons>
+  </ion-toolbar>
+  <div class="logo">
+      <img src="../../assets/img/logo2.png">
+    </div>
+</ion-header>
+
+<ion-content >
+  <div class="inicio">
+    
+    <div class="options"> 
+      <div class="titulo" >
+        <h4>Inicio de sesión</h4>
+      </div>
+   <!--   <div class="btns2">
+        <ion-button color="secondary" (click)="RGFacebook()" ><ion-icon name="logo-facebook"></ion-icon> <span>Facebook</span></ion-button>
+        <ion-button color="primary" (click)="form()" > <ion-icon name="list"></ion-icon> <span>Formulario</span></ion-button>
+       
+    </div>
+  -->
+    
+      <form #loginForm="ngForm"  class="formContent">
+        <ion-item [class.formError]="!correo.valid && correo.touched">
+          <ion-label position="floating">Correo electrónico</ion-label>
+          <ion-input required pattern="[a-zA-Z0-9_]+([.][a-zA-Z0-9_]+)*@[a-zA-Z0-9_]+([.][a-zA-Z0-9_]+)*[.][a-zA-Z]{1,5}" autofocus="true" type="email" id="correo" name="correo" #correo="ngModel" [(ngModel)]="usuarioLogin.correo"></ion-input>
+        </ion-item>
+        <p class="formErrormsj" *ngIf="!correo.valid && correo.touched">Ingresa un correo válido</p>
+
+        <ion-item [class.formError]="!password.valid && password.touched">
+          <ion-label position="floating">Contraseña</ion-label>
+          <ion-input required type="password" id="password"  name="password" #password="ngModel" [(ngModel)]="usuarioLogin.password"></ion-input>
+        </ion-item>
+        <div class="frgpss">
+          <p (click)="recover()"  shape="round" class="bntIS" >¿Olvidaste tu contraseña?</p>
+        </div>
+        <ion-button color="primary"  (click)="login()"   class="bntIS"  [disabled]=!loginForm.form.valid><p>Iniciar sesión</p></ion-button>
+
+      </form>
+      <div class="btnsRedes" >
+        <p>También puedes ingresar utilizando tus redes sociales</p>
+          <ion-button  (click)="doFbLogin()"   class="bntIS" > <ion-icon name="logo-facebook"></ion-icon><p>Facebook</p></ion-button>
+      </div>
+     
+    </div>
+  </div>
+</ion-content>
+
+
+
+  

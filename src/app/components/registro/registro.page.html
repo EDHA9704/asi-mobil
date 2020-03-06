@@ -1,0 +1,59 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="inicio"></ion-back-button>
+    </ion-buttons>
+  </ion-toolbar>
+  <div class="logo">
+      <img src="../../assets/img/logo2.png">
+    </div>
+</ion-header>
+
+<ion-content >
+  <div class="inicio">
+    
+    <div class="options"> 
+     
+      <div class="titulo" >
+        <h4>Únete a nuestra plataforma</h4>
+      </div>
+   <!--   <div class="btns2">
+        <ion-button color="secondary" (click)="RGFacebook()" ><ion-icon name="logo-facebook"></ion-icon> <span>Facebook</span></ion-button>
+        <ion-button color="primary" (click)="form()" > <ion-icon name="list"></ion-icon> <span>Formulario</span></ion-button>
+       
+    </div>
+  -->
+      <form id="formC" #loginForm="ngForm" class="formContent">
+       
+        <ion-item [class.formError]="!correo.valid && correo.touched || status == true">
+          <ion-label   position="floating">Correo electrónico</ion-label>
+          <ion-input  required pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$" type="email" id="correo" name="correo" #correo="ngModel" [(ngModel)]="usuarioAdoptante.correo"></ion-input>
+        </ion-item>
+        <p class="formErrormsj" *ngIf="!correo.valid && correo.touched">Ingresa un correo válido</p>
+        <p class="formErrormsj" *ngIf="status == true">Correo electrónico ya registrado</p>
+
+        <ion-item [class.formError]="!password.valid && password.touched">
+          <ion-label position="floating">Contraseña</ion-label>
+          <ion-input pattern="^(?=.*\d)(?=.*[\u0021-\u002b\u003c-\u0040])(?=.*[A-Z])(?=.*[a-z])\S{8,30}$" required minlength="8" maxlength="30"  type="password" id="password"  name="password" #password="ngModel" [(ngModel)]="usuarioAdoptante.password"></ion-input>
+        </ion-item>
+        <p class="formErrormsj" *ngIf="!password.valid && password.touched">Contraseña no válida</p>
+        <p class="smallText">La contraseña debe contener entre 8-20 caracteres, al menos 1 letra mayúscula, 1 letra minúscula, 1 número y un caracter no alfanumérico.
+          </p>
+
+        <ion-button color="primary"  (click)="registroProcess()"   class="bntIS"  [disabled]=!loginForm.form.valid><p>Continuar</p></ion-button>
+
+      </form>
+
+      <div class="btnsRedes" >
+        <p>También puedes ingresar utilizando tus redes sociales</p>
+          <ion-button  (click)="doFbLogin()"   class="bntIS" > <ion-icon name="logo-facebook"></ion-icon><p>Facebook</p></ion-button>
+
+      </div>
+     
+    </div>
+  </div>
+</ion-content>
+
+
+
+

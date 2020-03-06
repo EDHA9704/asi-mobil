@@ -1,0 +1,44 @@
+<ion-menu side="start" menuId="first" contentId="principal" (ionWillOpen)="load()">
+   
+    <ion-content>
+      <div class="user" *ngIf="usuario">
+        <div class="photo">
+          <img *ngIf="usuario.type == 'nr'" src="https://fundacionesbckimg.s3.us-east-2.amazonaws.com/{{ 
+            usuario.image}}">
+          <img *ngIf="usuario.type == 'fb'" src="{{usuario.image}}">
+
+        </div>
+        <div class="name" *ngIf="usuarioOb">
+          <button  mat-button [matMenuTriggerFor]="menu" style="font-size: 1.2em;">{{usuarioOb.nombres}} <i class="fa fa-chevron-down" aria-hidden="true"></i></button>
+          <mat-menu  #menu="matMenu">
+            <button mat-menu-item (click)="editPerfil()">Editar perfil</button>
+          </mat-menu>
+        </div>
+      
+      </div>
+      <ion-list *ngIf="usuario">
+        <ion-item [routerLinkActive]="['active']" [routerLink]="['/tabs']" (click)="cerrarMenu()">Inicio</ion-item>
+        <ion-item (click)="presentModal()">Publicar emergencia</ion-item>
+        <ion-item [routerLinkActive]="['active']" [routerLink]="['/adopciones']" (click)="cerrarMenu()">Mis adopciones</ion-item>
+        <mat-accordion>
+          <mat-expansion-panel>
+            <mat-expansion-panel-header>
+              <mat-panel-title>
+                Donaciones
+              </mat-panel-title>
+           
+            </mat-expansion-panel-header>
+        
+            <ion-item [routerLinkActive]="['active']" [routerLink]="['/donaciones-reportadas']" (click)="cerrarMenu()">Donaciones realizadas</ion-item>
+            <ion-item *ngIf="usuario.rol != 3" [routerLinkActive]="['active']" [routerLink]="['/donaciones']" (click)="cerrarMenu()">Donaciones asignadas</ion-item>        
+
+          </mat-expansion-panel>
+          
+        </mat-accordion>
+        
+       
+        <ion-item (click)="logOut()">Cerrar sesión</ion-item>
+       
+      </ion-list>
+    </ion-content>
+  </ion-menu>

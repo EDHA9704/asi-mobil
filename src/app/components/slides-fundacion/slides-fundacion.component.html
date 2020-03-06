@@ -1,0 +1,62 @@
+<ion-content>
+    <ion-fab vertical="top" horizontal="end" slot="fixed">
+        <ion-fab-button (click)="myDismiss('s')" color="dark" style="max-width: 2rem; max-height: 2rem;">
+            <ion-icon name="close"></ion-icon>
+
+        </ion-fab-button>
+      </ion-fab>
+    <div class="swiper-container" *ngIf="op == 'port'">
+        
+        <div class="swiper-wrapper">
+          <div  class="swiper-slide" *ngFor="let p of portadas" >
+              <div class="titulo" *ngIf="p.mensaje1">
+                  <h5>{{p.mensaje1}}</h5>
+                </div>
+                <div class="imgP">
+                    <img id="imgSW"  src="https://fundacionesbckimg.s3.us-east-2.amazonaws.com/{{ 
+                      p.foto}}" >
+                </div>
+            <div class="descripcion" *ngIf="p.mensaje2">
+                {{p.mensaje2}}
+              </div>
+              <div class="btnLeer" *ngIf="p.mensaje2">
+                  <a *ngIf="p.mensaje2.length > 125" (click)="verDescripcion(p.mensaje2)">Leer mas</a>
+              </div>
+              
+          </div>
+        </div>
+       
+        <div class="swiper-pagination"></div>
+        <div id="upDescripcion" class="upDescripcion" >
+            <p *ngIf="msj">{{msj}}</p>
+          </div>
+        
+      </div>
+      <div class="swiper-container" *ngIf="op == 'hist'">
+          <div class="swiper-wrapper">
+            <div  class="swiper-slide" *ngFor="let his of historias">
+                <div class="titulo" >
+                    <h5>{{his.titulo}}</h5>
+                  </div>
+                  <div class="imgP">
+                      <img id="imgSW" src="https://fundacionesbckimg.s3.us-east-2.amazonaws.com/{{ 
+                        his.foto}}">
+                    </div>
+                    <div class="descripcion" >
+                        {{his.descripcion}}
+                      </div>
+                      <div class="btnLeer" >
+                          <a *ngIf="his.descripcion.length > 125" (click)="verDescripcion(his.descripcion)">Leer mas</a>
+                      </div>
+                    </div>
+                  </div>
+                 
+         
+          <div class="swiper-pagination"></div>
+        
+          <div id="upDescripcion" class="upDescripcion" >
+              <p *ngIf="msj">{{msj}}</p>
+            </div>
+        </div>
+       
+</ion-content>

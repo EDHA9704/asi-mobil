@@ -1,0 +1,230 @@
+<ion-header >
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title *ngIf="mascota">{{mascota.nombre}}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content  id="msc" [scrollEvents]="true"
+(ionScroll)="logScrolling($event)"
+(ionScrollEnd)="logScrollEnd()">
+
+      
+  <div *ngIf="!mascota" class="carga">
+    <div class="header-carga">
+        <ion-card>
+            <ion-card-content>
+                <ion-skeleton-text animated></ion-skeleton-text>
+      
+            </ion-card-content>
+          </ion-card>
+          <ion-skeleton-text animated style="width: 60%"></ion-skeleton-text>
+
+    </div>
+    
+    <div class="ion-padding custom-skeleton">
+      <ion-skeleton-text animated style="width: 60%"></ion-skeleton-text>
+      <ion-skeleton-text animated></ion-skeleton-text>
+      <ion-skeleton-text animated style="width: 88%"></ion-skeleton-text>
+      <ion-skeleton-text animated style="width: 70%"></ion-skeleton-text>
+      <ion-skeleton-text animated style="width: 60%"></ion-skeleton-text>
+    </div>
+    <div class="ion-padding custom-skeleton">
+        <ion-skeleton-text animated style="width: 60%"></ion-skeleton-text>
+        <ion-skeleton-text animated></ion-skeleton-text>
+        <ion-skeleton-text animated style="width: 88%"></ion-skeleton-text>
+        <ion-skeleton-text animated style="width: 70%"></ion-skeleton-text>
+        <ion-skeleton-text animated style="width: 60%"></ion-skeleton-text>
+      </div>
+  
+      <ion-button style="width: 100%; --background: transparent; position: absolute; bottom: 0;left: 0;">
+          <ion-skeleton-text animated></ion-skeleton-text>
+      </ion-button>
+
+   
+  </div>
+  <div class="mascota" *ngIf="mascota" >
+
+    <div class="header-perfil">
+
+      <div class="fotoP">
+        <div class="img">
+          <ion-avatar>
+            <ion-img 
+            ionImgViewer
+            src="https://fundacionesbckimg.s3.us-east-2.amazonaws.com/{{ 
+              prinPhoto[0].name}}">
+          </ion-img>
+          </ion-avatar>
+         
+        </div>
+      </div>
+      <div class="datosMsc">
+        <h2>{{mascota.nombre}}</h2>
+        <div class="detll">
+          <p><i class="fa fa-paw" aria-hidden="true"></i> {{mascota.raza}}</p>
+          <p><i class="fa fa-paw" aria-hidden="true"></i> {{mascota.sexo}}</p>
+        </div>
+        
+      </div>
+    <div class="headerdescripcion">
+      <mat-expansion-panel (opened)="panelOpenState = true"
+                            (closed)="panelOpenState = false" (click)="prub(panelOpenState)">
+        <mat-expansion-panel-header >
+          <mat-panel-title >
+            <p class="desc" id="panelTitle">{{mascota.descripcion}}</p>
+          </mat-panel-title>
+          
+        </mat-expansion-panel-header>
+
+       
+       
+      </mat-expansion-panel>
+    </div>
+      
+    </div>
+   
+     <div class="content-perfil" id="prubeC">
+      <mat-tab-group  (selectedIndexChange)="tabChanged($event)" mat-align-tabs="center">
+        <mat-tab >
+            <ng-template mat-tab-label style="display: flex; flex-direction: column;">
+              <ion-icon style="font-size: 1.4rem !important;" name="photos"></ion-icon>
+              <span>Galeria</span>
+              </ng-template>
+              
+              <div class="scrollGallery">
+                <ion-grid class="gallery">
+                  <ion-row>
+                    <ion-col size="4" *ngFor="let ph of mascota.fotos" >
+                      <div class="image-container">
+                       <ion-thumbnail>
+                         <ion-img  
+                         ionImgViewer 
+                         width="100%" height="100%"
+                         src="https://fundacionesbckimg.s3.us-east-2.amazonaws.com/{{ 
+                          ph.name}}">
+                       </ion-img>
+                     </ion-thumbnail>
+                     </div>
+                    </ion-col>
+                  </ion-row>
+                </ion-grid>
+              
+              </div>
+           
+        </mat-tab>
+        <mat-tab> 
+            <ng-template mat-tab-label>
+              <ion-icon style="font-size: 1.4rem !important;" name="paw"></ion-icon>
+              <span>Características</span>
+              </ng-template>
+              <ion-grid>
+                <ion-row  >
+                  <ion-col size="6" class="itemOP">
+                      <ion-item>
+                          <i class="fa fa-heart" aria-hidden="true" slot="start"></i> 
+                          <ion-label>
+                              {{mascota.especie}}
+                          </ion-label>
+                        </ion-item>
+    
+                  </ion-col>
+                  <ion-col size="6" class="itemOP">
+                    <ion-item>
+                        <i class="fa fa-text-height" aria-hidden="true" slot="start"></i> 
+                        <ion-label>
+                            {{mascota.tamanio}}
+                        </ion-label>
+                      </ion-item> 
+                  </ion-col>
+                
+                  <ion-col size="12" class="itemOP">
+                      <ion-item>
+                          <i class="fa fa-circle" aria-hidden="true" slot="start"></i> 
+                          <ion-label>
+                              {{mascota.color}}
+                          </ion-label>
+                        </ion-item> 
+                  </ion-col>
+                 
+                    <ion-col size="12" class="itemOP">
+                        <ion-item>
+                            <i class="fa fa-medkit" aria-hidden="true" slot="start"></i>
+                            <ion-label *ngIf="mascota.esterilizado == 'Si'">
+                                Esterilizado
+                            </ion-label>
+                            <ion-label *ngIf="mascota.esterilizado == 'No'">
+                                No esterilizado
+                            </ion-label>
+                          </ion-item> 
+                       </ion-col>
+                  <ion-col size="12" class="itemOP">
+                      <ion-item>
+                          <i class="fa fa-birthday-cake" aria-hidden="true" slot="start"></i>
+                          <ion-label *ngIf="mascota.anios > 0 && mascota.meses > 0">
+                              {{mascota.edadT}} ({{mascota.anios}} años/ {{mascota.meses}} meses)
+                          </ion-label>
+                          <ion-label *ngIf="mascota.anios > 0 && mascota.meses == 0">
+                              {{mascota.edadT}} ({{mascota.anios}} años)
+                          </ion-label>
+                          <ion-label *ngIf="mascota.anios == 0 && mascota.meses > 0">
+                              {{mascota.edadT}}  ({{mascota.meses}} meses)
+                          </ion-label>
+                        </ion-item> 
+                  </ion-col>
+                 
+                
+                </ion-row>
+            </ion-grid>
+           
+        </mat-tab>
+        <mat-tab > 
+            <ng-template mat-tab-label>
+              <ion-icon style="font-size: 1.4rem !important;" name="heart-half"></ion-icon>
+              <span>Vacunas</span>
+              </ng-template>
+
+              <div class="desc-vacun">
+                
+                <div class="vacunas">
+                 
+                  <ion-item> 
+                    <ion-label>Antirrábica</ion-label><ion-icon *ngIf="mascota.vacunas.Antirrabica == true"  name="checkmark-circle" slot="end"></ion-icon>
+                    <ion-icon *ngIf="mascota.vacunas.Antirrabica == false || mascota.vacunas.Antirrabica == ''"  name="close-circle" slot="end"></ion-icon>
+                  </ion-item>
+                  <ion-item> 
+                    <ion-label>Bronchicine</ion-label><ion-icon *ngIf="mascota.vacunas.Bronchicine == true" name="checkmark-circle" slot="end"></ion-icon>
+                    <ion-icon *ngIf="mascota.vacunas.Bronchicine == false || mascota.vacunas.Bronchicine == ''"  name="close-circle" slot="end"></ion-icon>
+                  </ion-item>
+                  <ion-item> 
+                    <ion-label>Puppy</ion-label><ion-icon *ngIf="mascota.vacunas.Puppy == true" name="checkmark-circle" slot="end"></ion-icon>
+                    <ion-icon *ngIf="mascota.vacunas.Puppy == false || mascota.vacunas.Puppy == ''"  name="close-circle" slot="end"></ion-icon>
+                  </ion-item>
+                  <ion-item> 
+                    <ion-label>Múltiple</ion-label><ion-icon *ngIf="mascota.vacunas.Multiple == true" name="checkmark-circle" slot="end"></ion-icon>
+                    <ion-icon *ngIf="mascota.vacunas.Multiple == false || mascota.vacunas.Multiple == ''"  name="close-circle" slot="end"></ion-icon>
+                  </ion-item>
+                  
+                  
+                </div>
+               
+             </div>
+        </mat-tab>
+      
+      </mat-tab-group>
+
+
+
+      
+   
+     </div>
+  </div>
+</ion-content>
+<ion-footer *ngIf="mascota && validAdop == true"  translucent="true">
+  <p  (click)="presentModal(mascota._id)">ADOPTAME</p>
+</ion-footer>
+<ion-footer *ngIf="mascota && vadopcion && validAdop == false" translucent="true" >
+   <p> Postulado {{(vadopcion.creadoEn | amFromUnix) | amLocale:'es' | amTimeAgo}}</p>
+  </ion-footer>

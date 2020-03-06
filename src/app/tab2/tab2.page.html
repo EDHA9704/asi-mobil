@@ -1,0 +1,140 @@
+
+<ion-content id="divNotificacion" [scrollEvents]="true"
+(ionScrollStart)="logScrollStart($event)"
+(ionScroll)="logScrolling($event)"
+(ionScrollEnd)="logScrollEnd()">
+<ion-header id="headerM" mode="ios" slot="fixed" class="mostrar">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+        <ion-menu-button color="ligth" menu="first">
+          </ion-menu-button>
+    </ion-buttons>
+      <ion-searchbar  animated class="fg" placeholder=" "
+      (ionInput)="buscarKey($event)" 
+      (ionCancel)="cancelBuscar($event)"></ion-searchbar>
+     
+  </ion-toolbar>
+
+ 
+</ion-header>
+<ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)" *ngIf="selecFiltro == false && statusMsc == false && bkey == false">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+  <ion-refresher slot="fixed" (ionRefresh)="doRefresh2($event)" *ngIf="selecFiltro == true && statusMsc == false && bkey == false">
+      <ion-refresher-content></ion-refresher-content>
+    </ion-refresher>
+    <div class="btnFiltro" >
+      <!--<ion-button color="ligth" (click)="presentModal('msc')">
+          <i class="fa fa-filter" aria-hidden="true"></i>
+
+        </ion-button>-->
+        <span>{{total}} resultados</span>
+        <button (click)="presentPopover($event,'fund')">
+          Filtrar <i class="fa fa-filter" aria-hidden="true"></i>
+        </button>
+       
+  </div>
+    <div class="filtros"*ngIf="selecFiltro == true;">
+        <ion-chip *ngIf="selecFiltroAr.sector != ''">
+            <ion-label >{{selecFiltroAr.sector}}</ion-label>
+            <ion-icon name="close-circle" (click)="eliminarFiltro('sec')"></ion-icon>
+          </ion-chip>
+        
+    </div>
+    <div class="cards" *ngIf="fundaciones.length == 0 && carga == true && statusMsc == false">
+        <ion-card >
+            <ion-card-header>
+                <ion-skeleton-text animated style="width: 100%; height: 100%;"></ion-skeleton-text>
+            </ion-card-header>
+          
+            <ion-card-content>
+                <ion-skeleton-text animated></ion-skeleton-text>
+              </ion-card-content>
+          </ion-card>
+          <ion-card >
+              <ion-card-header>
+                  <ion-skeleton-text animated style="width: 100%; height: 100%;"></ion-skeleton-text>
+              </ion-card-header>
+            
+              <ion-card-content>
+                  <ion-skeleton-text animated></ion-skeleton-text>
+                </ion-card-content>
+            </ion-card>
+            <ion-card >
+                <ion-card-header>
+                    <ion-skeleton-text animated style="width: 100%; height: 100%;"></ion-skeleton-text>
+                </ion-card-header>
+              
+                <ion-card-content>
+                    <ion-skeleton-text animated></ion-skeleton-text>
+                  </ion-card-content>
+              </ion-card>
+              <ion-card >
+                  <ion-card-header>
+                      <ion-skeleton-text animated style="width: 100%; height: 100%;"></ion-skeleton-text>
+                  </ion-card-header>
+                
+                  <ion-card-content>
+                      <ion-skeleton-text animated></ion-skeleton-text>
+                    </ion-card-content>
+                </ion-card>
+                <ion-card >
+                    <ion-card-header>
+                        <ion-skeleton-text animated style="width: 100%; height: 100%;"></ion-skeleton-text>
+                    </ion-card-header>
+                  
+                    <ion-card-content>
+                        <ion-skeleton-text animated></ion-skeleton-text>
+                      </ion-card-content>
+                  </ion-card>
+                  <ion-card >
+                      <ion-card-header>
+                          <ion-skeleton-text animated style="width: 100%; height: 100%;"></ion-skeleton-text>
+                      </ion-card-header>
+                    
+                      <ion-card-content>
+                          <ion-skeleton-text animated></ion-skeleton-text>
+                        </ion-card-content>
+                    </ion-card>
+    
+     
+    </div>
+    <ion-list class="cards" *ngIf="fundaciones.length > 0 && carga == false && statusMsc == false">
+      
+      <ion-card *ngFor="let fund of fundaciones">
+          <ion-card-header>
+            <div class="nameHead">
+              <p class="name">
+                {{fund.nombreFundacion}}
+              </p>
+            </div>
+            <img src="https://fundacionesbckimg.s3.us-east-2.amazonaws.com/{{ 
+              fund.logo}}" (click)="perfilFundacion(fund._id)">
+          </ion-card-header>
+        
+          <ion-card-content>
+            <ion-card-title (click)="perfilFundacion(fund._id)"><i class="fa fa-map-marker" aria-hidden="true"></i> {{fund.sector}}</ion-card-title>
+            <ion-card-title (click)="perfilFundacion(fund._id)"><i class="fa fa-phone-square" aria-hidden="true"></i> {{fund.telefono}}</ion-card-title>
+
+          </ion-card-content>
+        </ion-card>
+        <p *ngIf="status == true">No se encontró más fundaciones</p>
+    </ion-list>
+    <div class="advertencia" *ngIf="statusMsc == true">
+        <img src="../../assets/img/dog-2952471_960_720.jpg">
+       <p>No existe fundaciones</p>
+      </div>
+      <ion-infinite-scroll threshold="100px" (ionInfinite)="loadData($event)" *ngIf="selecFiltro == false && statusMsc == false && bkey == false">
+          <ion-infinite-scroll-content
+            loadingSpinner="bubbles"
+            loadingText="agregando fundaciones...">
+          </ion-infinite-scroll-content>
+        </ion-infinite-scroll>
+        <ion-infinite-scroll threshold="100px" (ionInfinite)="loadData2($event)" *ngIf="selecFiltro == true && statusMsc == false && bkey == false">
+            <ion-infinite-scroll-content
+              loadingSpinner="bubbles"
+              loadingText="agregando fundaciones...">
+            </ion-infinite-scroll-content>
+          </ion-infinite-scroll>
+  
+  </ion-content>

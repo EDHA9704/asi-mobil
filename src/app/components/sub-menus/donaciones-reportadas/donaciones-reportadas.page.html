@@ -1,0 +1,54 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title >Mis donaciones</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div style="text-align: center;" *ngIf="carga == true">
+    <ion-spinner name="bubbles"></ion-spinner>
+  </div>
+  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+  <div class="advertencia" *ngIf="carga == false && status == true && page == 1">
+      <img src="../../../../assets/img/dog-2952471_960_720.jpg">
+     <p>No existe donaciones</p>
+    </div>
+  <ion-list *ngIf="donaciones && carga == false">
+    <ion-item *ngFor="let don of donaciones"  [routerLink]="['/perfil-donacion',don._id,'DON']">
+      <ion-avatar slot="start">
+        <img src="https://fundacionesbckimg.s3.us-east-2.amazonaws.com/{{ 
+          don.foto}}">
+      </ion-avatar>
+      <div class="datos">
+          <div class="datos-name">
+              <h3>{{don.fundacion.nombreFundacion}}</h3>
+              <ion-label [class.estP]="don.estado == 0 "
+             *ngIf="don.estado == 0">pendiente</ion-label>
+              <ion-label [class.estP]="don.estado == 1"
+              *ngIf="don.estado == 1">aprobado</ion-label>
+              <ion-label
+              [class.estA]="don.estado == 2" *ngIf="don.estado == 2">negado</ion-label>
+            </div>
+      
+            <div class="datos-all">
+              <ion-label >{{don.tipo}}</ion-label>
+                <ion-label *ngIf="don.tipo == 'Económica'">$ {{don.cantidad}}</ion-label>
+                <ion-label *ngIf="don.tipo == 'Producto'">{{don.nombreProducto}}</ion-label>
+            </div>
+      </div>
+  
+      
+    </ion-item>
+  </ion-list>
+  <ion-infinite-scroll threshold="100px" (ionInfinite)="loadData($event)">
+      <ion-infinite-scroll-content
+        loadingSpinner="bubbles"
+        loadingText="agregando donaciones...">
+      </ion-infinite-scroll-content>
+    </ion-infinite-scroll>
+</ion-content>
