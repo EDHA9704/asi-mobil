@@ -17,6 +17,8 @@ export class PerfilAdopcionPage implements OnInit {
   public usuario:any;
   public fab;
   public image:any;
+  public returnUrl:any;
+  fullUrl:string
   constructor(private storage: Storage,private _adopcionService:AdopcionService,private activeRoute:ActivatedRoute,
     private _router:Router) {
     this.id = this.activeRoute.snapshot.paramMap.get('id');
@@ -27,6 +29,8 @@ export class PerfilAdopcionPage implements OnInit {
   async ngOnInit() {
     await this.obtenerStorageUser();
     this.obtenerAdopcion();
+    this.returnUrl = this.activeRoute.snapshot.queryParams['returnUrl'] || '/';
+    console.log(this.returnUrl)
   }
   tabChanged(event){
     
@@ -56,6 +60,9 @@ export class PerfilAdopcionPage implements OnInit {
        this.usuario=val;
        console.log(this.usuario)
      });
+   }
+   redirect(){
+    this._router.navigate([this.returnUrl]);    
    }
    perfilFundacion(id){
     this._router.navigate(['perfil-fundacion',id]);       

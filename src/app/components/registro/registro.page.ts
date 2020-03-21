@@ -28,7 +28,7 @@ import { MatDialog } from '@angular/material';
 export class RegistroPage implements OnInit {
   public usuarioAdoptante:UsuarioAdoptante;
   public usuarioAdoptante2:UsuarioAdoptante;
-
+  hide2 = true;
   public usuarioLogin:UsuarioLogin;
   public proFR;
   public proRegistro;

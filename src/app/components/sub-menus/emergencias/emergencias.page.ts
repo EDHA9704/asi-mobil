@@ -32,6 +32,7 @@ export class EmergenciasPage implements OnInit {
   public selecFiltro; 
   public selecFiltroAr:any;
   public bkey;
+  fullUrl:string
   constructor(public modalController: ModalController,public popoverController: PopoverController,
     private storage: Storage,private _emergenciaService:EmergenciaService,
     public toastController: ToastController,public alertController: AlertController,
@@ -49,6 +50,7 @@ export class EmergenciasPage implements OnInit {
     this.obtEmergencias(this.page);
   }
   async ngOnInit() {
+    this.fullUrl = this._router.url.toString()
     $("#headerM").removeClass('ocultar')
     $("#headerM").addClass('mostrar')
     this._changesService.change.subscribe(isOpen => {
@@ -334,11 +336,13 @@ export class EmergenciasPage implements OnInit {
     return await popover.present();
   }
   perfilEmergencia(em){
-
+    if( this.fullUrl == undefined || this.fullUrl == null  || this.fullUrl == ""){
+      this.fullUrl = '/tabs/tab1'
+    }
     if(em.responsable == this.usuario.id){
-      this._router.navigate(['perfil-emergencia',em._id,'EMR']);  
+      this._router.navigate(['perfil-emergencia',em._id,'EMR'], { queryParams: { returnUrl: this.fullUrl }});  
     }else{
-      this._router.navigate(['perfil-emergencia',em._id,'EMA']);  
+      this._router.navigate(['perfil-emergencia',em._id,'EMA'], { queryParams: { returnUrl: this.fullUrl }});  
     }
   
     
@@ -366,7 +370,7 @@ export class EmergenciasPage implements OnInit {
 
     await alert.present();
   }
-  async presentModal() {
+  async presentModal() { 
     if(this.usuarioOb.telefono != "" && this.usuarioOb.telefono != null && this.usuarioOb.celular != "" && this.usuarioOb.celular != ""
     && this.usuarioOb.correoVerificado == true){
     const modal = await this.modalController.create({

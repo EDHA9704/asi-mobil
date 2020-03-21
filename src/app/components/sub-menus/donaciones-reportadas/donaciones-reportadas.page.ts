@@ -3,6 +3,7 @@ import { DonacionService } from 'src/app/services/donacion.service';
 import { ToastController } from '@ionic/angular';
 import { Storage } from '@ionic/storage';
 import {GLOBAL} from '../../../services/global';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-donaciones-reportadas',
@@ -21,13 +22,16 @@ export class DonacionesReportadasPage implements OnInit {
   public carga;
   public status;
   public url;
-  constructor(private _donacionService:DonacionService,private storage: Storage,public toastController: ToastController) { 
+  fullUrl:string
+  constructor(private _donacionService:DonacionService,private storage: Storage,
+    public toastController: ToastController,private _router:Router) { 
     this.page = 1;
     this.carga = false;
     this.url = GLOBAL.url;
   }
 
  async ngOnInit() {
+  this.fullUrl = this._router.url.toString()
   await this.obtenerStorageUser()
   this.obtenerDonaciones(this.page)
   }
@@ -126,5 +130,11 @@ export class DonacionesReportadasPage implements OnInit {
           
       }
     )
+  }
+  redirec(id,op){
+    if( this.fullUrl == undefined || this.fullUrl == null  || this.fullUrl == ""){
+      this.fullUrl = '/tabs/tab1'
+    }
+    this._router.navigate(['/perfil-donacion',id,op], { queryParams: { returnUrl: this.fullUrl }});        
   }
 }

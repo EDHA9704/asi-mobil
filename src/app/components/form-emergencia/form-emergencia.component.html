@@ -145,7 +145,7 @@
                            
                               <button type="button" mat-button (click)="presentMapModal()" style="border:1px solid #3bbfad; width: 100%;">Seleccionar dirección<i style="color: #3bbfad; font-size: 2em;" class="fa fa-map-marker" aria-hidden="true"></i></button>
                   
-                              <p *ngIf="direccionSelected != ''" style="padding: .5em 0;">Dirección seleccionada: {{direccionSelected.formmatedAddres}}</p>
+                              <p *ngIf="direccionSelected && direccionSelected != ''" style="padding: .5em 0;">Dirección seleccionada: {{direccionSelected.formmatedAddres}}</p>
                           
                           </ion-col>
                           <ion-col size="12">

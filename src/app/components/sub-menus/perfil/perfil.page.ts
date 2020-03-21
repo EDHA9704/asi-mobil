@@ -37,6 +37,7 @@ export class PerfilPage implements OnInit {
   public usuario:any;
   public usuarioAcc:any;
   public disabledPass = true;
+  hide2 = true;
   getErrorMessage(op) {
     if(op == 'nm'){
       return this.nombres.hasError('required') ? 'Nombres requeridos' :

@@ -134,7 +134,14 @@ ion-header{
 .frgpss{
     width: 100%;
     text-align: center;
+    p{
+        color: #3bbfad;
+    }
+    i{
+        color: #3bbfad;
+    }
     & p::first-letter{
+       
         text-transform: capitalize;
     }
    

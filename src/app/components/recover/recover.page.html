@@ -27,7 +27,7 @@
               </mat-form-field>
              
               <div class="btnsNP">
-                <button mat-button color="primary" class="btn btn-primary btnRGA" [disabled]="!firstFormGroup.valid" (click)="validarCorreo(stepper)">Siguiente</button> 
+                <button mat-button color="primary" class="btn btn-primary btnRGA" [disabled]="!firstFormGroup.valid || process == true" [class.disables]="process == true" (click)="validarCorreo(stepper)">Siguiente</button> 
               </div>
             </form>
       </mat-step>
@@ -51,10 +51,11 @@
               </div>
               <div  class="btnsNP">
                 
-                <button mat-button class="btn btn-success btnRGA" (click)="validarCodigo(stepper)" [disabled]="!secondFormGroup.valid">Verificar</button>
+                <button mat-button class="btn btn-success btnRGA" (click)="validarCodigo(stepper)" [disabled]="!secondFormGroup.valid || process == true" [class.disables]="process == true">Verificar</button>
                 <button mat-button class="btn btn-danger" (click)="eliminarCodigoPrev2(stepper)">Cancelar</button>
               </div>
-              <div  class="btnsNP2">
+              <div  class="btnsNP2" style="margin: 2em 0;
+              text-align: center;">
                 
                  
                   <a (click)="eliminarCodigoPrev(stepper)">¿No recibiste el código?</a>
@@ -67,7 +68,9 @@
               <ng-template matStepLabel>Contraseña</ng-template>
             
               <mat-form-field>
-                  <input matInput placeholder="Nueva contraseña" formControlName="password" required>
+                  <input matInput [type]="hide2 ? 'password' : 'text'" placeholder="Nueva contraseña" formControlName="password" required>
+                  <mat-icon  style="cursor: pointer;" matSuffix (click)="hide2 = !hide2">{{hide2 ? 'visibility_off' : 'visibility'}}</mat-icon>
+
                   <mat-error *ngIf="threeFormGroup.controls.password.hasError('required') ">
                       Contraseña requerida.
                     </mat-error>
@@ -75,8 +78,8 @@
                         Contraseña invalida.
                       </mat-error>
                 </mat-form-field>
-              <div class="btnsNP">
-                  <button mat-button class="btn btn-success btnRGA" (click)="cambiarPassword()" [disabled]="!threeFormGroup.valid">Guardar</button>
+              <div class="btnsNP" style="margin: 2em 0;">
+                  <button mat-button class="btn btn-success btnRGA" (click)="cambiarPassword()" [disabled]="!threeFormGroup.valid || process == true" [class.disables]="process == true">Guardar</button>
                   <button mat-button class="btn btn-danger" (click)="eliminarCodigoPrev2(stepper)">Cancelar</button>
 
               </div>

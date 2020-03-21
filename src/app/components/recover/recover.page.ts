@@ -30,7 +30,8 @@ export class RecoverPage implements OnInit {
 
   public mensaje;
   public mensaje2;
-
+  hide2 = true;
+  process:any;
   public user:UsuarioRecover;
   public codi:Codigo;
   @ViewChild('stepper', {static: true}) private myStepper: MatStepper;
@@ -57,7 +58,14 @@ export class RecoverPage implements OnInit {
   ionViewDidEnter() {
     this.totalStepsCount = this.myStepper._steps.length;
   }
-  
+  ionViewDidLeave(){
+    console.log("ENTRO LEAVE")
+    
+    if(this.myStepper.selectedIndex == 1 || this.myStepper.selectedIndex == 2){
+      this.eliminarCodigo(this.myStepper)
+    }
+    //this.eliminarCodigo()
+  }
   forms(){
     this.firstFormGroup = this._formBuilder.group({
       email: ['', [Validators.required, Validators.email]]
@@ -65,8 +73,8 @@ export class RecoverPage implements OnInit {
     this.secondFormGroup = this._formBuilder.group({
       codigo: ['', [Validators.required,Validators.pattern('[0-9]{4}')]]
     });
-    this.threeFormGroup = this._formBuilder.group({
-      password: ['', [Validators.required,Validators.pattern('^\\w+([\\.-]?\\w+)*@\\w+([\\.-]?\\w+)*(\\.\\w{2,3})+$')]]
+    this.threeFormGroup = this._formBuilder.group({ 
+      password: ['', [Validators.required,Validators.pattern('^(?=.*\\d)(?=.*[\\u0021-\\u002b\\u003c-\\u0040])(?=.*[A-Z])(?=.*[a-z])\\S{8,30}$')]]
     });
   }
   validarCorreo(stepper: MatStepper){
@@ -120,18 +128,21 @@ export class RecoverPage implements OnInit {
     }
   
   enviarCodigoRecover(stepper: MatStepper){
+    this.process = true;
     this.mail = new Mail("","","","")
     this.mail.asunto = "VMB";
     this.mail.usuario = this.user.fullname
     this.mail.correo = this.user.correo
-
+    
     this._usuarioService.enviarCodigo(this.mail).subscribe(
       res=>{
         console.log(res)
         if(res.n == '3'){
           this.vall = true;
           this.codi = res.codigo;
-            setTimeout(() => {           // or do some API calls/ Async events
+        
+            setTimeout(() => {  
+              this.process = false;         // or do some API calls/ Async events
               stepper.next();
               this.vallE = true;
              }, 1);
@@ -148,8 +159,9 @@ export class RecoverPage implements OnInit {
       },
       error=>{
         var errorMessage = <any>error;
-  
+        this.process = false;     
         console.log(<any>error)
+        this.presentToast('Algo salió mal, intentalo mas tarde.')
           this.vall = false;
           this.mensaje = 'Algo salió mal, intentalo mas tarde...'
         
@@ -160,6 +172,7 @@ export class RecoverPage implements OnInit {
   
 
   validarCodigo(stepper: MatStepper){
+    this.process = true;     
     var codiV = this.secondFormGroup.value;
    
     this._usuarioService.verificarCodigo(this.user.correo,codiV.codigo,'recover').subscribe(
@@ -170,10 +183,12 @@ export class RecoverPage implements OnInit {
         this.presentToast('Código correcto')
           setTimeout(() => {           // or do some API calls/ Async events
             stepper.next();
+            this.process = false;     
             this.vallE2 = true;
            }, 1);
       },
       error=>{
+        this.process = false;     
         console.log(<any>error)
         this.presentToast('Código incorrecto')
         this.vall2 = false;
@@ -264,6 +279,7 @@ export class RecoverPage implements OnInit {
   }
   
   cambiarPassword(){
+    this.process = true;     
     var pss =  this.threeFormGroup.value;
     this.user.password = pss.password; 
   
@@ -271,6 +287,7 @@ export class RecoverPage implements OnInit {
       response =>{
   
         if(response.usuario && response.n == '1'){
+          this.process = false;     
           this.presentToast('Contraseña actualizada')
           this._router.navigate(['login']);
   
@@ -278,6 +295,7 @@ export class RecoverPage implements OnInit {
         
       },
       error=>{
+        this.process = false;     
         console.log(<any>error)
         this.presentToast('No se pudo actualizar la contraseña')
       }

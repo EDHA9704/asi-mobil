@@ -122,20 +122,20 @@
               </ng-template>
               <ion-grid>
                 <ion-row  >
-                  <ion-col size="6" class="itemOP">
+                  <ion-col size="12" class="itemOP">
                       <ion-item>
                           <i class="fa fa-heart" aria-hidden="true" slot="start"></i> 
                           <ion-label>
-                              {{mascota.especie}}
+                              Tipo: {{mascota.especie}}
                           </ion-label>
                         </ion-item>
     
                   </ion-col>
-                  <ion-col size="6" class="itemOP">
+                  <ion-col size="12" class="itemOP">
                     <ion-item>
                         <i class="fa fa-text-height" aria-hidden="true" slot="start"></i> 
                         <ion-label>
-                            {{mascota.tamanio}}
+                            Tamaño: {{mascota.tamanio}}
                         </ion-label>
                       </ion-item> 
                   </ion-col>
@@ -144,7 +144,7 @@
                       <ion-item>
                           <i class="fa fa-circle" aria-hidden="true" slot="start"></i> 
                           <ion-label>
-                              {{mascota.color}}
+                              Color: {{mascota.color}}
                           </ion-label>
                         </ion-item> 
                   </ion-col>
@@ -164,13 +164,13 @@
                       <ion-item>
                           <i class="fa fa-birthday-cake" aria-hidden="true" slot="start"></i>
                           <ion-label *ngIf="mascota.anios > 0 && mascota.meses > 0">
-                              {{mascota.edadT}} ({{mascota.anios}} años/ {{mascota.meses}} meses)
+                              Edad: {{mascota.edadT}} ({{mascota.anios}} años/ {{mascota.meses}} meses)
                           </ion-label>
                           <ion-label *ngIf="mascota.anios > 0 && mascota.meses == 0">
-                              {{mascota.edadT}} ({{mascota.anios}} años)
+                            Edad: {{mascota.edadT}} ({{mascota.anios}} años)
                           </ion-label>
                           <ion-label *ngIf="mascota.anios == 0 && mascota.meses > 0">
-                              {{mascota.edadT}}  ({{mascota.meses}} meses)
+                            Edad: {{mascota.edadT}}  ({{mascota.meses}} meses)
                           </ion-label>
                         </ion-item> 
                   </ion-col>
@@ -206,7 +206,9 @@
                     <ion-label>Múltiple</ion-label><ion-icon *ngIf="mascota.vacunas.Multiple == true" name="checkmark-circle" slot="end"></ion-icon>
                     <ion-icon *ngIf="mascota.vacunas.Multiple == false || mascota.vacunas.Multiple == ''"  name="close-circle" slot="end"></ion-icon>
                   </ion-item>
-                  
+                  <ion-item> 
+                    <ion-label>Otras vacunas: {{mascota.otherVacunas}} </ion-label> 
+                  </ion-item>
                   
                 </div>
                

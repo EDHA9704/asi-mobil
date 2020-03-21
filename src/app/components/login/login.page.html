@@ -23,7 +23,7 @@
        
     </div>
   -->
-    
+
       <form #loginForm="ngForm"  class="formContent">
         <ion-item [class.formError]="!correo.valid && correo.touched">
           <ion-label position="floating">Correo electrónico</ion-label>
@@ -33,10 +33,13 @@
 
         <ion-item [class.formError]="!password.valid && password.touched">
           <ion-label position="floating">Contraseña</ion-label>
-          <ion-input required type="password" id="password"  name="password" #password="ngModel" [(ngModel)]="usuarioLogin.password"></ion-input>
+          <ion-input required [type]="hide2 ? 'password' : 'text'" id="password"  name="password" #password="ngModel" [(ngModel)]="usuarioLogin.password"></ion-input>
+          <ion-icon style="    position: absolute;
+          right: 5%;
+          bottom: 12%; z-index: 1200;" [name]="hide2 ? 'eye-off' : 'eye'" slot="end" (click)="hide2 = !hide2"></ion-icon>
         </ion-item>
-        <div class="frgpss">
-          <p (click)="recover()"  shape="round" class="bntIS" >¿Olvidaste tu contraseña?</p>
+        <div class="frgpss"> 
+          <p (click)="recover()"  shape="round" class="bntIS" >¿Olvidaste tu contraseña? <i class="fa fa-chevron-circle-right" aria-hidden="true"></i></p>
         </div>
         <ion-button color="primary"  (click)="login()"   class="bntIS"  [disabled]=!loginForm.form.valid><p>Iniciar sesión</p></ion-button>
 

@@ -35,6 +35,7 @@ export class PerfilEmergenciaPage implements OnInit {
     lat:Number,
     lng:Number
   }
+  public returnUrl:any;
   constructor(private _router:Router,private storage: Storage,private _usuarioService:UsuarioService,
     private _emergenciaService:EmergenciaService,private activeRoute:ActivatedRoute,private loadController:LoadingController) { 
     this.id = this.activeRoute.snapshot.paramMap.get('id');
@@ -45,6 +46,7 @@ export class PerfilEmergenciaPage implements OnInit {
   }
 
   async ngOnInit() {
+    this.returnUrl = this.activeRoute.snapshot.queryParams['returnUrl'] || '/';
     await this.obtenerStorageUser()
     this.obtenerEmergencia()
   }
@@ -200,4 +202,8 @@ export class PerfilEmergenciaPage implements OnInit {
     })
   
 }
+redirect(){
+    
+  this._router.navigate([this.returnUrl]);    
+ }
 }

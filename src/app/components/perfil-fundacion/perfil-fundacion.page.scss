@@ -20,6 +20,12 @@ p,a,button,span{
       height: 65%;
     }
   }
+  .swiper-slide{
+      width: 100%;
+      img{
+          min-width: 100% !important;
+      }
+  }
 ion-content{
 
     .fundacion{
@@ -27,7 +33,7 @@ ion-content{
             display: flex;
             flex-direction: column;
             width: 100%;
-            min-height: auto;
+            min-height: 14em;
             position: relative;
             ion-toolbar{
                 max-width: 10%;
@@ -324,7 +330,8 @@ ion-content{
         .datos{
             width: 75%;
             p{
-                margin:.5rem 0;
+                margin:.2rem 0;
+                padding: .2em 0 !important;
                 span{
                     font-weight: bolder;
                     color: #383434;
@@ -341,7 +348,12 @@ ion-content{
     padding: 1rem 0;
 
     .rp{
-        margin-bottom: 2rem;
+        margin-bottom: 0;
+        text-align: center;
+        
+    }
+    .rp2{
+        margin-bottom: 2em;
         text-align: center;
         
     }

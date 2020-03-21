@@ -37,6 +37,16 @@
                   <div class="swiper-pagination"></div>
                 
                 </div>
+                <div class="swiper-container" *ngIf="portadasFundacion && portadasFundacion.length == 0">
+                
+                  <div class="swiper-wrapper" *ngIf="portadasFundacion.length == 0">
+                      <div  class="swiper-slide" ><img src="../../../assets/img/4586.jpg" ></div>
+  
+                    </div>
+                 
+                 
+                
+                </div>
           </div>
           <div class="header2">
 
@@ -75,14 +85,20 @@
         <div class="fundacion-tabs">
             <mat-tab-group  (selectedIndexChange)="tabChanged($event)" mat-align-tabs="center">
                 <mat-tab >
-                    <ng-template mat-tab-label style="font-size: 10px !important;">
+                    <ng-template mat-tab-label style="font-size: 10px !important; ">
                         <i style="font-size: 1rem !important;" class="fa fa-university" aria-hidden="true"></i> Perfil
                       </ng-template>
                    <div class="nosotros">
 
-                     <p class="rp">
+                     <p class="rp" style="text-align: start; font-size: .9em; padding: 0 24px;">
                         Representante <strong>{{fundacion.representante}}</strong>
                      </p>
+                     <p class="rp" style="text-align: start; font-size: .9em; padding: 0 24px;">
+                      Fundada el <strong>{{fundacion.fechaFundacion}}</strong>
+                   </p>
+                   <p class="rp2" style="text-align: start; font-size: .9em; padding: 0 24px;" *ngIf="fundacion.link && fundacion.link != null && fundacion.link != ''">
+                    Web <strong>{{fundacion.link}}</strong>
+                 </p>
                      <mat-accordion>
                       <mat-expansion-panel [expanded]="step === 0" (opened)="setStep(0)">
                         <mat-expansion-panel-header>
@@ -186,7 +202,10 @@
                           
                           <div class="datos">
                             <p><span>Titular:</span> {{fundacion.titular}}</p>
+                            <p><span>Cédula:</span> {{fundacion.cedulaCuenta}}</p>
+                            <p><span>Correo:</span> {{fundacion.correoCuenta}}</p>
                             <p><span>Banco:</span> {{fundacion.banco}}</p>
+                            <p><span>Tipo de cuenta:</span> {{fundacion.tipoCuenta}}</p>
                             <p><span>Número de cuenta:</span> {{fundacion.numCuenta}}</p>
 
                           </div>
@@ -230,13 +249,22 @@
                   <ion-grid>
                     <ion-row>
                       <ion-col size="1"><i class="fa fa-phone" aria-hidden="true"></i></ion-col>
-                      <ion-col size="11">{{fundacion.telefono}}</ion-col>
-                      <ion-col size="1"><i class="fa fa-mobile" aria-hidden="true"></i></ion-col>
-                      <ion-col size="11">{{fundacion.celular}}</ion-col>
+                      <ion-col size="11">{{fundacion.telefono}} / {{fundacion.celular}}</ion-col>
+                     
                       <ion-col size="1"><i class="fa fa-envelope" aria-hidden="true"></i></ion-col>
                       <ion-col size="11">{{fundacion.correo}}</ion-col>
                       <ion-col size="1"><i class="fa fa-map-marker" aria-hidden="true"></i></ion-col>
-                      <ion-col size="11">{{fundacion.sector}} - {{fundacion.barrio}} - {{fundacion.calleP}} - {{fundacion.calleS}}</ion-col>
+                      <ion-col size="11">Sector: {{fundacion.sector}}, Barrio: {{fundacion.barrio}}</ion-col>
+                      <ion-col size="12">
+                        <div class="ubicacion" style="width: 100%; height: 15em;">
+                          <p>{{fundacion.direccionMap.formmatedAddres}}</p>
+                          <div id="map1" style="width: 100%; height: 100%;">
+                          </div>
+                        
+                        </div>
+
+                      </ion-col>
+                     
                     </ion-row>
                   </ion-grid>
                  

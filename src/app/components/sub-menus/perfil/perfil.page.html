@@ -65,10 +65,13 @@
       <input matInput required id="direccion" placeholder="Dirección" [formControl]="direccion" required>
       <mat-error *ngIf="direccion.invalid">{{getErrorMessage('dir')}}</mat-error>
     </mat-form-field>-->
-    <div class="customPassword">
-      <mat-form-field *ngIf="usuarioAcc.type != 'fb'">
-        <input matInput type="password" id="pass" placeholder="Contraseña" [formControl]="password" >
+    <div class="customPassword" *ngIf="usuarioAcc.type != 'fb'">
+      <mat-form-field >
+        <input matInput [type]="hide2 ? 'password' : 'text'" id="pass" placeholder="Contraseña" [formControl]="password" >
+        <mat-icon *ngIf="disabledPass == false" style="cursor: pointer;" matSuffix (click)="hide2 = !hide2">{{hide2 ? 'visibility_off' : 'visibility'}}</mat-icon>
         <mat-error *ngIf="password.invalid">{{getErrorMessage('pss')}}</mat-error>
+        
+
       </mat-form-field>
       <ion-button *ngIf="disabledPass == true" style="--background: #3bbfad;" expand="full" (click)="changePass('habilitar')"><i class="fa fa-refresh" aria-hidden="true"></i></ion-button>
       <ion-button *ngIf="disabledPass == false" style="--background: #bf3b3b;" expand="full" (click)="changePass('deshabilitar')"><i class="fa fa-times-circle" aria-hidden="true"></i></ion-button>

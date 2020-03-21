@@ -13,7 +13,8 @@ import { LoadingController } from '@ionic/angular';
 import { AlertController } from '@ionic/angular';
 import {Router, ActivatedRoute, Params} from '@angular/router';
 import { Storage } from '@ionic/storage';
-
+import { AndroidPermissions } from '@ionic-native/android-permissions/ngx';
+import { Diagnostic } from '@ionic-native/diagnostic/ngx';
 import {PopUpLocationComponent} from '../pop-up-location/pop-up-location.component'
 declare var $:any;
 @Component({
@@ -22,7 +23,7 @@ declare var $:any;
   styleUrls: ['./proceso-adopcion.page.scss'],
   providers:[{
     provide: STEPPER_GLOBAL_OPTIONS, useValue: {displayDefaultIndicatorType: false}
-  }]
+  },AndroidPermissions,Diagnostic]
 })
 export class ProcesoAdopcionPage implements OnInit {
   @Input() id: string;
@@ -38,8 +39,19 @@ export class ProcesoAdopcionPage implements OnInit {
   public url;
   public edads = ['18','19','20','21','22','23','24','25','26','27','28','29','30','31','32','33','34','35','36','37','38','39','40','41','42','43','44','45','46','47','48','49','50']
   direccionSelected:any=''
+  process:any;
+  gpsEnable = false;
+  gpsPermission = false;
   constructor(private _route:ActivatedRoute,
-    private _router:Router,private storage: Storage,public alertController: AlertController,public toastController: ToastController,public loadingController: LoadingController,private nativeStorage: NativeStorage,private _formBuilder: FormBuilder,navParams: NavParams,private _mascotaService:MascotaService,public modalController: ModalController) { 
+    private _router:Router,private storage: Storage,
+
+    public toastController: ToastController,
+    public loadingController: LoadingController,
+    private nativeStorage: NativeStorage,
+    private _formBuilder: FormBuilder,navParams: NavParams,
+    private _mascotaService:MascotaService,public modalController: ModalController,
+    private androidPermissions: AndroidPermissions,private diagnostic: Diagnostic,
+    public alertController: AlertController) { 
     this.id = navParams.get('id');
     this.obtenerMascota(this.id);
     this.url = GLOBAL.url;
@@ -48,6 +60,7 @@ export class ProcesoAdopcionPage implements OnInit {
   }
 
   async ngOnInit() {
+    this.validarPermisiosLocation()
     this.firstFrGroup = this._formBuilder.group({
       cedula: ['', [Validators.required,Validators.pattern('^([0-9]){0,10}$')]],
       instruccion: ['', [Validators.required]],
@@ -166,53 +179,65 @@ $("#telefonoRP").keyup(()=>{
 
   }
   async registrarAdopcion(fid,mid){
-    const loading = await this.loadingController.create({
-      message: 'Postulando...'
-    });
+    if(this.direccionSelected != '' && this.direccionSelected != null && this.direccionSelected != undefined){
+      this.process = true;
+      const loading = await this.loadingController.create({
+        message: 'Postulando...',
+        spinner: 'circles',
+        backdropDismiss: false
+      });
+    
+     
+      this.presentLoading(loading)
+      this.adopcion.cedula = this.firstFrGroup.get('cedula').value;
+      this.adopcion.instruccion = this.firstFrGroup.get('instruccion').value;
+      this.adopcion.inmueble = this.firstFrGroup.get('inmueble').value;
+      this.adopcion.ocupacion = this.firstFrGroup.get('ocupacion').value;
+      this.adopcion.direccion = this.firstFrGroup.get('direccion').value;
+      this.adopcion.deseoAdoptar= this.secondFrmGroup.get('deseoAdoptar').value;
+      this.adopcion.cambiarDomicilio = this.secondFrmGroup.get('cambiarDomicilio').value;
+      this.adopcion.cargoGastos = this.secondFrmGroup.get('cargoGastos').value;
+      this.adopcion.dineroMensualMS = this.secondFrmGroup.get('dineroMensualMS').value;
+      this.adopcion.cerramiento = this.trFrmGroup.get('cerramiento').value;
+      this.adopcion.salirViaje = this.trFrmGroup.get('salirViaje').value;
+      this.adopcion.tiempoSolo = this.trFrmGroup.get('tiempoSolo').value;
+      this.adopcion.comidaMS = this.trFrmGroup.get('comidaMS').value;
+      this.adopcion.enfermaMS = this.trFrmGroup.get('enfermaMS').value;
+      this.adopcion.dormirMS = this.trFrmGroup.get('dormirMS').value;
+      this.adopcion.numMascotas = this.frFrmGroup.get('numMascotas').value;
+      this.adopcion.estadoMascotas = this.frFrmGroup.get('estadoMascotas').value;
+      this.adopcion.numPersonas = this.frFrmGroup.get('numPersonas').value;
+      this.adopcion.familiarEmbarazo = this.frFrmGroup.get('familiarEmbarazo').value;
+      this.adopcion.familiarAlergico = this.frFrmGroup.get('familiarAlergico').value;
+      this.adopcion.compartidaFamilia = this.fvFrmGroup.get('compartidaFamilia').value;
+      this.adopcion.nombresRP = this.fvFrmGroup.get('nombresRP').value;
+      this.adopcion.telefonoRP = this.fvFrmGroup.get('telefonoRP').value;
+      this.adopcion.visitarDomicilio = this.fvFrmGroup.get('visitarDomicilio').value;
   
+  
+  
+      this._mascotaService.registroAdopcion(fid,mid,this.usuario.rol,this.adopcion,this.usuario.token).subscribe(
+        response=>{
+          this.process = false;
+          console.log(response)
+          loading.dismiss();   
+          
+          var msj = "Te has postulado correctamente al proceso de adopción para: "+this.mascota.nombre+". Se te notificará cuando la respectiva fundación revise tu postulación."
+          this.presentAlert("Proceso de adopción",msj)
+          this.myDismiss('ok');
+        },
+        error=>{
+ 
+          this.presentToast('Error al procesar la solicitud. Inténtalo de nuevo.')
+          this.process = false;
+          loading.dismiss();   
+          console.log(<any>error)
+        }
+      )
+    }else{
+      this.presentToast('Selecciona tu dirección en el mapa')
+    }
    
-    this.presentLoading(loading)
-    this.adopcion.cedula = this.firstFrGroup.get('cedula').value;
-    this.adopcion.instruccion = this.firstFrGroup.get('instruccion').value;
-    this.adopcion.inmueble = this.firstFrGroup.get('inmueble').value;
-    this.adopcion.ocupacion = this.firstFrGroup.get('ocupacion').value;
-    this.adopcion.direccion = this.firstFrGroup.get('direccion').value;
-    this.adopcion.deseoAdoptar= this.secondFrmGroup.get('deseoAdoptar').value;
-    this.adopcion.cambiarDomicilio = this.secondFrmGroup.get('cambiarDomicilio').value;
-    this.adopcion.cargoGastos = this.secondFrmGroup.get('cargoGastos').value;
-    this.adopcion.dineroMensualMS = this.secondFrmGroup.get('dineroMensualMS').value;
-    this.adopcion.cerramiento = this.trFrmGroup.get('cerramiento').value;
-    this.adopcion.salirViaje = this.trFrmGroup.get('salirViaje').value;
-    this.adopcion.tiempoSolo = this.trFrmGroup.get('tiempoSolo').value;
-    this.adopcion.comidaMS = this.trFrmGroup.get('comidaMS').value;
-    this.adopcion.enfermaMS = this.trFrmGroup.get('enfermaMS').value;
-    this.adopcion.dormirMS = this.trFrmGroup.get('dormirMS').value;
-    this.adopcion.numMascotas = this.frFrmGroup.get('numMascotas').value;
-    this.adopcion.estadoMascotas = this.frFrmGroup.get('estadoMascotas').value;
-    this.adopcion.numPersonas = this.frFrmGroup.get('numPersonas').value;
-    this.adopcion.familiarEmbarazo = this.frFrmGroup.get('familiarEmbarazo').value;
-    this.adopcion.familiarAlergico = this.frFrmGroup.get('familiarAlergico').value;
-    this.adopcion.compartidaFamilia = this.fvFrmGroup.get('compartidaFamilia').value;
-    this.adopcion.nombresRP = this.fvFrmGroup.get('nombresRP').value;
-    this.adopcion.telefonoRP = this.fvFrmGroup.get('telefonoRP').value;
-    this.adopcion.visitarDomicilio = this.fvFrmGroup.get('visitarDomicilio').value;
-
-
-
-    this._mascotaService.registroAdopcion(fid,mid,this.usuario.rol,this.adopcion,this.usuario.token).subscribe(
-      response=>{
-        console.log(response)
-        loading.dismiss();   
-        
-        var msj = "Te has postulado correctamente al proceso de adopción para: "+this.mascota.nombre+". Se te notificará cuando la respectiva fundación revise tu postulación."
-        this.presentAlert("Proceso de adopción",msj)
-        this.myDismiss('ok');
-      },
-      error=>{
-        loading.dismiss();   
-        console.log(<any>error)
-      }
-    )
   }
   async obtenerStorageUser(){
     await this.storage.get('usuario').then((val) => {
@@ -242,23 +267,104 @@ $("#telefonoRP").keyup(()=>{
 
     await alert.present();
   }
+  async presentMapModalFin() {
 
-  async presentMapModal() {
+    const modal = await this.modalController.create({
+      component: PopUpLocationComponent,
+      componentProps: {
+        'tipo': 'adopcion',
+      }
+    });
+    modal.onDidDismiss().then((detail) => {
+      console.log(detail)
 
-      const modal = await this.modalController.create({
-        component: PopUpLocationComponent,
-        componentProps: {
-          'tipo': 'adopcion',
-        }
-      });
-      modal.onDidDismiss().then((detail) => {
-        console.log(detail)
-
+      if(detail != '' && detail != null && detail != undefined ){
         this.direccionSelected = detail.data
         this.firstFrGroup.controls['direccion'].setValue(this.direccionSelected)
-     });
-      return await modal.present();
+      }else{
+        this.direccionSelected = ''
+      }
+      
+   });
+    return await modal.present();
+  
+ 
+}
+  async presentMapModal() {
+
+    if(this.gpsPermission == false ){
+      this.androidPermissions.checkPermission(this.androidPermissions.PERMISSION.ACCESS_COARSE_LOCATION).then(
+        result => {
+          console.log(result)
+          if(result.hasPermission == true){
+           
+            this.gpsPermission = true
+            if(this.gpsEnable == true && this.gpsPermission == true){
+              this.presentMapModalFin()
+            }
+          }else{
+            this.gpsPermission = false
+            this.androidPermissions.requestPermission(this.androidPermissions.PERMISSION.ACCESS_COARSE_LOCATION)
+          }
+    
+        },
+        err => {this.gpsPermission = false}
+      );
+      
+    }else if(this.gpsEnable == false){
+      this.diagnostic.isGpsLocationEnabled()
+    .then((state) => {
+      console.log(state)
+      if(state == true){
+        this.gpsEnable = true;
+        if(this.gpsEnable == true && this.gpsPermission == true){
+          this.presentMapModalFin()
+        }
+      }else{
+        this.presentAlert('GPS','Por favor, enciende tu GPS.');
+        this.gpsEnable = false;
+      }
+     
+    }).catch(e => {console.error(e)
+      this.gpsEnable = false;});
+  
+    }
     
    
   }
+
+  validarPermisiosLocation(){
+    //gps oon-off
+    this.diagnostic.isGpsLocationEnabled()
+    .then((state) => {
+      console.log(state)
+      if(state == true){
+        this.gpsEnable = true;
+      }else{
+        this.presentAlert('GPS','Por favor, enciende tu GPS.');
+        this.gpsEnable = false;
+      }
+     
+    }).catch(e => {console.error(e)
+      this.gpsEnable = false;});
+  
+      //permision al gps
+    this.androidPermissions.checkPermission(this.androidPermissions.PERMISSION.ACCESS_COARSE_LOCATION).then(
+      result => {
+        console.log(result)
+        if(result.hasPermission == true){
+          console.log("entro pr")
+          this.gpsPermission = true
+        }else{
+          console.log("entro pr2")
+          this.gpsPermission = false
+          this.androidPermissions.requestPermission(this.androidPermissions.PERMISSION.ACCESS_COARSE_LOCATION)
+        }
+  
+      },
+      err => {console.log("entro pr3");this.gpsPermission = false}
+    );
+  }
+  
+
 }

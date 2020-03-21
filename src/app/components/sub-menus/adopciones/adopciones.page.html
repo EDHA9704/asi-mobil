@@ -18,7 +18,7 @@
      <p>No existe adopciones</p>
     </div>
   <ion-list *ngIf="adopciones && carga == false">
-    <ion-item *ngFor="let adp of adopciones" [routerLink]="['/perfil-adopcion',adp.adopcion._id]">
+    <ion-item *ngFor="let adp of adopciones" (click)="redirec(adp.adopcion._id)">
       <ion-avatar slot="start">
         <img src="https://fundacionesbckimg.s3.us-east-2.amazonaws.com/{{ 
           adp.photo}}">

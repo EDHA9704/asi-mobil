@@ -34,7 +34,10 @@
 
         <ion-item [class.formError]="!password.valid && password.touched">
           <ion-label position="floating">Contraseña</ion-label>
-          <ion-input pattern="^(?=.*\d)(?=.*[\u0021-\u002b\u003c-\u0040])(?=.*[A-Z])(?=.*[a-z])\S{8,30}$" required minlength="8" maxlength="30"  type="password" id="password"  name="password" #password="ngModel" [(ngModel)]="usuarioAdoptante.password"></ion-input>
+          <ion-input pattern="^(?=.*\d)(?=.*[\u0021-\u002b\u003c-\u0040])(?=.*[A-Z])(?=.*[a-z])\S{8,30}$" required minlength="8" maxlength="30"  [type]="hide2 ? 'password' : 'text'" id="password"  name="password" #password="ngModel" [(ngModel)]="usuarioAdoptante.password"></ion-input>
+          <ion-icon style="    position: absolute;
+          right: 5%;
+          bottom: 12%; z-index: 1200;" [name]="hide2 ? 'eye-off' : 'eye'" slot="end" (click)="hide2 = !hide2"></ion-icon>
         </ion-item>
         <p class="formErrormsj" *ngIf="!password.valid && password.touched">Contraseña no válida</p>
         <p class="smallText">La contraseña debe contener entre 8-20 caracteres, al menos 1 letra mayúscula, 1 letra minúscula, 1 número y un caracter no alfanumérico.

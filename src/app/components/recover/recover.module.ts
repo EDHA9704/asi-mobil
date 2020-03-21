@@ -6,7 +6,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { IonicModule } from '@ionic/angular';
 import { ReactiveFormsModule } from '@angular/forms';
 import { RecoverPage } from './recover.page';
-import { MatStepperModule,MatButtonModule, MatFormFieldModule,MatInputModule} from '@angular/material'
+import { MatStepperModule,MatButtonModule,MatIconModule, MatFormFieldModule,MatInputModule} from '@angular/material'
 const routes: Routes = [
   {
     path: '',
@@ -24,6 +24,7 @@ const routes: Routes = [
     IonicModule,
     MatInputModule,
     MatButtonModule,
+    MatIconModule,
     RouterModule.forChild(routes)
   ],
   declarations: [RecoverPage]

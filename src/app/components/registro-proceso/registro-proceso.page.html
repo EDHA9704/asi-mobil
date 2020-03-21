@@ -53,7 +53,7 @@
                 </p>
               <ion-item [class.formError]="!edad.valid && edad.touched">
                 <ion-label position="floating">MM/DD/YYYY</ion-label>
-                <ion-datetime required displayFormat="MM/DD/YYYY" id="edad"  name="edad" #edad="ngModel" [(ngModel)]="usuarioAdoptante.edad" placeholder="Fecha de nacimiento"></ion-datetime>
+                <ion-datetime done-text="Aceptar" cancel-text="Cancelar" required displayFormat="MM/DD/YYYY" id="edad"  name="edad" #edad="ngModel" [(ngModel)]="usuarioAdoptante.edad" placeholder="Fecha de nacimiento"></ion-datetime>
               </ion-item>
               <ion-button color="primary" type="submit" (click)="registrarUsuario()"   class="bntIS"  [disabled]=!loginForm.form.valid>Finalizar</ion-button>
 

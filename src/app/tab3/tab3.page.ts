@@ -26,7 +26,7 @@ export class Tab3Page implements OnInit {
   public status;
   public carga;
   public notificaciones=[];
-
+  fullUrl:string
   @ViewChild(IonContent,{read:IonContent,static:false}) content: IonContent;
   public selecFiltro;
   public selecFiltroAr:any;
@@ -58,7 +58,7 @@ export class Tab3Page implements OnInit {
     }, 500);
   }
 async ngOnInit(){ 
- 
+  this.fullUrl = this._router.url.toString()
   await this.obtenerStorageUser()
   this.obtenerNotificaciones(this.page);
 }
@@ -262,18 +262,22 @@ ScrollToTop(){
 }
 
 redirectPage(nt){
+
+  if( this.fullUrl == undefined || this.fullUrl == null  || this.fullUrl == ""){
+    this.fullUrl = '/tabs/tab1'
+  }
   if(nt.tipo == 1 || nt.tipo == 9 || nt.tipo == 10){
-    this._router.navigate(['/perfil-adopcion',nt.adopcion]);        
+    this._router.navigate(['/perfil-adopcion',nt.adopcion], { queryParams: { returnUrl: this.fullUrl }});         
   }else if(nt.tipo == 7 || nt.tipo == 5 || nt.tipo == 8 ){
-    this._router.navigate(['/perfil-emergencia',nt.emergencia._id,'EMA']);       
+    this._router.navigate(['/perfil-emergencia',nt.emergencia._id,'EMA'], { queryParams: { returnUrl: this.fullUrl }});       
   }else if(nt.tipo == 2 || nt.tipo == 16 || nt.tipo == 17 || nt.tipo == 18){
-    this._router.navigate(['/perfil-emergencia',nt.emergencia._id,'EMR']); 
+    this._router.navigate(['/perfil-emergencia',nt.emergencia._id,'EMR'], { queryParams: { returnUrl: this.fullUrl }}); 
   }else if(nt.tipo == 3 || nt.tipo == 11 || nt.tipo == 12){
-    this._router.navigate(['/perfil-donacion',nt.donacion._id,'DONR']); 
+    this._router.navigate(['/perfil-donacion',nt.donacion._id,'DONR'], { queryParams: { returnUrl: this.fullUrl }}); 
   }else if(nt.tipo == 13 || nt.tipo == 14){
-    this._router.navigate(['/perfil-donacion',nt.donacion._id,'DONA']); 
+    this._router.navigate(['/perfil-donacion',nt.donacion._id,'DONA'], { queryParams: { returnUrl: this.fullUrl }}); 
   }else if(nt.tipo == 15){
-    this._router.navigate(['/perfil-donacion',nt.donacion._id,'DONA']); 
+    this._router.navigate(['/perfil-donacion',nt.donacion._id,'DONA'], { queryParams: { returnUrl: this.fullUrl }}); 
   }
   this.cambiarEstado(nt._id)
 }

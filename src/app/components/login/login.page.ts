@@ -49,6 +49,7 @@ export class LoginPage implements OnInit {
     correo:"",
     image:""
   }
+  hide2 = true;
   constructor(public dialog: MatDialog,private platform: Platform,public alertCtrl: AlertController,private oneSignal:OneSignal,private nativeStorage: NativeStorage,private storage: Storage,
 		public loadingController: LoadingController,private fb: Facebook,private _route:ActivatedRoute,private _notificacionService:NotificacionService,
     private _router:Router, private _usuarioService:UsuarioService,public toastController: ToastController,
@@ -79,6 +80,8 @@ export class LoginPage implements OnInit {
     toast.present();
     
   }
+
+  
   async presentAlertConfirm(user) {
     const alert = await this.alertController.create({
       header: 'Confirmar cuenta',

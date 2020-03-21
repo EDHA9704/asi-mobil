@@ -3,6 +3,7 @@ import {AdopcionService} from '../../../services/adopcion.service'
 import { Storage } from '@ionic/storage';
 import { ToastController } from '@ionic/angular';
 import {GLOBAL} from '../../../services/global';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-adopciones',
@@ -20,8 +21,9 @@ export class AdopcionesPage implements OnInit {
   public pages;
   public itemsPerPage;
   public status;
+  fullUrl:string
   public statusLength;
-  constructor(private _adopcionService:AdopcionService,private storage: Storage,public toastController: ToastController) { 
+  constructor(private _adopcionService:AdopcionService,private _router:Router,private storage: Storage,public toastController: ToastController) { 
     this.carga = true;
     this.page = 1;
     this.url = GLOBAL.url;
@@ -30,6 +32,7 @@ export class AdopcionesPage implements OnInit {
   }
 
  async ngOnInit() {
+  this.fullUrl = this._router.url.toString()
   await this.obtenerStorageUser()
   this.obtenerAdopciones(this.page)
   }
@@ -137,4 +140,12 @@ export class AdopcionesPage implements OnInit {
       }
     )
   }
+
+  redirec(id){
+    if( this.fullUrl == undefined || this.fullUrl == null  || this.fullUrl == ""){
+      this.fullUrl = '/tabs/tab1'
+    }
+    this._router.navigate(['/perfil-adopcion',id], { queryParams: { returnUrl: this.fullUrl }});        
+  }
+  
 }

@@ -82,7 +82,7 @@
                   
                   <button type="button" mat-button (click)="presentMapModal()" style="border:1px solid #3bbfad; width: 100%;">Seleccionar dirección domiciliaria <i style="color: #3bbfad; font-size: 2em;" class="fa fa-map-marker" aria-hidden="true"></i></button>
       
-                  <p *ngIf="direccionSelected != ''" style="padding: .5em 0;">Dirección seleccionada: {{direccionSelected.formmatedAddres}}</p>
+                  <p *ngIf="direccionSelected && direccionSelected != ''" style="padding: .5em 0;">Dirección seleccionada: {{direccionSelected.formmatedAddres}}</p>
                 </div>
                 </form>           
             <div class="btnI">
@@ -309,7 +309,7 @@
               </form>  
               <div class="btnI2">
                   <button mat-button matStepperPrevious>Regresar</button>
-                  <button mat-button (click)="registrarAdopcion(mascota.responsable._id,mascota._id)" >Finalizar</button>
+                  <button mat-button (click)="registrarAdopcion(mascota.responsable._id,mascota._id)" [disabled]="!fvFrmGroup.valid || process == true" [class.disables]="!fvFrmGroup.valid || process == true">Finalizar</button>
                 </div>
           
         </mat-step>

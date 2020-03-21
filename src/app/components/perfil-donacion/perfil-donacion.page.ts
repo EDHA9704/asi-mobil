@@ -31,6 +31,7 @@ export class PerfilDonacionPage implements OnInit {
     lat:Number,
     lng:Number
   }
+  public returnUrl:any;
   constructor(private _router:Router,private storage: Storage,
     private _donacionService:DonacionService,
     private activeRoute:ActivatedRoute,private loadController:LoadingController) { 
@@ -41,6 +42,7 @@ export class PerfilDonacionPage implements OnInit {
   }
 
   async ngOnInit() {
+    this.returnUrl = this.activeRoute.snapshot.queryParams['returnUrl'] || '/';
     await this.obtenerStorageUser()
     this.obtenerDonacion()
   }
@@ -151,5 +153,9 @@ console.log(this.voluntario)
         console.log(<any>error)
       }
     )
+   }
+   redirect(){
+    
+    this._router.navigate([this.returnUrl]);    
    }
 }

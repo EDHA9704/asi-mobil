@@ -28,7 +28,7 @@ export class MascotaService {
   obtMisMascotas(id, page = 1):Observable<any>{
     let headers = new HttpHeaders().set('Content-Type','application/json');
 
-    return this._http.get(this.url+'obtener-mis-mascotas/'+id+'/'+page, {headers:headers});
+    return this._http.get(this.url+'obtener-mis-mascotas2/'+id+'/'+page, {headers:headers});
   }
   obtMascota(id):Observable<any>{
     let headers = new HttpHeaders().set('Content-Type','application/json');

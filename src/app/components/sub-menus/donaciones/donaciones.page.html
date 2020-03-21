@@ -19,7 +19,7 @@
      <p>No existe donaciones</p>
     </div>
   <ion-list *ngIf="donaciones && carga == false">
-    <ion-item *ngFor="let don of donaciones"  [routerLink]="['/perfil-donacion',don.donacion._id,'DONA']">
+    <ion-item *ngFor="let don of donaciones" (click)="redirec(don.donacion._id,'DONA')" >
       <ion-avatar slot="start">
         <img src="https://fundacionesbckimg.s3.us-east-2.amazonaws.com/{{ 
           don.donacion.foto}}">

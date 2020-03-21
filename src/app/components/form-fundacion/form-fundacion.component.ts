@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ModalController } from '@ionic/angular';
+import { ModalController, LoadingController } from '@ionic/angular';
 import { NavParams } from '@ionic/angular';
 import {FormControl, Validators} from '@angular/forms';
 import { NativeStorage } from '@ionic-native/native-storage/ngx';
@@ -13,13 +13,14 @@ import { AlertController } from '@ionic/angular';
 import {Mail} from '../../models/mail';
 import { Storage } from '@ionic/storage';
 import {PopUpLocationComponent} from '../pop-up-location/pop-up-location.component'
-
+import { AndroidPermissions } from '@ionic-native/android-permissions/ngx';
+import { Diagnostic } from '@ionic-native/diagnostic/ngx';
 declare var $:any;
 @Component({
   selector: 'app-form-fundacion',
   templateUrl: './form-fundacion.component.html',
   styleUrls: ['./form-fundacion.component.scss'],
-  providers:[FundacionService,UsuarioService]
+  providers:[FundacionService,UsuarioService,AndroidPermissions,Diagnostic]
 })
 export class FormFundacionComponent implements OnInit {
   public op = 'ec';
@@ -35,10 +36,11 @@ export class FormFundacionComponent implements OnInit {
   public errorC;
   public errorP;
   public mail:Mail;
-
+  process:any;
   asector = ["Norte","Centro","Sur"]
   image:any=''
-
+  gpsEnable = false;
+  gpsPermission = false;
   nombre = new FormControl('',[Validators.required,Validators.pattern('^[a-z A-Z áéíóúÁÉÍÓÚñÑ 0-9]*$'),Validators.maxLength(20),Validators.minLength(4)]);
   cantidad = new FormControl('',[Validators.required,Validators.pattern('[0-9]+$')]);
   foto = new FormControl('',[Validators.required]);
@@ -137,7 +139,9 @@ export class FormFundacionComponent implements OnInit {
     }
   constructor(private storage: Storage,public alertController: AlertController,private _snackBar: MatSnackBar,private _fundacionService:FundacionService, private nativeStorage: NativeStorage,
     public modalController: ModalController,navParams: NavParams,private _usuarioService:UsuarioService,
-    public actionSheetController: ActionSheetController,private camera: Camera) { 
+    public actionSheetController: ActionSheetController,
+    private camera: Camera,public loadingController: LoadingController,
+    private androidPermissions: AndroidPermissions,private diagnostic: Diagnostic) { 
     this.op2 = navParams.get('op');
     this.co = navParams.get('co')
     this.idf = navParams.get('idf');
@@ -146,6 +150,7 @@ export class FormFundacionComponent implements OnInit {
   }
 
   async ngOnInit() {
+    this.validarPermisiosLocation()
     console.log(this.voluntario.value)
     
     $(document).ready(()=>{
@@ -280,62 +285,107 @@ export class FormFundacionComponent implements OnInit {
         alert("error "+JSON.stringify(err))
       })
 }
+
+validarRegistro(result,op){
+  if(op == 'ec'){
+    this.myDismiss(result,op)
+  }else if(op == 'pro'){
+      if(this.direccionSelected != '' && this.direccionSelected != null && this.direccionSelected != undefined){
+        this.myDismiss(result,op)
+      }else{
+        this._snackBar.open('Selecciona la dirección en el mapa.', 'Cerrar', {
+          duration: 3000
+        });
+      }
+
+  }
+}
   async registrarDonacion(result,op){
-   console.log(this.op)
-    if(this.errorP == false || this.errorC == false){
-     
-      this.donacion = new Donacion("","","","","","","","","","",false,"")
-      if(op == 'ec'){
-        this.donacion.tipo = 'Económica' 
-        this.donacion.cantidad = this.cantidad.value;
-        this.donacion.estado = 0
-        this.donacion.descripcion = this.des.value;
-  
-      }
-      if(op == 'pro'){
-        this.donacion.tipo = 'Producto' 
-        this.donacion.nombreProducto = this.nombre.value;
-        this.donacion.descripcion = this.des2.value;
-  
-        if(this.voluntario.value == 1){
-          this.donacion.estado = 3
-          this.donacion.asignar = true
 
-        }else if(this.voluntario.value == 2){
+
+      console.log(this.op)
+      if(this.errorP == false || this.errorC == false){
+        const loading = await this.loadingController.create({
+          message: 'Procesando solicitud',
+          spinner: 'circles',
+          translucent: true,
+          cssClass: 'custom-class custom-loading',
+          backdropDismiss: false
+        });
+        this.presentLoading(loading);
+        this.process = true;
+        this.donacion = new Donacion("","","","","","","","","","",false,"")
+        if(op == 'ec'){
+          this.donacion.tipo = 'Económica' 
+          this.donacion.cantidad = this.cantidad.value;
           this.donacion.estado = 0
-          this.donacion.asignar = false
+          this.donacion.descripcion = this.des.value;
+    
         }
-      }
+        if(op == 'pro'){
+          this.donacion.tipo = 'Producto' 
+          this.donacion.nombreProducto = this.nombre.value;
+          this.donacion.descripcion = this.des2.value;
+    
+          if(this.voluntario.value == 1){
+            this.donacion.estado = 3
+            this.donacion.asignar = true
+            this.donacion.sector = this.sector.value;
+        this.donacion.direccion = this.direccionSelected; 
       
-      this.donacion.fundacion = this.idf;
-      this.donacion.sector = this.sector.value;
-      this.donacion.direccion = this.direccionSelected; 
-     // this.donacion.calleP = this.calleP.value;
-     // this.donacion.calleS = this.calleS.value;
-      this.donacion.referencia = this.referencia.value;
-      this.donacion.donanteR = this.idU;
-
-      console.log(this.donacion)
-      this._fundacionService.uploadDonacion(this.foto.value,this.donacion,this.usuarioAcc.rol).then(
-        response=>{
-          this.modalController.dismiss(result);
-          console.log(response)
-        },
-        error=>{
-          this._snackBar.open('Error, intentalo de nuevo', 'Cerrar', {
-            duration: 3000
-          });
-          console.log(<any>error)
+        this.donacion.referencia = this.referencia.value;
+  
+          }else if(this.voluntario.value == 2){
+            this.donacion.estado = 0
+            this.donacion.asignar = false
+          }
         }
-       
-      )
-    }else{
-        this.presentAlert("Debes validar tu correo o actualizar tus datos antes de registrar una donación")
-    }
+        
+        this.donacion.fundacion = this.idf;
+        
+        this.donacion.donanteR = this.idU;
+  
+        console.log(this.donacion)
+  
+  
+            this._fundacionService.uploadDonacion(this.foto.value,this.donacion,this.usuarioAcc.rol).then(
+              response=>{
+                this.modalController.dismiss(result);
+                this.direccionSelected = ''
+                loading.dismiss();
+                console.log(response)
+                this.process = false;
+              },
+              error=>{
+                this.process = false;
+                loading.dismiss();
+                this._snackBar.open('Error, inténtalo de nuevo', 'Cerrar', {
+                  duration: 3000
+                });
+                console.log(<any>error)
+              }
+             
+            )
+   
+
+        
+      }else{
+          this.presentAlert("Debes validar tu correo o actualizar tus datos antes de registrar una donación")
+      }
+
+  
 
    
   }
-  enviarMail(result){
+async  enviarMail(result){
+    const loading = await this.loadingController.create({
+      message: 'Enviando correo',
+      spinner: 'circles',
+      translucent: true,
+      cssClass: 'custom-class custom-loading',
+      backdropDismiss: false
+    });
+    this.presentLoading(loading);
     this.mail = new Mail("","","","","","","","","","")
         this.mail.asunto = "COMB";
         this.mail.nombres = this.usuario.nombres;
@@ -357,13 +407,17 @@ export class FormFundacionComponent implements OnInit {
     this._usuarioService.enviarEmail(this.mail).subscribe(
       res=>{
          if(res.n == '1'){
-          
+          loading.dismiss();
            this.modalController.dismiss(result);
          }
   
        },
        err=>{
-        
+        this._snackBar.open('Error, inténtalo de nuevo', 'Cerrar', {
+          duration: 3000
+        });
+        loading.dismiss();
+
          console.log(<any>err);
   
        }
@@ -422,6 +476,58 @@ async obtenerStorageUser(){
  }
  async presentMapModal() {
 
+  if(this.gpsPermission == false ){
+    this.androidPermissions.checkPermission(this.androidPermissions.PERMISSION.ACCESS_COARSE_LOCATION).then(
+      result => {
+        console.log(result)
+        if(result.hasPermission == true){
+         
+          this.gpsPermission = true
+          if(this.gpsEnable == true && this.gpsPermission == true){
+            this.presentMapModalFin()
+          }
+        }else{
+          this.gpsPermission = false
+          this.androidPermissions.requestPermission(this.androidPermissions.PERMISSION.ACCESS_COARSE_LOCATION)
+        }
+  
+      },
+      err => {this.gpsPermission = false}
+    );
+    
+  }else if(this.gpsEnable == false){
+    this.diagnostic.isGpsLocationEnabled()
+  .then((state) => {
+    console.log(state)
+    if(state == true){
+      this.gpsEnable = true;
+      if(this.gpsEnable == true && this.gpsPermission == true){
+        this.presentMapModalFin()
+      }
+    }else{
+      this.presentAlert2('GPS','Por favor, enciende tu GPS.');
+      this.gpsEnable = false;
+    }
+   
+  }).catch(e => {console.error(e)
+    this.gpsEnable = false;});
+
+  }
+  
+ 
+}
+async presentAlert2(head,text) {
+  const alert = await this.alertController.create({
+    header: head,
+    
+    message: text,
+    buttons: ['Aceptar']
+  });
+
+  await alert.present();
+}
+async presentMapModalFin() {
+
   const modal = await this.modalController.create({
     component: PopUpLocationComponent,
     componentProps: {
@@ -438,5 +544,40 @@ async obtenerStorageUser(){
   return await modal.present();
 
 
+}
+async presentLoading(loading) {
+  return await loading.present();
+}
+validarPermisiosLocation(){
+  //gps oon-off
+  this.diagnostic.isGpsLocationEnabled()
+  .then((state) => {
+    console.log(state)
+    if(state == true){
+      this.gpsEnable = true;
+    }else{
+     
+      this.gpsEnable = false;
+    }
+   
+  }).catch(e => {console.error(e)
+    this.gpsEnable = false;});
+
+    //permision al gps
+  this.androidPermissions.checkPermission(this.androidPermissions.PERMISSION.ACCESS_COARSE_LOCATION).then(
+    result => {
+      console.log(result)
+      if(result.hasPermission == true){
+        
+        this.gpsPermission = true
+      }else{
+        
+        this.gpsPermission = false
+        //this.androidPermissions.requestPermission(this.androidPermissions.PERMISSION.ACCESS_COARSE_LOCATION)
+      }
+
+    },
+    err => {this.gpsPermission = false}
+  );
 }
 }

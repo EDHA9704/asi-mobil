@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {FormControl, Validators} from '@angular/forms';
 import { Camera, CameraOptions } from '@ionic-native/camera/ngx';
-import { ActionSheetController } from '@ionic/angular';
+import { ActionSheetController, LoadingController, AlertController } from '@ionic/angular';
 import { ModalController } from '@ionic/angular';
 import { Emergencia } from '../../models/emergencia';
 import { EmergenciaService } from '../../services/emergencia.service';
@@ -9,12 +9,13 @@ import { Storage } from '@ionic/storage';
 import {PopUpLocationComponent} from '../pop-up-location/pop-up-location.component'
 import {MatSnackBar} from '@angular/material/snack-bar';
 declare var $:any;
-
+import { AndroidPermissions } from '@ionic-native/android-permissions/ngx';
+import { Diagnostic } from '@ionic-native/diagnostic/ngx';
 @Component({
   selector: 'app-form-emergencia',
   templateUrl: './form-emergencia.component.html',
   styleUrls: ['./form-emergencia.component.scss'],
-  providers:[EmergenciaService,MatSnackBar]
+  providers:[EmergenciaService,MatSnackBar,AndroidPermissions,Diagnostic]
 })
 export class FormEmergenciaComponent implements OnInit {
   anivel = ["Atención inmediata","Muy urgente","Urgente","Normal","No urgente"]
@@ -42,6 +43,9 @@ export class FormEmergenciaComponent implements OnInit {
   referencia = new FormControl('', [Validators.required,Validators.pattern('[0-9 a-z A-Z áéíóúÁÉÍÓÚñÑ . , : ; \\- \\n]+$'),Validators.maxLength(300),Validators.minLength(10)]);
   extra = new FormControl('', [Validators.required,Validators.pattern('[0-9]+$'),Validators.maxLength(10),Validators.minLength(7)]);
 
+
+  gpsEnable = false;
+  gpsPermission = false;
   getErrorMessage(op) {
     if(op == 'n'){
       return this.nivel.hasError('required') ? 'Selecciona el nivel' :
@@ -127,9 +131,17 @@ export class FormEmergenciaComponent implements OnInit {
 
   image:any=''
   image2:any=''
-  constructor(private storage: Storage,private _snackBar: MatSnackBar,private _emergenciaService:EmergenciaService, public modalController: ModalController,private camera: Camera,public actionSheetController: ActionSheetController) { }
+  
+  
+  constructor(private storage: Storage,private _snackBar: MatSnackBar,
+    private _emergenciaService:EmergenciaService, 
+    public modalController: ModalController,private camera: Camera,
+    public actionSheetController: ActionSheetController,public loadingController: LoadingController,
+    private androidPermissions: AndroidPermissions,private diagnostic: Diagnostic,
+    public alertController: AlertController) { }
 
   async ngOnInit() {
+    this.validarPermisiosLocation()
     await this.obtenerStorageUser()
     $(document).ready(()=>{
       this.validarEspacios()
@@ -137,6 +149,47 @@ export class FormEmergenciaComponent implements OnInit {
         });
   }
 
+  async presentAlert(head,msj) {
+    const alert = await this.alertController.create({
+      header: head,
+      message: msj,
+      buttons: ['Aceptar']
+    });
+
+    await alert.present();
+  }
+validarPermisiosLocation(){
+  //gps oon-off
+  this.diagnostic.isGpsLocationEnabled()
+  .then((state) => {
+    console.log(state)
+    if(state == true){
+      this.gpsEnable = true;
+    }else{
+      this.presentAlert('GPS','Por favor, enciende tu GPS.');
+      this.gpsEnable = false;
+    }
+   
+  }).catch(e => {console.error(e)
+    this.gpsEnable = false;});
+
+    //permision al gps
+  this.androidPermissions.checkPermission(this.androidPermissions.PERMISSION.ACCESS_COARSE_LOCATION).then(
+    result => {
+      console.log(result)
+      if(result.hasPermission == true){
+        console.log("entro pr")
+        this.gpsPermission = true
+      }else{
+        console.log("entro pr2")
+        this.gpsPermission = false
+        this.androidPermissions.requestPermission(this.androidPermissions.PERMISSION.ACCESS_COARSE_LOCATION)
+      }
+
+    },
+    err => {console.log("entro pr3");this.gpsPermission = false}
+  );
+}
 
   openCam(op){
 
@@ -162,7 +215,7 @@ export class FormEmergenciaComponent implements OnInit {
     
     }, (err) => {
      // Handle error
-     alert("error "+JSON.stringify(err))
+     alert("No se selecciono una imagen")
     });
 
   }
@@ -186,7 +239,7 @@ export class FormEmergenciaComponent implements OnInit {
         this.foto2.setValue(imageData);
       }
       }, (err) => {
-        alert("error "+JSON.stringify(err))
+        alert("No se selecciono una imagen")
       })
 }
 async presentActionSheet(op) {
@@ -217,12 +270,21 @@ async registrarEmergencia(){
   if( this.tipo.valid && this.descripcion.valid
     && this.sector.valid 
      && this.referencia.valid
-    && this.direccion.valid && this.foto.value != null && this.foto.value != ""
+    && this.direccion.valid && this.foto.value != null && this.foto.value != "" && this.direccionSelected != ''
+    && this.direccionSelected != null && this.direccionSelected != undefined
     ){
       var emergencia  = new Emergencia(
         this.tipo.value,this.descripcion.value,
         this.sector.value,this.direccion.value,this.referencia.value,this.extra.value
       )
+      const loading = await this.loadingController.create({
+        message: 'Enviando emergencia',
+        spinner: 'circles',
+        translucent: true,
+        cssClass: 'custom-class custom-loading',
+        backdropDismiss: false
+      });
+      this.presentLoading(loading);
      // const imageForm = new FormData();
      // imageForm.append('image', this.imageObj);
     
@@ -232,8 +294,10 @@ async registrarEmergencia(){
             this._snackBar.open('Emergencia enviada', 'Cerrar', {
               duration: 3000
             });
+            loading.dismiss();
           },
           error=>{
+            loading.dismiss();
             this._snackBar.open('Error, intentalo de nuevo', 'Cerrar', {
               duration: 3000
             });
@@ -288,8 +352,8 @@ $("#referencia").keyup(()=>{
 
 
 }
-async presentMapModal() {
 
+async presentMapModalFin(){
   const modal = await this.modalController.create({
     component: PopUpLocationComponent,
     componentProps: {
@@ -304,7 +368,51 @@ async presentMapModal() {
    
  });
   return await modal.present();
+}
+async presentMapModal() {
 
 
+  
+if(this.gpsPermission == false ){
+    this.androidPermissions.checkPermission(this.androidPermissions.PERMISSION.ACCESS_COARSE_LOCATION).then(
+      result => {
+        console.log(result)
+        if(result.hasPermission == true){
+          console.log("entro pr")
+          this.gpsPermission = true
+          if(this.gpsEnable == true && this.gpsPermission == true){
+            this.presentMapModalFin()
+          }
+        }else{
+          console.log("entro pr2")
+          this.gpsPermission = false
+          this.androidPermissions.requestPermission(this.androidPermissions.PERMISSION.ACCESS_COARSE_LOCATION)
+        }
+  
+      },
+      err => {console.log("entro pr3");this.gpsPermission = false}
+    );
+    
+  }else if(this.gpsEnable == false){
+    this.diagnostic.isGpsLocationEnabled()
+  .then((state) => {
+    console.log(state)
+    if(state == true){
+      this.gpsEnable = true;
+      if(this.gpsEnable == true && this.gpsPermission == true){
+        this.presentMapModalFin()
+      }
+    }else{
+      this.presentAlert('GPS','Por favor, enciende tu GPS.');
+      this.gpsEnable = false;
+    }
+   
+  }).catch(e => {console.error(e)
+    this.gpsEnable = false;});
+
+  }
+}
+async presentLoading(loading) {
+  return await loading.present();
 }
 }

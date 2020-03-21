@@ -3,7 +3,7 @@ import {UsuarioService} from "../../services/usuario.service"
 import {MascotaService} from "../../services/mascota.service"
 import {Router, ActivatedRoute, Params} from '@angular/router';
 import {GLOBAL} from '../../services/global';
-import { ToastController, AlertController } from '@ionic/angular';
+import { ToastController, AlertController, LoadingController } from '@ionic/angular';
 import { ModalController } from '@ionic/angular';
 import { FormFundacionComponent } from '../form-fundacion/form-fundacion.component';
 import { SlidesFundacionComponent } from '../slides-fundacion/slides-fundacion.component';
@@ -13,7 +13,7 @@ import { NativeStorage } from '@ionic-native/native-storage/ngx';
 import * as $ from 'jquery'
 import Swiper from 'swiper';
 import { Storage } from '@ionic/storage';
-
+declare var google:any;
 @Component({
   selector: 'app-perfil-fundacion',
   templateUrl: './perfil-fundacion.page.html',
@@ -44,10 +44,21 @@ export class PerfilFundacionPage implements OnInit {
 
   public fab;
   public usuarioOb:any
+  mp1 = false;
+  mp2 = false
+  map:any;
+  mapHtml:any;
+  contMap = 0
+  markerActualUserLocation:any;
+  donLatLng = {
+    lat:Number,
+    lng:Number
+  }
+  
   constructor(private storage: Storage,private nativeStorage: NativeStorage,private _snackBar: MatSnackBar,
     public modalController: ModalController,private _router:Router,public toastController: ToastController,
     private activeRoute:ActivatedRoute, private _usuarioService:UsuarioService,private _mascotaService:MascotaService,
-    public alertController: AlertController,
+    public alertController: AlertController,private loadController:LoadingController,
     private usuarioService:UsuarioService) { 
     this.id = this.activeRoute.snapshot.paramMap.get('id');
     this.url = GLOBAL.url;
@@ -107,8 +118,9 @@ export class PerfilFundacionPage implements OnInit {
   obtFundacion(){
     this._usuarioService.obtFundacionSTD(this.id).subscribe(
       response=>{
+
         this.fundacion = response.fundacion;
-     
+     console.log(this.fundacion)
         this.stdM = response.stdMascotas;
         this.stdV = response.stdVoluntarios;
       },
@@ -251,7 +263,15 @@ export class PerfilFundacionPage implements OnInit {
 
     }else if(event == 2){
       this.fab = 2;
-    }else{
+    }else if(event == 3){
+      this.fab = 3;
+      if(this.contMap == 0){
+        this.contMap++
+          this.loadMap('1')
+
+      }
+    }
+    else{
       this.fab = 0;
     }
   }
@@ -366,4 +386,44 @@ async presentModal(op) {
       }
     )
    }
+
+   async loadMap(mp){
+    const loading = await this.loadController.create()
+    loading.present()
+  // await this.currentLocationUser()
+
+   const mapEle:HTMLElement = document.getElementById('map'+mp);
+   this.mapHtml = mapEle;
+   console.log("bien")
+   this.donLatLng.lat = this.fundacion.direccionMap.latLng.lat
+   this.donLatLng.lng = this.fundacion.direccionMap.latLng.lng
+   console.log("bien2")
+   console.log(this.donLatLng)
+   this.map = new google.maps.Map(this.mapHtml,{
+     center:this.donLatLng,
+     zoom:12,
+   })
+   console.log("bien3")
+   google.maps.event.addListenerOnce(this.map,'idle',()=>{
+    loading.dismiss();
+    console.log("bien4")
+    this.putMarker(this.map,this.donLatLng,'Hello')
+   })
+
+  }
+  putMarker(map,markerL,text){
+   
+      
+    this.markerActualUserLocation = new google.maps.Marker({
+      position:{
+        lat:markerL.lat,
+        lng:markerL.lng
+      },
+      draggable: false,
+      zoom:8,
+      map:map,
+      title:text
+    })
+  
+}
 }
