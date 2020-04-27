@@ -155,7 +155,7 @@ this._usuarioService.login(this.usuarioLogin, 'true').subscribe(
     }else{
       
         this.stUser.id = this.usuarioAdoptante._id
-        this.stUser.type = 'fb',
+        this.stUser.type = 'nr',
         this.stUser.rol = response.usuario.rol
         this.stUser.correo= this.usuarioAdoptante.correo,
         this.stUser.image= response.usuario.foto
