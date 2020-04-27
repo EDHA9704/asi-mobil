@@ -12,7 +12,7 @@
       </div>
       
     </div>
-
+ 
    
     <div class="fundacion-tabs " *ngIf="usuario">
         <mat-tab-group (selectedIndexChange)="tabChanged($event)" mat-align-tabs="center">
@@ -20,7 +20,7 @@
                 <form  class="donacion">
                       <div class="photoDonacion">
                           <p >Selecciona una foto del comprobante</p>
-                          <div class="photo">
+                          <div class="photo" >
                               <img *ngIf="image != ''" src="{{image}}">
                 
                               <ion-button class="nphoto"  *ngIf="image == ''" (click)="presentActionSheet()"><ion-icon name="camera"></ion-icon></ion-button>
@@ -62,7 +62,7 @@
                           <form id="formC"  class="formContent">
                               <div class="photoDonacion">
                                   <p *ngIf="op == 'pro'">Selecciona una foto del producto</p>
-                                  <div class="photo">
+                                  <div class="photo" *ngIf="op == 'pro'">
                                       <img *ngIf="image != ''" src="{{image}}">
                         
                                       <ion-button class="nphoto"  *ngIf="image == ''" (click)="presentActionSheet()"><ion-icon name="camera"></ion-icon></ion-button>
@@ -133,8 +133,8 @@
                           </form>     
                         <div class="btnI2">
                           <button mat-button matStepperPrevious>Regresar</button>
-                          <button mat-button *ngIf="(op == 'pro' && voluntario.value == 2) || (op == 'pro' && voluntario.value == '')" (click)="validarRegistro('registro','')" [disabled]="!des.valid || !nombre.valid || !foto.valid || !voluntario.valid "
-                          [class.noval]="!des.valid || !nombre.valid || !foto.valid || !voluntario.valid">Enviar</button>
+                          <button mat-button *ngIf="(op == 'pro' && voluntario.value == 2) || (op == 'pro' && voluntario.value == '')" (click)="validarRegistro('registro','')" [disabled]="!des2.valid || !nombre.valid  || !voluntario.valid "
+                          [class.noval]="!des2.valid || !nombre.valid || !voluntario.valid">Enviar</button>
                           <button mat-button *ngIf="op == 'pro' && voluntario.value == 1" (click)="validarRegistro('registro','pro')" >Enviar</button>
         
                         </div>

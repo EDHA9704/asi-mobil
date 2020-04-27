@@ -47,7 +47,7 @@ export class FormFundacionComponent implements OnInit {
   des = new FormControl('',[Validators.required,Validators.pattern('^[a-z A-Z áéíóúÁÉÍÓÚñÑ 0-9 ; : \\- + , . \\n]*$'),Validators.maxLength(500),Validators.minLength(5)]);
   des2 = new FormControl('',[Validators.required,Validators.pattern('^[a-z A-Z áéíóúÁÉÍÓÚñÑ 0-9 ; : \\- + , . \\n]*$'),Validators.maxLength(500),Validators.minLength(5)]);
 
-  voluntario = new FormControl('',[Validators.required]);
+  voluntario = new FormControl("2",[Validators.required]);
   sector = new FormControl('',[Validators.required]);
   direccion = new FormControl('',[]);
   //calleP = new FormControl('',[Validators.required,Validators.pattern('^[a-z A-Z áéíóúÁÉÍÓÚñÑ 0-9 , .]*$'),Validators.maxLength(20),Validators.minLength(4)]);
@@ -81,30 +81,7 @@ export class FormFundacionComponent implements OnInit {
     return this.sector.hasError('required') ? 'Sector requerido' :
             '';
   }
- /* getErrorMessage4() {
-    return this.barrio.hasError('required') ? 'Nombre del barrio requerido' :
-    this.barrio.hasError('pattern') ? 'No se admite caracteres especiales':
-    this.barrio.hasError('minlength') ? 'barrio no válido':
-    this.barrio.hasError('maxlength') ? 'Exceso de caracteres (máximo 20)':
 
-            '';
-  }*/
- /* getErrorMessage5() {
-    return this.calleP.hasError('required') ? 'Calle principal requerida' :
-    this.calleP.hasError('pattern') ? 'No se admite caracteres especiales':
-    this.calleP.hasError('minlength') ? 'Calle no válida':
-    this.calleP.hasError('maxlength') ? 'Exceso de caracteres (máximo 20)':
-
-    '';
-  }   
-    getErrorMessage6() {
-      return this.calleS.hasError('required') ? 'Calle secundaria requerida' :
-      this.calleS.hasError('pattern') ? 'No se admite caracteres especiales':
-      this.calleS.hasError('minlength') ? 'Calle no válida':
-      this.calleS.hasError('maxlength') ? 'Exceso de caracteres (máximo 20)':
-  
-              '';
-    }*/
     getErrorMessage7() {
       return this.referencia.hasError('required') ? 'Número de casa o referencia requerida' :
       this.referencia.hasError('pattern') ? 'No se admite caracteres especiales':
@@ -165,10 +142,12 @@ export class FormFundacionComponent implements OnInit {
 
     if(event == 0){
       this.op = 'ec';
+      this.image = ''
       $(document).ready(()=>{
         this.limpiarEspacios()
       });
     }else if(event == 1){
+      this.image = ''
       $(document).ready(()=>{
         this.limpiarEspacios()
       });
@@ -287,9 +266,9 @@ export class FormFundacionComponent implements OnInit {
 }
 
 validarRegistro(result,op){
-  if(op == 'ec'){
+  if(op == 'ec' && this.foto.value != ''){
     this.myDismiss(result,op)
-  }else if(op == 'pro'){
+  }else if(op == 'pro' ){
       if(this.direccionSelected != '' && this.direccionSelected != null && this.direccionSelected != undefined){
         this.myDismiss(result,op)
       }else{
@@ -298,7 +277,11 @@ validarRegistro(result,op){
         });
       }
 
-  }
+  }/*else{
+    this._snackBar.open('Selecciona una foto', 'Cerrar', {
+      duration: 3000
+    });
+  }*/
 }
   async registrarDonacion(result,op){
 
@@ -512,6 +495,8 @@ async obtenerStorageUser(){
   }).catch(e => {console.error(e)
     this.gpsEnable = false;});
 
+  }else{
+    this.presentMapModalFin()
   }
   
  

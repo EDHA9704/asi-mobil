@@ -27,8 +27,8 @@
       <div class="datos">
           <div class="datos-name">
               <h3>{{don.fundacion.nombreFundacion}}</h3>
-              <ion-label [class.estP]="don.estado == 0 "
-             *ngIf="don.estado == 0">pendiente</ion-label>
+              <ion-label [class.estP]="don.estado == 0 || don.estado == 3 "
+             *ngIf="don.estado == 0 || don.estado == 3">pendiente</ion-label>
               <ion-label [class.estP]="don.estado == 1"
               *ngIf="don.estado == 1">aprobado</ion-label>
               <ion-label

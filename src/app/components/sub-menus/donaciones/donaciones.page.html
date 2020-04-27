@@ -29,7 +29,7 @@
               <h3>{{don.donacion.fundacion.nombreFundacion}}</h3>
          
               <div class="estados">
-              <ion-label [class.estP]="don.donacion.estado == 0" *ngIf="don.donacion.estado == 0"><i class="fa fa-university" aria-hidden="true"></i> pendiente</ion-label>
+              <ion-label [class.estP]="don.donacion.estado == 0 || don.donacion.estado == 3" *ngIf="don.donacion.estado == 0 || don.donacion.estado == 3"><i class="fa fa-university" aria-hidden="true"></i> pendiente</ion-label>
               <ion-label [class.estP]="don.donacion.estado == 1" *ngIf="don.donacion.estado == 1"><i class="fa fa-university" aria-hidden="true"></i> aprobado</ion-label>
               <ion-label [class.estA]="don.donacion.estado == 2" *ngIf="don.donacion.estado == 2"><i class="fa fa-university" aria-hidden="true"></i> negado</ion-label>
               <ion-label class="estP" *ngIf="don.estadoVl == 0"><i class="fa fa-user" aria-hidden="true"></i> pendiente</ion-label>

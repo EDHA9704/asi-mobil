@@ -328,9 +328,9 @@ $("#telefonoRP").keyup(()=>{
     }).catch(e => {console.error(e)
       this.gpsEnable = false;});
   
+    }else{
+      this.presentMapModalFin()
     }
-    
-   
   }
 
   validarPermisiosLocation(){

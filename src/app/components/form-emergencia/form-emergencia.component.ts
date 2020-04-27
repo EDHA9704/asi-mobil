@@ -410,6 +410,8 @@ if(this.gpsPermission == false ){
   }).catch(e => {console.error(e)
     this.gpsEnable = false;});
 
+  }else{
+    this.presentMapModalFin()
   }
 }
 async presentLoading(loading) {
