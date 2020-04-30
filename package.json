@@ -57,7 +57,7 @@
     "hammerjs": "^2.0.8",
     "ion-refresh-native": "^1.0.5",
     "ionic-header-parallax": "^1.1.0",
-    "jquery": "^3.3.1",
+    "jquery": "^3.5.0",
     "moment": "^2.24.0",
     "ng2-swipe-cards": "^1.1.1",
     "ngx-ionic-image-viewer": "^0.2.0",
