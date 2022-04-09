@@ -58,7 +58,7 @@
     "ion-refresh-native": "^1.0.5",
     "ionic-header-parallax": "^1.1.0",
     "jquery": "^3.3.1",
-    "moment": "^2.24.0",
+    "moment": "^2.29.2",
     "ng2-swipe-cards": "^1.1.1",
     "ngx-ionic-image-viewer": "^0.2.0",
     "ngx-moment": "^3.5.0",
